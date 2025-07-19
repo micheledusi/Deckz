@@ -2,7 +2,7 @@
 #import cetz.draw: content
 
 #import "../data/suit.typ": *
-#import "../data/number.typ": *
+#import "../data/rank.typ": *
 
 // Draw a figure (J, Q, K) in a CeTZ canvas
 // in double copy, with a central symmetry.
@@ -17,12 +17,12 @@
 	content((-0.1em, -0.68em), angle: 180deg, text(size: 1.7em, fig))
 }
 
-// Show the stack of number + suit symbols
-#let draw-central-number-canvas(card-data) = {
-  let num = card-data.number
+// Show the stack of rank + suit symbols
+#let draw-central-rank-canvas(card-data) = {
+  let num = card-data.rank
 	let symbol = suits.at(card-data.suit)
 	cetz.canvas({
-  // Switch by number
+  // Switch by rank
 		
 		// ACE
 		if num == "ace" {

@@ -2,22 +2,17 @@
 #import "canvas.typ": *
 #import "placement.typ": *
 
-
-//// Show card elements
-
-// Show the stack of number + suit symbols
-#let show-number-and-suit-stack(card-data) = {
+// Show the stack of rank + suit symbols
+#let show-rank-and-suit-stack(card-data) = {
   align(center + horizon,
     stack(
       dir: ttb,
       spacing: 0.2em,
-      numbers.at(card-data.number),
+      ranks.at(card-data.rank),
       suits.at(card-data.suit),
     )
   )
 }
-
-
 
 //// Show cards
 
@@ -28,7 +23,7 @@
       inset: 0pt, outset: 0.13em,
       radius: 40%,
       width: if equal-size {1.5em} else {auto},
-      text(card-data.color, align(center)[#numbers.at(card-data.number)#suits.at(card-data.suit)])
+      text(card-data.color, align(center)[#ranks.at(card-data.rank)#suits.at(card-data.suit)])
   )
 }
 
@@ -42,7 +37,7 @@
       radius: 10%,
       fill: bg-color,
   )[
-      #text(card-data.color, show-number-and-suit-stack(card-data))
+      #text(card-data.color, show-rank-and-suit-stack(card-data))
   ]
 }
 
@@ -58,7 +53,7 @@
   )[
     #text(card-data.color)[
       #two-corners(
-        box(width: 0.8em, align(center, numbers.at(card-data.number)))
+        box(width: 0.8em, align(center, ranks.at(card-data.rank)))
       )
       #align(center + horizon)[
         #text(size: 1.4em, suits.at(card-data.suit))
@@ -79,11 +74,11 @@
   )[
     #text(card-data.color)[
       #two-corners(
-        show-number-and-suit-stack(card-data)
+        show-rank-and-suit-stack(card-data)
       )
       #text(2em,
         align(center + horizon,
-          draw-central-number-canvas(card-data)
+          draw-central-rank-canvas(card-data)
         )
       )
     ]
@@ -102,11 +97,11 @@
   )[
     #text(card-data.color)[
       #four-corners(
-        show-number-and-suit-stack(card-data)
+        show-rank-and-suit-stack(card-data)
       )
       #text(3em,
         align(center + horizon,
-          draw-central-number-canvas(card-data)
+          draw-central-rank-canvas(card-data)
         )
       )
     ]
@@ -126,11 +121,11 @@
   )[
     #text(card-data.color)[
       #four-corners-diagonal(
-        show-number-and-suit-stack(card-data)
+        show-rank-and-suit-stack(card-data)
       )
       #text(2.5em,
         align(center + horizon,
-          draw-central-number-canvas(card-data)
+          draw-central-rank-canvas(card-data)
         )
       )
     ]

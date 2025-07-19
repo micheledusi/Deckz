@@ -1,16 +1,16 @@
 #import "../data/suit.typ": *
-#import "../data/number.typ": *
+#import "../data/rank.typ": *
 #import "convert.typ": *
 
 // Pre-prepared data structures
 
 // Cards = a dictionary of all the cards in a deck.
-// Structure: `cards.<suit>.<number>`
+// Structure: `cards.<suit>.<rank>`
 #let cards = (:)
 #for (suit, suit-symbol) in suits {
   cards.insert(suit, (:))
-  for (number, number-symbol) in numbers {
-    cards.at(suit).insert(number, get-card-code(suit, number))
+  for (rank, rank-symbol) in ranks {
+    cards.at(suit).insert(rank, get-card-code(suit, rank))
   }
 }
 
@@ -18,7 +18,7 @@
 // A list of codes for all the cards in a deck.
 #let deck = ()
 #for (suit, suit-symbol) in suits {
-  for (number, number-symbol) in numbers {
-    deck.push(get-card-code(suit, number))
+  for (rank, rank-symbol) in ranks {
+    deck.push(get-card-code(suit, rank))
   }
 }

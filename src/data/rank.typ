@@ -1,6 +1,6 @@
-// Numbers
+// Ranks
 
-#let numbers = (
+#let ranks = (
   "ace": "A",
   "two": "2",
   "three": "3", 
