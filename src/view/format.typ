@@ -3,7 +3,7 @@
 #import "placement.typ": *
 
 // Show the stack of rank + suit symbols
-#let show-rank-and-suit-stack(card-data) = {
+#let render-rank-and-suit-stack(card-data) = {
   align(center + horizon,
     stack(
       dir: ttb,
@@ -16,7 +16,7 @@
 
 //// Show cards
 
-#let show-card-inline(card, equal-size: true) = {
+#let render-card-inline(card, equal-size: true) = {
   let card-data = extract-card-data(card) 
   box(
       fill: bg-color,
@@ -27,7 +27,7 @@
   )
 }
 
-#let show-card-mini(card) = {
+#let render-card-mini(card) = {
   let card-data = extract-card-data(card) 
   box(
       width: 1.5em,
@@ -37,11 +37,11 @@
       radius: 10%,
       fill: bg-color,
   )[
-      #text(card-data.color, show-rank-and-suit-stack(card-data))
+      #text(card-data.color, render-rank-and-suit-stack(card-data))
   ]
 }
 
-#let show-card-small(card) = {
+#let render-card-small(card) = {
   let card-data = extract-card-data(card) 
   box(
       width: 2.5em,
@@ -62,7 +62,7 @@
   ]
 }
 
-#let show-card-medium(card) = {
+#let render-card-medium(card) = {
   let card-data = extract-card-data(card) 
   box(
       width: 6.5em,
@@ -74,7 +74,7 @@
   )[
     #text(card-data.color)[
       #two-corners(
-        show-rank-and-suit-stack(card-data)
+        render-rank-and-suit-stack(card-data)
       )
       #text(2em,
         align(center + horizon,
@@ -85,7 +85,7 @@
   ]
 }
 
-#let show-card-large(card) = {
+#let render-card-large(card) = {
   let card-data = extract-card-data(card) 
   box(
     width: 10em,
@@ -97,7 +97,7 @@
   )[
     #text(card-data.color)[
       #four-corners(
-        show-rank-and-suit-stack(card-data)
+        render-rank-and-suit-stack(card-data)
       )
       #text(3em,
         align(center + horizon,
@@ -109,7 +109,7 @@
 }
 
 // Square card layout
-#let show-card-square(card) = {
+#let render-card-square(card) = {
   let card-data = extract-card-data(card) 
   box(
     width: 10em,
@@ -121,7 +121,7 @@
   )[
     #text(card-data.color)[
       #four-corners-diagonal(
-        show-rank-and-suit-stack(card-data)
+        render-rank-and-suit-stack(card-data)
       )
       #text(2.5em,
         align(center + horizon,
@@ -130,4 +130,25 @@
       )
     ]
   ]
+}
+
+// Render function to view cards in different formats.
+// This function allows you to specify the format of the card to be rendered.
+// Available formats include: inline, mini, small, medium, large, and square.
+#let render(card, format: "small") = {
+  if format == "inline" {
+    render-card-inline(card)
+  } else if format == "mini" {
+    render-card-mini(card)
+  } else if format == "small" {
+    render-card-small(card)
+  } else if format == "medium" {
+    render-card-medium(card)
+  } else if format == "large" {
+    render-card-large(card)
+  } else if format == "square" {
+    render-card-square(card)
+  } else {
+    render-card-small(card)
+  }
 }
