@@ -61,7 +61,7 @@
         box(width: 0.8em, align(center, numbers.at(card-data.number)))
       )
       #align(center + horizon)[
-        #suits.at(card-data.suit)
+        #text(size: 1.4em, suits.at(card-data.suit))
       ]
     ]
   ]

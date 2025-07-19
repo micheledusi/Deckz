@@ -9,10 +9,12 @@
 // 
 // _*Note*: this has to be drawn in a canvas._
 #let draw-symmetric-figure-canvas(fig, symbol) = {
+	// Suit
 	content((-1em, 0.75em), symbol)
-	content((0.1em, 0.75em), angle: 0deg, text(size: 1.7em, fig))
-	content((-0.1em, -0.75em), angle: 180deg, text(size: 1.7em, fig))
 	content((1em, -0.75em), angle: 180deg, symbol)
+	// Figure
+	content((0.1em, 0.68em), angle: 0deg, text(size: 1.7em, fig))
+	content((-0.1em, -0.68em), angle: 180deg, text(size: 1.7em, fig))
 }
 
 // Show the stack of number + suit symbols
