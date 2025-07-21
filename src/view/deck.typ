@@ -1,27 +1,36 @@
-#import "card.typ": *
+#import "format.typ": *
+
+#import cetz: draw
 
 // Shows an array of cards as a hand, one next to the other.
-#let show-hand(mode: "mini", angle: 90deg, ..cards) = {
+#let render-hand(angle: 45deg, width: 10cm, format: "medium", ..cards) = {
 	let cards-array = cards.pos()
 	let angle-shift = angle / (cards-array.len() -1)
 	let angle-start = -angle / 2
-	let cards-views = cards-array.enumerate().map(pair => {
-		let i = pair.at(0)
-		let card = pair.at(1)
-		move(
-			dy: 0em, 
-			rotate(
-				angle-start + i * angle-shift,
-				origin: center + bottom,
-				reflow: false,
-				box(stroke: 0pt, [#show-card-small(card)#v(10em)]),
+	let radius = (width) / (2 * calc.sin(angle / 2))
+	cetz.canvas({
+		draw.rotate(z: -angle-start)
+		for i in range(cards-array.len()) {
+			content((0, radius),
+				rotate(
+					angle-start + i * angle-shift,
+					reflow: true,
+					origin: center + horizon,
+					render(format: format, cards-array.at(i))
+				)
 			)
-		)
+			draw.rotate(z: -angle-shift)
 		}
-	)
-	stack(
-		dir: ltr,
-		spacing: -2em,
-		..cards-views
-	)
+	})
+}
+
+#let render-deck(angle: 60deg, height: 1cm, format: "medium", top-card) = {
+	let num-cards = int(height / 2.5pt)
+	let shift-x = height * calc.cos(angle) / num-cards
+	let shift-y = height * calc.sin(angle) / num-cards
+	cetz.canvas({
+		for i in range(num-cards) {
+			content((shift-x * i, shift-y * i), render(format: format, top-card))
+		}
+	})
 }
