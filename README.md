@@ -17,10 +17,10 @@ Use **Deckz** to visualize individual cards, create stylish examples in document
 #set text(font: "Roboto Slab")
 
 #align(center)[
-	#box(fill: olive, width: 100%, inset: 5mm)[
-		#deckz.deck("AS")
-		#deckz.hand("KC", "QC", "AD", "10S", "3H")
-	]
+  #box(fill: olive, width: 100%, inset: 5mm)[
+    #deckz.deck("AS")
+    #deckz.hand("KC", "QC", "AD", "10S", "3H")
+  ]
 ]
 ```
 </details>
@@ -143,12 +143,12 @@ In the `deck` function, you can also specify different parameters:
 
 ```typ
 #stack(
-	dir: ltr,
-	spacing: 1fr,
-	deckz.deck("8S"),
-	deckz.deck("8S", angle: 90deg, height: 2.5cm),
-	deckz.deck("8S", angle: 180deg, height: 8pt, format: "small"),
-	deckz.deck("8S", angle: 80deg, height: 18mm, noise: 0.5)
+  dir: ltr,
+  spacing: 1fr,
+  deckz.deck("8S"),
+  deckz.deck("8S", angle: 90deg, height: 2.5cm),
+  deckz.deck("8S", angle: 180deg, height: 8pt, format: "small"),
+  deckz.deck("8S", angle: 80deg, height: 18mm, noise: 0.5)
 )
 ```
 
@@ -173,14 +173,14 @@ As can be seen in the example above, the cards are displayed in an arc shape, wi
 #let my-hand = ("AS", "KH", "QD", "JS", "JH", "10C", "9D", "6C")
 
 #table(
-	columns: (1fr),
-	align: center,
-	stroke: none,
-	deckz.hand(..my-hand),
-	deckz.hand(angle: 0deg, width: 4cm, ..my-hand),
-	deckz.hand(format: "mini", ..my-hand),
-	deckz.hand(width: 5cm, noise: 2, format: "small", ..my-hand),
-	deckz.hand(angle: 180deg, width: 3cm, noise: 0.5, format: "large", ..(my-hand + my-hand)),
+  columns: (1fr),
+  align: center,
+  stroke: none,
+  deckz.hand(..my-hand),
+  deckz.hand(angle: 0deg, width: 4cm, ..my-hand),
+  deckz.hand(format: "mini", ..my-hand),
+  deckz.hand(width: 5cm, noise: 2, format: "small", ..my-hand),
+  deckz.hand(angle: 180deg, width: 3cm, noise: 0.5, format: "large", ..(my-hand + my-hand)),
 )
 ```
 
@@ -209,21 +209,177 @@ For example, if you want to use a croissant emoji as a custom suit for diamonds,
 
 ## Final Examples
 
-### Example: Hand of Cards
+### Displaying the current state of a game
+You can use Deckz to display the **current state of a game**, such as the cards in hand, the cards on the table, and the deck.
+
+![Example of a game state with Deckz.](docs/poker_game.png)
+
+<details>
+  <summary><i><u>See the code for this example</u></i></summary>
+
 ```typ
-#stack(spacing: 6pt,
-  deckz.small("10H"),
-  deckz.small("JC"),
-  deckz.small("QD"),
-  deckz.small("KS"),
-  deckz.small("AC"),
+#import "@preview/deckz:0.1.0" as deckz
+
+#let player-mat(body) = box(
+  stroke: olive.darken(20%),
+  fill: olive.lighten(10%),
+  radius: (top: 50%, bottom: 5%), 
+  inset: 15%,
+  body
+)
+
+= Who's winning?
+
+#text(white, font: "Roboto Slab", weight: "semibold")[
+
+  #box(fill: olive, 
+    width: 100%, height: 12cm, 
+    inset: 4mm, radius: 2mm
+  )[
+
+    #place(center + bottom)[
+      #player-mat[
+        #deckz.hand(format: "small", width: 3cm, "9S", "10H", "4C", "4D", "2D")
+        Alice
+      ]
+    ]
+
+    #place(left + horizon)[
+      #rotate(90deg, reflow: true)[
+        #player-mat[
+          #deckz.hand(format: "small", width: 3cm, "AS", "JH", "JC", "JD", "3D")
+          #align(center)[Bob]
+        ]
+      ]
+    ]
+
+    #place(center + top)[
+      #rotate(180deg, reflow: true)[
+        #player-mat[
+          #deckz.hand(format: "small", width: 3cm, "KH", "8H", "7H", "5C", "3C")
+          #rotate(180deg)[Carol]
+        ]
+      ]
+      
+    ]
+
+    #place(right + horizon)[
+      #rotate(-90deg, reflow: true)[
+        #player-mat[
+          #deckz.hand(format: "small", width: 3cm, "6S", "3H", "2H", "QC", "9C")
+          #align(center)[Dave]
+        ]
+      ]
+    ]
+
+    #place(center + horizon)[
+      #deckz.deck(format: "small", angle: 80deg, height: 8mm, "AD")
+    ]
+  ]
+]
+
+In this situation, Alice has a *Pair of Four* (#deckz.inline("4C"), #deckz.inline("4D")). _What should the player do?_
+```
+</details>
+
+### Comparing different formats
+You can use Deckz to **compare different formats** of the same card, or to show how a card looks in different contexts.
+
+![Example of comparing different formats.](docs/comparison_table.png)
+<details>
+  <summary><i><u>See the code for this example</u></i></summary>
+
+```typ
+#import "@preview/deckz:0.1.0" as deckz
+
+#set page(margin: 0.5in, fill: gray.lighten(60%))
+#set table(stroke: 1pt + white, fill: white)
+#set text(font: "Arvo")
+
+= Comparison Table
+
+== #text(blue)[`inline`]
+A minimal format where the rank and suit are displayed directly within the flow of text -- perfect for quick references.
+#table(align: center, columns: (1fr,) * 4, 
+  deckz.inline("AS"),
+  deckz.inline("5H"),
+  deckz.inline("10C"),
+  deckz.inline("QD")
+)
+
+== #text(blue)[`mini`] 
+The smallest visual format: a compact rectangle showing the rank at the top and the suit at the bottom.
+#table(align: center, columns: (1fr,) * 4, 
+  deckz.mini("AS"),
+  deckz.mini("5H"),
+  deckz.mini("10C"),
+  deckz.mini("QD")
+)
+
+== #text(blue)[`small`]
+A slightly larger card with rank indicators on opposite corners and a central suit symbol -- ideal for tight layouts with better readability.
+#table(align: center, columns: (1fr,) * 4, 
+  deckz.small("AS"),
+  deckz.small("5H"),
+  deckz.small("10C"),
+  deckz.small("QD")
+)
+
+== #text(blue)[`medium`]
+A fully structured card layout featuring proper suit placement and figures. Rank and suit appear in two opposite corners, offering a realistic visual.
+#table(align: center, columns: (1fr,) * 4, 
+  deckz.medium("AS"),
+  deckz.medium("5H"),
+  deckz.medium("10C"),
+  deckz.medium("QD")
+)
+
+== #text(blue)[`large`]
+The most detailed format, with corner summaries on all four corners and an expanded layout -- great for presentations or printable decks.
+#table(align: center, columns: (1fr,) * 4, 
+  deckz.large("AS"),
+  deckz.large("5H"),
+  deckz.large("10C"),
+  deckz.large("QD")
+)
+
+== #text(blue)[`square`]
+A balanced 1:1 card format with rank and suit shown in all four corners and a central figure -- designed for symmetry and visual clarity.
+#table(align: center, columns: (1fr,) * 4, 
+  deckz.square("AS"),
+  deckz.square("5H"),
+  deckz.square("10C"),
+  deckz.square("KD")
 )
 ```
+</details>
 
-### Example: Inline Mention
+### Displaying a full deck
+You can use Deckz to display a **full deck of cards**, simply by retrieving the `deckz.deck52` array, which contains all 52 standard playing cards.
+
+![Example of a full deck.](docs/deck52.png)
+<details>
+  <summary><i><u>See the code for this example</u></i></summary>
+
 ```typ
-You drew the #deckz.inline("AS") — a lucky ace of spades!
+#import "@preview/deckz:0.1.0" as deckz
+
+#set page(margin: 5mm)
+
+#text(white, font: "Oldenburg")[
+
+  #box(fill: aqua.darken(40%), 
+    inset: 4mm, radius: 2mm
+  )[
+    #deckz.hand(angle: 270deg, width: 8cm, format: "large", noise: 0.35, ..deckz.deck52)
+
+    #place(center + horizon)[
+      #text(size: 30pt)[Deckz]
+    ]
+  ]
+]
 ```
+</details>
 
 ## Contributing
 Found a bug, have an idea, or want to contribute?
