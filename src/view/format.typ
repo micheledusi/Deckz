@@ -1,7 +1,6 @@
 #import "../model/convert.typ": * 
 #import "canvas.typ": *
 #import "placement.typ": *
-#import "../utils.typ": *
 
 // Show the stack of rank + suit symbols
 #let render-rank-and-suit-stack(card-data) = {

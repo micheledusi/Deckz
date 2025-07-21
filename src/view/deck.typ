@@ -13,9 +13,14 @@
 // - 'format': The cards rendering format. 
 #let render-hand(angle: 30deg, width: 10cm, noise: none, format: "medium", ..cards) = {
 	let cards-array = cards.pos()
-	let angle-shift = angle / (cards-array.len() - 1)
-	let angle-start = -angle / 2
-	let radius = (width) / (2 * calc.sin(angle / 2))
+	let (angle-start, angle-shift, radius, shift-x) = (0deg, 0deg, 0pt, 0pt)
+	if angle == 0deg {
+		shift-x = width / (cards-array.len() - 1)
+	} else {
+		angle-start = -angle / 2
+		angle-shift = angle / (cards-array.len() - 1)
+		radius = width / (2 * calc.sin(angle / 2))
+	}
 	// Handling randomness
 	let variabilities = ()
   if noise != none and noise > 0 {
@@ -34,7 +39,7 @@
 				noise + variabilities.at(i, default: none)
 			}
 			// Draw content
-			content((0, radius),
+			content((shift-x * i, radius),
 				rotate(
 					angle-start + i * angle-shift,
 					reflow: true,
