@@ -388,5 +388,12 @@ Feel free to open an **issue** or **pull request** on the [GitHub repository](ht
 Made something cool with Deckz? Let me know — I’d love to feature your work!
 
 ### Credits
-This package is created by [Michele Dusi](https://github.com/micheledusi).
+This package is created by [Michele Dusi](https://github.com/micheledusi) and is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
+All fonts used in this package are licensed under the [SIL Open Font License, Version 1.1](https://openfontlicense.org) 
+([*Oldenburg*](https://fonts.google.com/specimen/Oldenburg), [*Arvo*](https://fonts.google.com/specimen/Arvo))
+or the [Apache License, Version 2.0](http://www.apache.org/licenses/)
+([*Roboto Slab*](https://fonts.google.com/specimen/Roboto+Slab)).
+
+The card designs are inspired by the standard playing cards, with suit symbols taken from the [emoji library of Typst](https://typst.app/docs/reference/symbols/emoji/).
+This project works thanks to the following Typst packages: [CeTZ](https://typst.app/universe/package/cetz) and [Suiji](https://typst.app/universe/package/suiji).
