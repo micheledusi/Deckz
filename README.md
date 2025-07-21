@@ -5,28 +5,49 @@
 
 A flexible and customizable package to **render and display poker-style playing cards** in [Typst](https://typst.app/).
 
-Use **Deckz** to visualize individual cards, create stylish examples in documents, or (coming soon!) build full decks and hands for games and illustrations. ♠️♦️♣️♥️
+Use **Deckz** to visualize individual cards, create stylish examples in documents, or build full decks and hands for games and illustrations. ♠️♦️♣️♥️
 
-![A sample of rendered cards using different formats.](docs/example_cards.png)
+![A sample of cards rendered with Deckz.](docs/deck_hand_intro.png)
+<details>
+  <summary><i><u>See the code for this example</u></i></summary>
+
+```typ
+#import "@preview/deckz:0.1.0" as deckz: *
+
+#set text(font: "Roboto Slab")
+
+#align(center)[
+	#box(fill: olive, width: 100%, inset: 5mm)[
+		#deckz.deck("AS")
+		#deckz.hand("KC", "QC", "AD", "10S", "3H")
+	]
+]
+```
+</details>
 
 The name is inspired by Typst’s drawing package [CeTZ](https://typst.app/universe/package/cetz) — it mirrors its sound while hinting at its own purpose: rendering card decks.
 In fact, _Deckz_ also relies on _CeTZ_ internally to position elements precisely.
 
 
 ## Quick Example
+![Quick examples of some basic functionalities.](docs/quick_example.png)
 
 ```typ
-#import "@preview/deckz:0.1.0": card
+#import "@preview/deckz:0.1.0" as deckz
 
-= Card Example
+You can render cards by specifying their *card identifier*:
 
-#card.show("QS", format: "medium")
-#card.show("10H", format: "mini")
-#card.inline("KC")
+#deckz.render("10H", format: "mini")
+
+You can render *multiple formats*:
+
+#deckz.render("QS", format: "medium")
+
+You can also render cards #deckz.inline("KC") inline!
 ```
 
 ## Importing the Package
-To use Deckz, import it into your _Typst_ document with:
+To start using Deckz functionalities, import the package in your _Typst_ document with:
 
 ```typ
 #import "@preview/deckz:0.1.0" as deckz
@@ -39,12 +60,18 @@ You can then call any of the rendering functions using the `deckz` namespace.
 The main entry point is the `deckz.render()` function:
 
 ```typ
-#card.show("7D", format: "large")
+#card.render("7D", format: "large")
 ```
 
-The first argument is the **card identifier** as a string. Use standard short notation like `"AH"`, `"10S"`, `"QC"`, etc.
+The first argument is the **card identifier** as a string. Use standard short notation like `"AH"`, `"10S"`, `"QC"`, etc., where the first letter(s) indicates the *rank*, and the last letter the *suit*.
 
-The format parameter defines the card layout. See the next section for available formats.
+- **Available ranks**: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`.
+- **Available suits**: `H` (Hearts), `D` (Diamonds), `C` (Clubs), `S` (Spades).
+
+> *Note*. Card identifier is case-insensitive, so `"as"` and `"AS"` are equivalent and both represent the Ace of Spades.
+
+The second argument is optional and specifies the **format** of the card display. If not provided, it defaults to `medium`.
+See the next section for available formats.
 
 ## Formats
 
@@ -59,23 +86,126 @@ Deckz provides multiple display formats to fit different design needs:
 | `large`  | An expanded version of `medium` with corner summaries on all four sides for maximum readability. |
 | `square` | A balanced 1:1 format with summaries in all corners and the main figure centered — great for grid layouts. |
 
+Here's an example of how the same card looks in different formats:
+
+```typ
+#deckz.render("5S", format: "inline") #h(1fr)
+#deckz.render("5S", format: "mini") #h(1fr)
+#deckz.render("5S", format: "small") #h(1fr)
+#deckz.render("5S", format: "medium") #h(1fr)
+#deckz.render("5S", format: "large") #h(1fr)
+#deckz.render("5S", format: "square")
+``` 
+
+![Examples of different card formats.](docs/different_formats.png)
+
 You can use any of these with the `deckz.render()` function, or directly via specific calls:
 
 ```typ
 #deckz.mini("2C")
 #deckz.large("JH")
 #deckz.square("AD")
+
+are equivalent to
+
+#deckz.render("2C", format: "mini")
+#deckz.render("JH", format: "large")
+#deckz.render("AD", format: "square")
 ```
 
-**Note**. All formats are responsive to the current text size — they scale proportionally using `em` units, making them adaptable to different layouts and styles.
+![Examples of different card formats.](docs/equivalent_formulations.png)
 
-## Decks & Hands *(COMING SOON)*
-The next versions of Deckz will include support for:
+> *Note*. All formats are responsive to the current text size — they scale proportionally using `em` units, making them adaptable to different layouts and styles.
 
-- Rendering full decks;
-- Grouping hands of cards. 
+If you want more examples of how to use these formats, check out the examples at the end of this document.
 
-Stay tuned!
+## Decks & Hands
+Deckz also provides convenient functions to render **entire decks** or **hands of cards**. Both functions produce a _CeTZ_ canvas, which can be used in any context where you need to display multiple cards together.
+
+### Decks
+The deck visualization is created with the `deckz.deck()` function, which takes a card identifier as an argument. It renders a full deck of cards, with the specified card on top.
+
+<p align="center">
+<img src="docs/deck.png" alt="Deck example" width="180px"/>
+</p>
+
+```typ
+#deckz.deck("6D")
+```
+
+In the `deck` function, you can also specify different parameters:
+- `angle`: The direction towards which the cards are shifted. If equal to `0deg`, the cards will be stacked to the right; if equal to `180deg`, they will be stacked to the left. The default value of `90deg` stacks the cards upwards, whereas `270deg` stacks them downwards. Intermediate values will create a diagonal stack. Default is `60deg`.
+- `height`: The height of the deck (default is `1cm`). This determines for how much space the cards will be shifted in the specified direction.
+- `noise`: a number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
+- `format`: the format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
+
+![Example of a deck with different parameters.](docs/deck_comparison.png)
+
+```typ
+#stack(
+	dir: ltr,
+	spacing: 1fr,
+	deckz.deck("8S"),
+	deckz.deck("8S", angle: 90deg, height: 2.5cm),
+	deckz.deck("8S", angle: 180deg, height: 8pt, format: "small"),
+	deckz.deck("8S", angle: 80deg, height: 18mm, noise: 0.5)
+)
+```
+
+### Hands
+The hand visualization is created with the `deckz.hand()` function, which takes a variable number of card identifiers as arguments. It renders a hand of cards, with the specified cards displayed side by side.
+
+![An example of a hand of cards.](docs/hand.png)
+
+```typ
+#deckz.hand("AS", "KS", "QS", "JS", "10S")
+```
+
+As can be seen in the example above, the cards are displayed in an arc shape, with the first card on the left and the last card on the right. To customize such display, you can use the following parameters:
+- `angle`: The angle of the arc in degrees. The default is `30deg`, which creates a gentle arc. Higher values will create a wider arc, while lower values will create a tighter arc.
+- `width`: The width of the hand in centimeters. This determines how far apart the cards will be spaced. The default is `10cm`. More precisely, the width is the distance between the centers of the first and last card in the hand.
+- `noise`: a number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
+- `format`: the format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
+
+![Example of a hand with different parameters.](docs/hand_comparison.png)
+
+```typ
+#let my-hand = ("AS", "KH", "QD", "JS", "JH", "10C", "9D", "6C")
+
+#table(
+	columns: (1fr),
+	align: center,
+	stroke: none,
+	deckz.hand(..my-hand),
+	deckz.hand(angle: 0deg, width: 4cm, ..my-hand),
+	deckz.hand(format: "mini", ..my-hand),
+	deckz.hand(width: 5cm, noise: 2, format: "small", ..my-hand),
+	deckz.hand(angle: 180deg, width: 3cm, noise: 0.5, format: "large", ..(my-hand + my-hand)),
+)
+```
+
+## Card Customization *(COMING SOON)*
+Deckz allows for some customization of the card appearance, such as colors and styles. However, this feature is still under development and will be available in future releases.
+
+**Variant Colors**: to better distinguish same-color suits, Deckz will support variant colors for each suit.
+
+![Example of cards with custom colors.](docs/future_variant_colors.png)
+
+> *Note*. The color scheme shown above is inspired by the game *Balatro*. The hand displayed is the initial hand from a game started with the seed "DECKZ" — not a bad opening, huh? 😉
+
+**Custom Suits**: Deckz will also allow you to define custom suits, so you can use your own symbols or images instead of the standard hearts, diamonds, clubs, and spades.
+
+![Example of cards with custom suits.](docs/future_custom_suits.png)
+
+Even though this feature is not yet implemented, you can still use custom suits by defining your own `show` rule for the emoji suits. In fact, Deckz uses the `emoji.suit.*` symbols to render the standard suits, so you can override them with your own definitions.
+
+For example, if you want to use a croissant emoji as a custom suit for diamonds, you can define it like this:
+
+```typ
+#show emoji.suit.diamond: text(size: 0.7em, emoji.croissant)
+```
+
+> *Note*. The resizing of the emoji is used to make it fit better in the card layout. You can adjust the size as needed.
 
 ## Final Examples
 
