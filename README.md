@@ -60,7 +60,7 @@ You can then call any of the rendering functions using the `deckz` namespace.
 The main entry point is the `deckz.render()` function:
 
 ```typ
-#card.render("7D", format: "large")
+#deckz.render("7D", format: "large")
 ```
 
 The first argument is the **card identifier** as a string. Use standard short notation like `"AH"`, `"10S"`, `"QC"`, etc., where the first letter(s) indicates the *rank*, and the last letter the *suit*.
@@ -212,17 +212,17 @@ For example, if you want to use a croissant emoji as a custom suit for diamonds,
 ### Example: Hand of Cards
 ```typ
 #stack(spacing: 6pt,
-  card.small("10H"),
-  card.small("JC"),
-  card.small("QD"),
-  card.small("KS"),
-  card.small("AC"),
+  deckz.small("10H"),
+  deckz.small("JC"),
+  deckz.small("QD"),
+  deckz.small("KS"),
+  deckz.small("AC"),
 )
 ```
 
 ### Example: Inline Mention
 ```typ
-You drew the #card.inline("AS") — a lucky ace of spades!
+You drew the #deckz.inline("AS") — a lucky ace of spades!
 ```
 
 ## Contributing
