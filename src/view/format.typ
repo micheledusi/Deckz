@@ -1,6 +1,7 @@
 #import "../model/convert.typ": * 
 #import "canvas.typ": *
 #import "placement.typ": *
+#import "../utils.typ": *
 
 // Show the stack of rank + suit symbols
 #let render-rank-and-suit-stack(card-data) = {
@@ -132,10 +133,8 @@
   ]
 }
 
-// Render function to view cards in different formats.
-// This function allows you to specify the format of the card to be rendered.
-// Available formats include: inline, mini, small, medium, large, and square.
-#let render(card, format: "small") = {
+// Un-exposed function to choose the format based on the keyword.
+#let render-format(card, format: "medium") = {
   if format == "inline" {
     render-card-inline(card)
   } else if format == "mini" {
@@ -149,6 +148,38 @@
   } else if format == "square" {
     render-card-square(card)
   } else {
-    render-card-small(card)
+    render-card-medium(card)
+  }
+}
+
+#import "@preview/suiji:0.4.0" as suiji // Random numbers library
+
+// Render function to view cards in different formats.
+// This function allows you to specify the format of the card to be rendered.
+// Available formats include: inline, mini, small, medium, large, and square.
+// 
+// - 'card': The code of the card you want to represent.
+// - 'format': The selected format (inline, mini, small, medium, large, and square). Default value is "medium".
+// - 'noise': The amount of "randmness" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care.
+#let render(card, format: "medium", noise: none) = {
+  if noise == none or noise <= 0 {
+    // No Noise
+    return render-format(card, format: format)
+  } else {
+    // Ok noise
+    let seed = int(noise * 1e9) + 42
+    let rng = suiji.gen-rng-f(seed)
+    let (rng, (shift-x, shift-y, shift-rot)) = suiji.uniform-f(rng, low: -1/2, high: 1/2, size: 3)
+    move(
+      dx: shift-x * noise * 0.5em,
+      dy: shift-x * noise * 0.5em,
+      rotate(
+        shift-rot * noise * 15deg,
+        origin: center + horizon,
+        { // Translated and rotated content
+          render-format(card, format: format)
+        }
+      )
+    )
   }
 }

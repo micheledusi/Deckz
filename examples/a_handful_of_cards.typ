@@ -6,11 +6,10 @@
 
 = A Handful or Cards
 
-#lorem(120)
-
 #align(center)[
-	#deckz.deck(angle: 60deg, "AS")
-	#deckz.hand(angle: 20deg, width: 8cm, "AC", "KC", "QC", "AD", "3H")
+	#deckz.deck(angle: 60deg, height: 32pt, "AS")
+	#deckz.hand(angle: 20deg, width: 8cm, format: "medium", "AC", "KC", "QC", "AD", "3H", 
+	)
 ]
 
 #lorem(120)
