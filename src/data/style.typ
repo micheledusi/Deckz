@@ -17,7 +17,7 @@
 #let suits-colors-variant = (
   "heart": red.mix((purple, 20%)), 
   "spade": black.mix((green, 10%)),
-  "diamond": red.mix((orange, 50%)),
+  "diamond": red.mix((orange, 90%)),
   "club": blue.mix((black, 10%)),
 )
 
