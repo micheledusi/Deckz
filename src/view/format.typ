@@ -172,7 +172,7 @@
     let (rng, (shift-x, shift-y, shift-rot)) = suiji.uniform-f(rng, low: -1/2, high: 1/2, size: 3)
     move(
       dx: shift-x * noise * 0.5em,
-      dy: shift-x * noise * 0.5em,
+      dy: shift-y * noise * 0.5em,
       rotate(
         shift-rot * noise * 15deg,
         origin: center + horizon,
