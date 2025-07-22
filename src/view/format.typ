@@ -2,6 +2,48 @@
 #import "canvas.typ": *
 #import "placement.typ": *
 
+
+#let dimensions = (
+  inline: (
+    width: 1.5em, 
+    height: auto,
+    inset: 0pt, 
+    outset: 0.13em,
+    radius: 40%,
+  ),
+  mini: (
+    width: 1.5em, 
+    height: 2.1em,
+    inset: 8%,
+    radius: 10%,
+  ),
+  small: (
+    width: 2.5em, 
+    height: 3.5em,
+    inset: 8%,
+    radius: 10%,
+  ),
+  medium: (
+    width: 6.5em, 
+    height: 9.1em,
+    inset: 6%,
+    radius: 10%,
+  ),
+  large: (
+    width: 10em, 
+    height: 14em,
+    inset: 5%,
+    radius: 10%,
+  ),
+  square: (
+    width: 10em, 
+    height: 10em,
+    inset: 4%,
+    radius: 8%,
+  ),
+)
+
+
 // Show the stack of rank + suit symbols
 #let render-rank-and-suit-stack(card-data) = {
   align(center + horizon,
@@ -14,43 +56,44 @@
   )
 }
 
+// Show a rectangle with the card style and a custom content
+#let render-card-rectangle(format, body) = box(
+  width: dimensions.at(format).width,
+  height: dimensions.at(format).height, 
+  inset: dimensions.at(format).inset,
+  radius: dimensions.at(format).radius,
+  stroke: border-style,
+  fill: bg-color,
+  body
+)
+
 //// Show cards
 
 #let render-card-inline(card, equal-size: true) = {
   let card-data = extract-card-data(card) 
   box(
-      fill: bg-color,
-      inset: 0pt, outset: 0.13em,
-      radius: 40%,
-      width: if equal-size {1.5em} else {auto},
-      text(card-data.color, align(center)[#ranks.at(card-data.rank)#suits.at(card-data.suit)])
+    fill: bg-color,
+    width: if equal-size {dimensions.inline.width} else {auto},
+    height: dimensions.inline.height,
+    inset: dimensions.inline.inset,
+    outset: dimensions.inline.outset,
+    radius: dimensions.inline.radius,
+    text(card-data.color, 
+      align(center)[#ranks.at(card-data.rank)#suits.at(card-data.suit)]
+    )
   )
 }
 
 #let render-card-mini(card) = {
   let card-data = extract-card-data(card) 
-  box(
-      width: 1.5em,
-      height: 2.1em, 
-      inset: 8%,
-      stroke: border-style,
-      radius: 10%,
-      fill: bg-color,
-  )[
+  render-card-rectangle("mini")[
       #text(card-data.color, render-rank-and-suit-stack(card-data))
   ]
 }
 
 #let render-card-small(card) = {
   let card-data = extract-card-data(card) 
-  box(
-      width: 2.5em,
-      height: 3.5em, 
-      inset: 8%,
-      stroke: border-style,
-      radius: 10%,
-      fill: bg-color,
-  )[
+  render-card-rectangle("small")[
     #text(card-data.color)[
       #two-corners(
         box(width: 0.8em, align(center, ranks.at(card-data.rank)))
@@ -64,14 +107,7 @@
 
 #let render-card-medium(card) = {
   let card-data = extract-card-data(card) 
-  box(
-      width: 6.5em,
-      height: 9.1em, 
-      inset: 6%,
-      stroke: border-style,
-      radius: 10%,
-      fill: bg-color,
-  )[
+  render-card-rectangle("medium")[
     #text(card-data.color)[
       #two-corners(
         render-rank-and-suit-stack(card-data)
@@ -86,15 +122,8 @@
 }
 
 #let render-card-large(card) = {
-  let card-data = extract-card-data(card) 
-  box(
-    width: 10em,
-    height: 14em, 
-    inset: 5%,
-    stroke: border-style,
-    radius: 10%,
-    fill: bg-color,
-  )[
+  let card-data = extract-card-data(card)
+  render-card-rectangle("large")[
     #text(card-data.color)[
       #four-corners(
         render-rank-and-suit-stack(card-data)
@@ -110,15 +139,8 @@
 
 // Square card layout
 #let render-card-square(card) = {
-  let card-data = extract-card-data(card) 
-  box(
-    width: 10em,
-    height: 10em, 
-    inset: 4%,
-    stroke: border-style,
-    radius: 8%,
-    fill: bg-color,
-  )[
+  let card-data = extract-card-data(card)
+  render-card-rectangle("square")[
     #text(card-data.color)[
       #four-corners-diagonal(
         render-rank-and-suit-stack(card-data)
