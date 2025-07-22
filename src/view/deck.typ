@@ -84,3 +84,29 @@
 		}
 	})
 }
+
+// Renders a heap of cards, randomly placed in the given area.
+// 
+// Parameters:
+// - 'cards': the cards to display, with standard code representation. 
+// 		The last cards are represented on top of the previous one, as the rendering follows the given order. 
+// - 'width': the horizontal dimension of the area in which cards are placed.
+// - 'height': the vertical dimension of the area in which cards are placed.
+// - 'format': The format or style to use for rendering each card. Default is "medium".
+// 
+// *Note*: the final result might exceed the borders of the given area, because
+// the contraint is applied to the cards' centers, not to their corners. 
+#let render-heap(format: "medium", width: 10cm, height: 6cm, ..cards) = {
+	let num-cards = cards.pos().len()
+	let rng = suiji.gen-rng-f(42)
+	let (rng, shift-x) = suiji.uniform-f(rng, low: 0, high: width / 1pt, size: num-cards)
+	let (rng, shift-y) = suiji.uniform-f(rng, low: 0, high: height / 1pt, size: num-cards)
+	let (rng, shift-rot) = suiji.uniform-f(rng, low: 0, high: 360, size: num-cards)
+	cetz.canvas({
+		for i in range(num-cards) {
+			content((shift-x.at(i) * 1pt, shift-y.at(i) * 1pt), rotate(shift-rot.at(i) * 1deg)[
+				#render-format(format: format, cards.pos().at(i))
+			])
+		}
+	})
+}
