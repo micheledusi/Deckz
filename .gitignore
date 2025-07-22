@@ -15,4 +15,4 @@ Thumbs.db
 *.bak
 
 # Temporary assets
-fonts/*
+fonts

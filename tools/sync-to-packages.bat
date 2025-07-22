@@ -17,6 +17,7 @@ popd
 set "TARGET_BASE=../typst-packages/packages/preview/%PACKAGE_NAME%"
 
 set "TOOLS_DIR=%~dp0"
+set "EXAMPLES_DIR=%SOURCE_DIR%\examples"
 set "GIT_DIR=%SOURCE_DIR%\.git"
 
 :: STEP 1: Extract version from manifest typst.toml
@@ -45,6 +46,40 @@ if "%VERSION%"=="" (
 )
 echo [INFO] Detected version: %VERSION%
 
+:: STEP 1.5: Check if some file refers to a previous version
+set "MISMATCH_FOUND=0"
+for /r "%SOURCE_DIR%" %%F in (*) do (
+    findstr /r /c:"%PACKAGE_NAME%:[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*" "%%F" >nul
+    if not errorlevel 1 (
+        for /f "delims=" %%L in ('findstr /n /r /c:"%PACKAGE_NAME%:[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*" "%%F"') do (
+            set "LINE=%%L"
+            for /f "tokens=1,* delims=:" %%N in ("!LINE!") do (
+                set "LINENUM=%%N"
+                set "TEXT=%%O"
+                for /f "tokens=2 delims=:" %%V in ("!TEXT!") do (
+                    set "REF=%%V"
+                )
+                for %%R in (!TEXT!) do (
+                    setlocal enabledelayedexpansion
+                    for /f "tokens=1,2,3 delims=:" %%A in ("!TEXT!") do (
+                        set "MATCHED=!PACKAGE_NAME!:%%B"
+                        set "VER=%%B"
+                        if not "!MATCHED!"=="%PACKAGE_NAME%:%VERSION%" (
+                            echo [ERROR] Version reference mismatch in file: %%F, line !LINENUM!: !MATCHED! (expected %PACKAGE_NAME%:%VERSION%)
+                            set "MISMATCH_FOUND=1"
+                        )
+                    )
+                    endlocal
+                )
+            )
+        )
+    )
+)
+if "%MISMATCH_FOUND%"=="1" (
+    echo [ERROR] One or more files refer to an old version.
+    exit /b 1
+)
+
 :: STEP 2.0: Define target directory
 set "TARGET_DIR=%TARGET_BASE%/%VERSION%/"
 
@@ -61,12 +96,13 @@ if "%CLEAN_TARGET%"=="TRUE" (
 :: STEP 2.2: Remove trailing backslash from dirs
 if "%SOURCE_DIR:~-1%"=="\" set "SOURCE_DIR=%SOURCE_DIR:~0,-1%"
 if "%TOOLS_DIR:~-1%"=="\" set "TOOLS_DIR=%TOOLS_DIR:~0,-1%"
+if "%EXAMPLES_DIR:~-1%"=="\" set "EXAMPLES_DIR=%EXAMPLES_DIR:~0,-1%"
 if "%GIT_DIR:~-1%"=="\" set "GIT_DIR=%GIT_DIR:~0,-1%"
 
 
 :: STEP 3: Copy files (excluding tools folder, this script, and .git directory)
 echo [INFO] Copying files to: %TARGET_DIR%
-robocopy "%SOURCE_DIR%" "%TARGET_DIR%" /E /XD "%TOOLS_DIR%" "%GIT_DIR%" /XF "%~f0"
+robocopy "%SOURCE_DIR%" "%TARGET_DIR%" /E /XD "%TOOLS_DIR%" "%GIT_DIR%" "%EXAMPLES_DIR%" /XF "%~f0"
 
 if %ERRORLEVEL% GEQ 8 (
     echo [ERROR] robocopy failed.
