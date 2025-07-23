@@ -1,6 +1,7 @@
 #import "../model/convert.typ": * 
 #import "canvas.typ": *
 #import "placement.typ": *
+#import "../data/style.typ": *
 
 
 #let dimensions = (

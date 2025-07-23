@@ -1,4 +1,16 @@
-// Style parameters
+#import "@preview/elembic:1.1.1" as e
+
+// Card style parameters
+#let card-style = e.element.declare(
+  "card-style",
+  prefix: "@preview/deckz:0.1.0",
+  doc: "Formats a card box",
+  display: it => box(fill: it.fill)[#it.body],
+  fields: (
+    e.field("body", content, required: true),
+    e.field("fill", e.types.paint, doc: "The background color", default: aqua.lighten(90%)),
+  )
+)
 
 #let bg-color = aqua.lighten(90%)
 
