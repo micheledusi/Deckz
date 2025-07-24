@@ -73,7 +73,7 @@ The first argument is the **card identifier** as a string. Use standard short no
 The second argument is optional and specifies the **format** of the card display. If not provided, it defaults to `medium`.
 See the next section for available formats.
 
-## Formats
+### Formats
 
 Deckz provides multiple display formats to fit different design needs:
 
@@ -118,6 +118,23 @@ are equivalent to
 > *Note*. All formats are responsive to the current text size — they scale proportionally using `em` units, making them adaptable to different layouts and styles.
 
 If you want more examples of how to use these formats, check out the examples at the end of this document.
+
+### Back of Cards
+
+To render the back of a card, you can use the `deckz.back(format)` function. This will display a generic card back design, which can be useful for games or when you want to hide the card's face.
+
+Alternatively, you can use the `deckz.render("back", format)` function, which is equivalent. Any string other than a valid card identifier will be interpreted as a request for the back of the card (except for the empty string).
+
+```typst
+// These are all equivalent:
+#deckz.medium("back")
+#deckz.render("back", format: "medium")
+#deckz.back(format: "medium")
+```
+
+<p align="center">
+<img src="docs/back_medium.png" alt="Example of cards back" width="300px"/>
+</p>
 
 ## Decks & Hands
 Deckz also provides convenient functions to render **entire decks** or **hands of cards**. Both functions produce a _CeTZ_ canvas, which can be used in any context where you need to display multiple cards together.
@@ -183,6 +200,12 @@ As can be seen in the example above, the cards are displayed in an arc shape, wi
   deckz.hand(angle: 180deg, width: 3cm, noise: 0.5, format: "large", ..(my-hand + my-hand)),
 )
 ```
+
+### Heaps
+Deckz also provides a `deckz.heap()` function to create a **heap of cards**. This is similar to a hand, but the cards are randomly scattered within a specified area, rather than arranged in an arc.
+
+> **TODO**. Missing documentation.
+
 
 ## Card Customization *(COMING SOON)*
 Deckz allows for some customization of the card appearance, such as colors and styles. However, this feature is still under development and will be available in future releases.

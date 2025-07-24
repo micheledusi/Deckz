@@ -1,20 +1,30 @@
 #import "@preview/cetz:0.4.1"
-#import cetz.draw: content
+#import cetz.draw: content, move-to
 
 #import "../data/suit.typ": *
 #import "../data/rank.typ": *
 
-// Draw a figure (J, Q, K) in a CeTZ canvas
+// Draw a figure rank (J, Q, K) in a CeTZ canvas
 // in double copy, with a central symmetry.
 // 
 // _*Note*: this has to be drawn in a canvas._
-#let draw-symmetric-figure-canvas(fig, symbol) = {
+#let draw-symmetric-figure-canvas(rank, symbol) = {
 	// Suit
 	content((-1em, 0.75em), symbol)
 	content((1em, -0.75em), angle: 180deg, symbol)
-	// Figure
-	content((0.1em, 0.68em), angle: 0deg, text(size: 1.7em, fig))
-	content((-0.1em, -0.68em), angle: 180deg, text(size: 1.7em, fig))
+	// Figure rank
+	content((0.1em, 0.68em), angle: 0deg, text(size: 1.7em, rank))
+	content((-0.1em, -0.68em), angle: 180deg, text(size: 1.7em, rank))
+}
+
+// Show the stack of rank + suit symbols.
+// Used for corners in larger formats, or for content in "mini" format.
+// 
+// _*Note*: this has to be drawn in a canvas._
+#let draw-stack-rank-and-suit(card-data, dx: 0pt, dy: 0pt, angle: 0deg) = {
+	move-to((dx, dy))
+	content((rel: (0pt, -1em)), angle: angle, suits.at(card-data.suit))
+	content((rel: (0pt, +1em)), angle: angle, ranks.at(card-data.rank))
 }
 
 // Show the stack of rank + suit symbols
