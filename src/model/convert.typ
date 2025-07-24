@@ -26,7 +26,7 @@
   }
   return (
     suit: my-suit,
-    color: suits-colors.at(my-suit),
+    color: if my-suit != none {suits-colors.at(my-suit, default: none)} else {none},
     rank: my-rank,
   )
 }
