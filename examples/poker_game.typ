@@ -53,7 +53,7 @@
 		]
 
 		#place(center + horizon)[
-			#deckz.deck(format: "small", angle: 80deg, height: 8mm, "AD")
+			#deckz.deck(format: "small", angle: 80deg, height: 8mm, "back")
 		]
 	]
 ]

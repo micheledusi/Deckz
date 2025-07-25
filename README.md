@@ -235,7 +235,7 @@ For example, if you want to use a croissant emoji as a custom suit for diamonds,
 ### Displaying the current state of a game
 You can use Deckz to display the **current state of a game**, such as the cards in hand, the cards on the table, and the deck.
 
-![Example of a game state with Deckz.](docs/poker_game.png)
+![Example of a game state with Deckz.](docs/poker_game_2.png)
 
 <details>
   <summary><i><u>See the code for this example</u></i></summary>
@@ -296,7 +296,7 @@ You can use Deckz to display the **current state of a game**, such as the cards 
     ]
 
     #place(center + horizon)[
-      #deckz.deck(format: "small", angle: 80deg, height: 8mm, "AD")
+      #deckz.deck(format: "small", angle: 80deg, height: 8mm, "back")
     ]
   ]
 ]
@@ -364,15 +364,6 @@ The most detailed format, with corner summaries on all four corners and an expan
   deckz.large("5H"),
   deckz.large("10C"),
   deckz.large("QD")
-)
-
-== #text(blue)[`square`]
-A balanced 1:1 card format with rank and suit shown in all four corners and a central figure -- designed for symmetry and visual clarity.
-#table(align: center, columns: (1fr,) * 4, 
-  deckz.square("AS"),
-  deckz.square("5H"),
-  deckz.square("10C"),
-  deckz.square("KD")
 )
 ```
 </details>
