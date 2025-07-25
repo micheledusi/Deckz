@@ -7,7 +7,7 @@ A flexible and customizable package to **render and display poker-style playing 
 
 Use **Deckz** to visualize individual cards, create stylish examples in documents, or build full decks and hands for games and illustrations. ♠️♦️♣️♥️
 
-![A sample of cards rendered with Deckz.](docs/deck_hand_intro.png)
+![A sample of cards rendered with Deckz.](docs/img/deck_hand_intro.png)
 <details>
   <summary><i><u>See the code for this example</u></i></summary>
 
@@ -30,7 +30,7 @@ In fact, _Deckz_ also relies on _CeTZ_ internally to position elements precisely
 
 
 ## Quick Example
-![Quick examples of some basic functionalities.](docs/quick_example.png)
+![Quick examples of some basic functionalities.](docs/img/quick_example.png)
 
 ```typ
 #import "@preview/deckz:0.1.0" as deckz
@@ -97,7 +97,7 @@ Here's an example of how the same card looks in different formats:
 #deckz.render("5S", format: "square")
 ``` 
 
-![Examples of different card formats.](docs/different_formats.png)
+![Examples of different card formats.](docs/img/different_formats.png)
 
 You can use any of these with the `deckz.render()` function, or directly via specific calls:
 
@@ -114,7 +114,7 @@ are equivalent to
 ```
 
 <p align="center">
-<img src="docs/equivalent_formulations.png" alt="Examples of different card formats" width="400px"/>
+<img src="docs/img/equivalent_formulations.png" alt="Examples of different card formats" width="400px"/>
 </p>
 
 > *Note*. All formats are responsive to the current text size — they scale proportionally using `em` units, making them adaptable to different layouts and styles.
@@ -135,7 +135,7 @@ Alternatively, you can use the `deckz.render("back", format)` function, which is
 ```
 
 <p align="center">
-<img src="docs/back_medium.png" alt="Example of cards back" width="300px"/>
+<img src="docs/img/back_medium.png" alt="Example of cards back" width="300px"/>
 </p>
 
 ## Decks & Hands
@@ -145,7 +145,7 @@ Deckz also provides convenient functions to render **entire decks** or **hands o
 The deck visualization is created with the `deckz.deck()` function, which takes a card identifier as an argument. It renders a full deck of cards, with the specified card on top.
 
 <p align="center">
-<img src="docs/deck.png" alt="Deck example" width="180px"/>
+<img src="docs/img/deck.png" alt="Deck example" width="180px"/>
 </p>
 
 ```typ
@@ -158,7 +158,7 @@ In the `deck` function, you can also specify different parameters:
 - `noise`: a number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
 - `format`: the format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
 
-![Example of a deck with different parameters.](docs/deck_comparison.png)
+![Example of a deck with different parameters.](docs/img/deck_comparison.png)
 
 ```typ
 #stack(
@@ -174,7 +174,7 @@ In the `deck` function, you can also specify different parameters:
 ### Hands
 The hand visualization is created with the `deckz.hand()` function, which takes a variable number of card identifiers as arguments. It renders a hand of cards, with the specified cards displayed side by side.
 
-![An example of a hand of cards.](docs/hand.png)
+![An example of a hand of cards.](docs/img/hand.png)
 
 ```typ
 #deckz.hand("AS", "KS", "QS", "JS", "10S")
@@ -186,7 +186,7 @@ As can be seen in the example above, the cards are displayed in an arc shape, wi
 - `noise`: a number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
 - `format`: the format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
 
-![Example of a hand with different parameters.](docs/hand_comparison.png)
+![Example of a hand with different parameters.](docs/img/hand_comparison.png)
 
 ```typ
 #let my-hand = ("AS", "KH", "QD", "JS", "JH", "10C", "9D", "6C")
@@ -207,7 +207,7 @@ As can be seen in the example above, the cards are displayed in an arc shape, wi
 Deckz also provides a `deckz.heap()` function to create a **heap of cards**. This is similar to a hand, but the cards are randomly scattered within a specified area, rather than arranged in an arc. Like the hand, the heap requires a list of card identifiers as arguments, and it can be customized with various parameters.
 
 <p align="center">
-<img src="docs/heap_square.png" alt="Example of heap of cards" width="350px"/>
+<img src="docs/img/heap_square.png" alt="Example of heap of cards" width="350px"/>
 </p>
 
 ```typ
@@ -232,13 +232,13 @@ Deckz allows for some customization of the card appearance, such as colors and s
 
 **Variant Colors**: to better distinguish same-color suits, Deckz will support variant colors for each suit.
 
-![Example of cards with custom colors.](docs/future_variant_colors.png)
+![Example of cards with custom colors.](docs/img/future_variant_colors.png)
 
 > *Note*. The color scheme shown above is inspired by the game *Balatro*. The hand displayed is the initial hand from a game started with the seed "DECKZ" — not a bad opening, huh? 😉
 
 **Custom Suits**: Deckz will also allow you to define custom suits, so you can use your own symbols or images instead of the standard hearts, diamonds, clubs, and spades.
 
-![Example of cards with custom suits.](docs/future_custom_suits.png)
+![Example of cards with custom suits.](docs/img/future_custom_suits.png)
 
 Even though this feature is not yet implemented, you can still use custom suits by defining your own `show` rule for the emoji suits. In fact, Deckz uses the `emoji.suit.*` symbols to render the standard suits, so you can override them with your own definitions.
 
@@ -255,7 +255,7 @@ For example, if you want to use a croissant emoji as a custom suit for diamonds,
 ### Displaying the current state of a game
 You can use Deckz to display the **current state of a game**, such as the cards in hand, the cards on the table, and the deck.
 
-![Example of a game state with Deckz.](docs/poker_game_2.png)
+![Example of a game state with Deckz.](docs/img/poker_game_2.png)
 
 <details>
   <summary><i><u>See the code for this example</u></i></summary>
@@ -328,7 +328,7 @@ In this situation, Alice has a *Pair of Four* (#deckz.inline("4C"), #deckz.inlin
 ### Comparing different formats
 You can use Deckz to **compare different formats** of the same card, or to show how a card looks in different contexts.
 
-![Example of comparing different formats.](docs/comparison_table.png)
+![Example of comparing different formats.](docs/img/comparison_table.png)
 <details>
   <summary><i><u>See the code for this example</u></i></summary>
 
@@ -391,7 +391,7 @@ The most detailed format, with corner summaries on all four corners and an expan
 ### Displaying a full deck
 You can use Deckz to display a **full deck of cards**, simply by retrieving the `deckz.deck52` array, which contains all 52 standard playing cards.
 
-![Example of a full deck.](docs/deck52.png)
+![Example of a full deck.](docs/img/deck52.png)
 <details>
   <summary><i><u>See the code for this example</u></i></summary>
 
@@ -429,5 +429,5 @@ All fonts used in this package are licensed under the [SIL Open Font License, Ve
 or the [Apache License, Version 2.0](http://www.apache.org/licenses/)
 ([*Roboto Slab*](https://fonts.google.com/specimen/Roboto+Slab)).
 
-The card designs are inspired by the standard playing cards, with suit symbols taken from the [emoji library of Typst](https://typst.app/docs/reference/symbols/emoji/).
+The card designs are inspired by the standard playing cards, with suit symbols taken from the [emoji library of Typst](https://typst.app/docs/img/reference/symbols/emoji/).
 This project works thanks to the following Typst packages: [CeTZ](https://typst.app/universe/package/cetz) and [Suiji](https://typst.app/universe/package/suiji).
