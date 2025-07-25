@@ -92,21 +92,44 @@
 // 		The last cards are represented on top of the previous one, as the rendering follows the given order. 
 // - 'width': the horizontal dimension of the area in which cards are placed.
 // - 'height': the vertical dimension of the area in which cards are placed.
+// - 'exceed': if true, allows cards to exceed the frame with the given dimensions. When the parameter is false, instead, cards placement considers a margin of half the card length on all four sides. This way, it is guaranteed that cards are placed within the specified frame size.
 // - 'format': The format or style to use for rendering each card. Default is "medium".
 // 
 // *Note*: the final result might exceed the borders of the given area, because
 // the contraint is applied to the cards' centers, not to their corners. 
-#let render-heap(format: "medium", width: 10cm, height: 6cm, ..cards) = {
+#let render-heap(format: "medium", width: 10cm, height: 10cm, exceed: false, ..cards) = context {
 	let num-cards = cards.pos().len()
+	let card-w = format-parameters.at(format).width.to-absolute()
+	let card-h = format-parameters.at(format).height.to-absolute()
+	// Random values
 	let rng = suiji.gen-rng-f(42)
-	let (rng, shift-x) = suiji.uniform-f(rng, low: 0, high: width / 1pt, size: num-cards)
-	let (rng, shift-y) = suiji.uniform-f(rng, low: 0, high: height / 1pt, size: num-cards)
-	let (rng, shift-rot) = suiji.uniform-f(rng, low: 0, high: 360, size: num-cards)
+	let (rng, rand-x) = suiji.uniform-f(rng, size: num-cards) 	// [0, 1)
+	let (rng, rand-y) = suiji.uniform-f(rng, size: num-cards) 	// [0, 1)
+	let (rng, shift-rot) = suiji.uniform-f(rng, low: 0, high: 360, size: num-cards) // [0°, 360°)
 	cetz.canvas({
 		for i in range(num-cards) {
-			content((shift-x.at(i) * 1pt, shift-y.at(i) * 1pt), rotate(shift-rot.at(i) * 1deg)[
-				#render-format(format: format, cards.pos().at(i))
-			])
+			// Compute random angle
+			let angle = shift-rot.at(i) * 1deg
+			// If cannot exceed, compute the bounding box
+			let (x, y) = (0, 0)
+			if not exceed {
+				let sin_angle = calc.abs(calc.sin(angle))
+				let cos_angle = calc.abs(calc.cos(angle))
+				let span-x = card-w * cos_angle + card-h * sin_angle
+				let span-y = card-w * sin_angle + card-h * cos_angle
+				x = rand-x.at(i) * (width - span-x) + (span-x / 2)
+				y = rand-y.at(i) * (height - span-y) + (span-y / 2)
+			} else {
+				x = rand-x.at(i) * width
+				y = rand-y.at(i) * height
+			}
+			// Render content
+			content((x, y), 
+				rotate(angle, origin: center + horizon, reflow: true)[
+					//#box(width: card-w, height: card-h, stroke: 1pt)
+					#render-card(format, cards.pos().at(i))
+				]
+			)
 		}
 	})
 }

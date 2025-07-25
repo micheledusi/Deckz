@@ -113,7 +113,9 @@ are equivalent to
 #deckz.render("AD", format: "square")
 ```
 
-![Examples of different card formats.](docs/equivalent_formulations.png)
+<p align="center">
+<img src="docs/equivalent_formulations.png" alt="Examples of different card formats" width="400px"/>
+</p>
 
 > *Note*. All formats are responsive to the current text size — they scale proportionally using `em` units, making them adaptable to different layouts and styles.
 
@@ -202,10 +204,28 @@ As can be seen in the example above, the cards are displayed in an arc shape, wi
 ```
 
 ### Heaps
-Deckz also provides a `deckz.heap()` function to create a **heap of cards**. This is similar to a hand, but the cards are randomly scattered within a specified area, rather than arranged in an arc.
+Deckz also provides a `deckz.heap()` function to create a **heap of cards**. This is similar to a hand, but the cards are randomly scattered within a specified area, rather than arranged in an arc. Like the hand, the heap requires a list of card identifiers as arguments, and it can be customized with various parameters.
 
-> **TODO**. Missing documentation.
+<p align="center">
+<img src="docs/heap_square.png" alt="Example of heap of cards" width="350px"/>
+</p>
 
+```typ
+#let (w, h) = (10cm, 10cm)
+#box(width: w, height: h, 
+	fill: olive, 
+	stroke: olive.darken(50%) + 2pt,
+)[
+	#deckz.heap(format: "small", width: w, height: h, ..deckz.deck52)
+]
+// Note: The `deckz.deck52` array contains all 52 standard playing cards.
+```
+
+The `deckz.heap()` function takes the following parameters:
+- `width`: The width of the heap in centimeters. This determines how far apart the cards will be scattered. The default is `10cm`.
+- `height`: The height of the heap in centimeters. This determines how far apart the cards will be scattered vertically. The default is `10cm`.
+- `format`: the format of the cards in the heap. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`. 
+- `exceed`: a boolean value that determines whether the cards can exceed the specified width and height. If set to `true`, the heap can extend beyond the specified dimensions, yet assessing that all cards' center positions will be contained within the specified area. If set to `false`, the whole surface of each card will be contained within the specified dimensions. The default is `false`.
 
 ## Card Customization *(COMING SOON)*
 Deckz allows for some customization of the card appearance, such as colors and styles. However, this feature is still under development and will be available in future releases.
