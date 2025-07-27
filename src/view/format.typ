@@ -174,7 +174,7 @@
         shift-rot * noise * 15deg,
         origin: center + horizon,
         { // Translated and rotated content
-          card(format, card)
+          render-card(format, card)
         }
       )
     )
