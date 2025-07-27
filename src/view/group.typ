@@ -21,7 +21,7 @@
 	angle: 30deg, 
 	/// The *width* of the hand, i.e. the distance between the first and last card. -> length
 	width: 10cm, 
-	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. -> float | none
+	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of "1" corresponds to a "standard" amount of noise, according to DECKZ style. Higher values might produce crazy results, handle with care. -> float | none
 	noise: none,
 	/// The *format* of the cards to render. Default is "medium".
 	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`. -> string
@@ -71,21 +71,22 @@
 
 
 /// Renders a *stack* of cards, as if they were placed one ontop of each other.
-/// Calculates the number of cards based on the given height, and spaces them evenly along the specified angle using trigonometric functions. Each card is rendered with a positional shift to create a fanned deck appearance.
+/// Calculates the number of cards based on the given height (@cmd:deckz:deck.height), and spaces them evenly along the specified angle (@cmd:deckz:deck.angle). Each card is rendered with a positional shift to create a fanned deck appearance.
 /// 
 /// ```side-by-side
 /// #deckz.deck(
-///		angle: 60deg,
-/// 	height: 0.5cm,
+///		angle: 20deg,
+/// 	height: 1.5cm,
 /// 	"7D"
 /// )
 /// ```
 /// 
 /// -> content
 #let deck(
-	/// The *angle* at which the deck is fanned out. Default is 60deg. -> angle
+	/// The *angle* at which the deck is fanned out. Default is #{60deg}. -> angle
 	angle: 60deg, 
-	/// The total *height* of the deck stack. Default is 1cm. -> height
+	/// The total *height* of the deck stack. This determines how many cards are rendered in the stack, as one card is displayed for every #{2.5pt} of height. 
+	/// -> height
 	height: 1cm, 
 	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. -> float | none
 	noise: none, 
@@ -117,7 +118,7 @@
 }
 
 /// Renders a *heap* of cards, randomly placed in the given area.
-/// The cards are placed in a random position within the specified width and height, with a random rotation applied to each card. The `heap.exceed` parameter controls whether cards can exceed the specified frame dimensions or not.
+/// The cards are placed in a random position within the specified width (@cmd:deckz:heap.width) and height (@cmd:deckz:heap.height), with a random rotation applied to each card. The @cmd:deckz:heap.exceed parameter controls whether cards can exceed the specified frame dimensions or not.
 /// 
 /// ```side-by-side
 /// #deckz.heap(
@@ -136,7 +137,34 @@
 	width: 10cm,
 	/// The *vertical dimension* of the area in which cards are placed. -> length
 	height: 10cm, 
-	/// If `true`, allows cards to *exceed the frame* with the given dimensions. When the parameter is `false`, instead, cards placement considers a margin of half the card length on all four sides. This way, it is guaranteed that cards are placed within the specified frame size. Default is `false`. -> boolean
+	/// If `true`, allows cards to *exceed the frame* with the given dimensions. When the parameter is `false`, instead, cards placement considers a margin of half the card length on all four sides. This way, it is guaranteed that cards are placed within the specified frame size. Default is `false`.
+	/// 
+	/// ```side-by-side
+	/// // Example with `exceed: true`
+	/// #box(width: 3cm, height: 3cm, stroke: green)[
+	/// 	#place(center + horizon, deckz.heap(
+	/// 		format: "small",
+	/// 		width: 3cm,
+	/// 		height: 3cm,
+	/// 		exceed: true,
+	/// 		..deckz.deck52.slice(0, 13)
+	/// 	))
+	/// ]
+	/// 
+	/// // Example with `exceed: false`
+	/// #box(width: 3cm, height: 3cm, stroke: green)[
+	/// 	#place(center + horizon, deckz.heap(
+	/// 		format: "small",
+	/// 		width: 3cm,
+	/// 		height: 3cm,
+	/// 		exceed: false,
+	/// 		..deckz.deck52.slice(0, 13)
+	/// 	))
+	/// ]
+	/// 
+	/// ``` 
+	/// 
+	/// -> boolean
 	exceed: false, 
 	/// The *cards to display*, with standard code representation. The last cards are represented on top of the previous one, as the rendering follows the given order.  -> array
 	..cards

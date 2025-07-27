@@ -1,13 +1,21 @@
 // rank.typ
 
-/// A mapping of all rank symbols utilized in DECKZ.
-/// Primarily intended for internal use within higher-level functions, but can also be accessed directly, for example, to iterate over the ranks.
+/// A mapping of all *rank symbols* utilized in DECKZ.
+/// 
+/// ```example
+/// #deckz.ranks
+/// ```
+/// 
+/// This dictionary is primarily intended for internal use within higher-level functions, but can also be accessed directly, for example, to iterate over the ranks.
 /// 
 /// ```side-by-side
-/// #for (rank, symbol) in deckz.ranks.pairs() [
-///   - #rank: #symbol
-/// ]
+/// #table(
+///   columns: 5 * (1fr, ),
+///   ..deckz.ranks.keys()
+/// )
 /// ```
+/// 
+/// -> dictionary
 #let ranks = (
   "ace": "A",
   "two": "2",

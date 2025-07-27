@@ -3,30 +3,14 @@
 
 // ----------------------------
 // Manual for DECKZ package
-= Getting started
-
+= How to use DECKZ
 #include "01.manual.typ"
 
 
 // ----------------------------
 // Complete documentation for DECKZ functions and features
 = Documentation
-
-== Card Visualization
-#show-module("view/format")
-#show-module("view/back", show-outline: false)
-
-#pagebreak()
-== Group Visualization
-#show-module("view/group")
-
-#pagebreak()
-== Data
-#show-module("data/suit")
-#show-module("data/rank")
-//#show-module("data/style")
-#show-module("model/structs")
-
+#include "02.documentation.typ"
 
 // ----------------------------
 // Examples
