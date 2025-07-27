@@ -14,7 +14,22 @@
 	)
 }
 
-#let render-back(format: "medium") = {
+/// Renders the back of a card in the specified format.
+/// Currently, it only supports one style, which is a simple rectangle with a rhombus pattern.
+/// 
+/// ```side-by-side
+/// #deckz.back(format: "medium")
+/// #deckz.back(format: "small")
+/// #deckz.back(format: "mini")
+/// #deckz.back(format: "inline")
+/// ```
+/// 
+/// -> content
+#let back(
+	/// The format of the card back, defaults to `medium`.
+	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`.
+	format: "medium"
+) = {
 	render-card-frame(format, box(
 			width: 100%,
 			height: 100%,

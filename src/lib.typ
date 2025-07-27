@@ -1,8 +1,13 @@
-// Importing package files
+// Deckz package for Typst
+
+// Card visualization functions
+#import "view/format.typ": render, inline, mini, small, medium, large, square
+#import "view/back.typ": back
+
+// Group visualization functions
+#import "view/group.typ": hand, deck, heap
+
+// Data structures and utility functions
 #import "data/rank.typ": ranks
 #import "data/suit.typ": suits
-#import "model/structs.typ": cards as cards52, deck as deck52
-#import "view/format.typ": render-card-inline as inline, render-card-mini as mini, render-card-small as small, render-card-medium as medium, render-card-large as large, render-card-square as square, render
-#import "view/deck.typ": render-hand as hand, render-deck as deck, render-heap as heap
-#import "view/back.typ": render-back as back
-
+#import "model/structs.typ": cards52, deck52

@@ -128,8 +128,8 @@
 #let render-card(format, card) = {
   let card-data = extract-card-data(card)
   if card-data.suit == none or card-data.rank == none {
-    import "back.typ": render-back
-    render-back(format: format)
+    import "back.typ": back
+    back(format: format)
   } else {
     render-card-frame(format,
       text(card-data.color,
@@ -138,30 +138,27 @@
     )
   }
 }
-
-#let render-card-inline(card) = render-card("inline", card)
-
-#let render-card-mini(card) = render-card("mini", card)
-
-#let render-card-small(card) = render-card("small", card)
-
-#let render-card-medium(card) = render-card("medium", card)
-
-#let render-card-large(card) = render-card("large", card)
-
-#let render-card-square(card) = render-card("square", card)
-
-
 #import "@preview/suiji:0.4.0" as suiji // Random numbers library
 
-// Render function to view cards in different formats.
-// This function allows you to specify the format of the card to be rendered.
-// Available formats include: inline, mini, small, medium, large, and square.
-// 
-// - 'card': The code of the card you want to represent.
-// - 'format': The selected format (inline, mini, small, medium, large, and square). Default value is "medium".
-// - 'noise': The amount of "randmness" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care.
-#let render(card, format: "medium", noise: none) = {
+/// Render function to view cards in different formats.
+/// This function allows you to specify the format of the card to be rendered.
+/// Available formats include: inline, mini, small, medium, large, and square.
+/// 
+/// ```side-by-side
+/// #deckz.render("10S")
+/// #deckz.render(format: "large", "8C")
+/// #deckz.render(format: "mini", "KH")
+/// ```
+/// 
+/// -> content
+#let render(
+  /// The code of the card you want to represent. -> string
+  card, 
+  /// The selected format (inline, mini, small, medium, large, and square). Default value is "medium". -> string
+  format: "medium", 
+  /// The amount of "randomness" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. -> float | none
+  noise: none,
+) = {
   if noise == none or noise <= 0 {
     // No Noise
     return render-card(format, card)
@@ -177,9 +174,110 @@
         shift-rot * noise * 15deg,
         origin: center + horizon,
         { // Translated and rotated content
-          render-card(format, card)
+          card(format, card)
         }
       )
     )
   }
 }
+
+
+/// Renders a card with the "*inline*" format.
+/// The card is displayed in a compact style: text size is coherent with the surrounding text, and the card is rendered as a simple text representation of its rank and suit.
+/// 
+/// ```side-by-side
+/// #lorem(10)
+/// #deckz.inline("AS"), #deckz.inline("3S")
+/// #lorem(10)
+/// #deckz.inline("KH").
+/// ```
+/// 
+/// -> content
+#let inline(
+  /// The code of the card you want to represent. -> string
+  card,
+) = render(format: "inline", card)
+
+
+/// Renders a card with the "*mini*" format.
+/// The card is displayed in a very compact style, suitable for dense layouts. The frame size is responsive to text, and it contains a small representation of the card's rank and suit.
+/// 
+/// ```side-by-side
+/// #deckz.mini("JC")
+/// #deckz.mini("AH")
+/// #deckz.mini("5S")
+/// #deckz.mini("9D")
+/// #deckz.mini("4H")
+/// #deckz.mini("3C")
+/// #deckz.mini("2D")
+/// #deckz.mini("KS")
+/// ```
+/// 
+/// -> content
+#let mini(
+  /// The code of the card you want to represent. -> string
+  card,
+) = render(format: "mini", card)
+
+/// Renders a card with the "*small*" format.
+/// The card is displayed in a concise style, balancing readability and space: the card's rank is shown symmetrically in two corners, with the suit displayed in the center.
+/// 
+/// ```side-by-side
+/// #deckz.small("3S")
+/// #deckz.small("6H")
+/// #deckz.small("QS")
+/// #deckz.small("5D")
+/// #deckz.small("AC")
+/// #deckz.small("4S")
+/// ```
+/// 
+/// -> content
+#let small(
+  /// The code of the card you want to represent. -> string
+  card,
+) = render(format: "small", card)
+
+/// Renders a card with the "*medium*" format: a full, structured card layout with two corner summaries and realistic suit placement.
+/// The medium format is usually the default format for card rendering in DECKZ.
+/// 
+/// ```side-by-side
+/// #deckz.medium("QD")
+/// #deckz.medium("AH")
+/// #deckz.medium("7C")
+/// ```
+/// 
+/// -> content
+#let medium(
+  /// The code of the card you want to represent. -> string
+  card,
+) = render(format: "medium", card)
+
+
+/// Renders a card with the "*large*" format, emphasizing the card's details: all four corners are used to display the rank and suit, with a large central representation.
+/// Like other formats, the large format is responsive to text size; corner summaries are scaled accordingly to the current text size.
+/// 
+/// ```side-by-side
+/// #deckz.large("JD")
+/// #deckz.large("9C")
+/// ```
+/// 
+/// -> content
+#let large(
+  /// The code of the card you want to represent. -> string
+  card,
+) = render(format: "large", card)
+
+/// Renders a card with the "*square*" format, i.e. with a frame layout with 1:1 ratio. 
+/// This may be useful for grid layouts or for situations where the cards are often rotated in many directions, because the corner summaries are placed diagonally.
+/// 
+/// ```side-by-side
+/// #deckz.square("5C")
+/// #deckz.square("JH")
+/// ```
+/// 
+/// -> content
+#let square(
+  /// The code of the card you want to represent. -> string
+  card,
+) = render(format: "square", card)
+
