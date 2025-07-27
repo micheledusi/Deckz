@@ -10,12 +10,13 @@
 // ----------------------------
 // Complete documentation for DECKZ functions and features
 = Documentation
+<sec:documentation>
 #include "02.documentation.typ"
 
 // ----------------------------
 // Examples
 = Examples
-
+<sec:examples>
 
 // ----------------------------
 // Additional information

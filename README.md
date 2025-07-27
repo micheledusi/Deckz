@@ -155,8 +155,8 @@ The deck visualization is created with the `deckz.deck()` function, which takes 
 In the `deck` function, you can also specify different parameters:
 - `angle`: The direction towards which the cards are shifted. If equal to `0deg`, the cards will be stacked to the right; if equal to `180deg`, they will be stacked to the left. The default value of `90deg` stacks the cards upwards, whereas `270deg` stacks them downwards. Intermediate values will create a diagonal stack. Default is `60deg`.
 - `height`: The height of the deck (default is `1cm`). This determines for how much space the cards will be shifted in the specified direction.
-- `noise`: a number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
-- `format`: the format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
+- `noise`: A number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
+- `format`: The format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
 
 ![Example of a deck with different parameters.](docs/img/deck_comparison.png)
 
@@ -182,9 +182,9 @@ The hand visualization is created with the `deckz.hand()` function, which takes 
 
 As can be seen in the example above, the cards are displayed in an arc shape, with the first card on the left and the last card on the right. To customize such display, you can use the following parameters:
 - `angle`: The angle of the arc in degrees. The default is `30deg`, which creates a gentle arc. Higher values will create a wider arc, while lower values will create a tighter arc.
-- `width`: The width of the hand in centimeters. This determines how far apart the cards will be spaced. The default is `10cm`. More precisely, the width is the distance between the centers of the first and last card in the hand.
-- `noise`: a number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
-- `format`: the format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
+- `width`: The width of the hand. This determines how far apart the cards will be spaced. The default is `10cm`. More precisely, the width is the distance between the centers of the first and last card in the hand.
+- `noise`: A number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
+- `format`: The format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
 
 ![Example of a hand with different parameters.](docs/img/hand_comparison.png)
 
@@ -204,7 +204,7 @@ As can be seen in the example above, the cards are displayed in an arc shape, wi
 ```
 
 ### Heaps
-Deckz also provides a `deckz.heap()` function to create a **heap of cards**. This is similar to a hand, but the cards are randomly scattered within a specified area, rather than arranged in an arc. Like the hand, the heap requires a list of card identifiers as arguments, and it can be customized with various parameters.
+Deckz also provides a `deckz.heap()` function to display a **heap of cards**. This is similar to a hand, but the cards are randomly scattered within a specified area, rather than arranged in an arc. Like the hand, the heap requires a list of card identifiers as arguments, and it can be customized with various parameters.
 
 <p align="center">
 <img src="docs/img/heap_square.png" alt="Example of heap of cards" width="350px"/>
@@ -222,8 +222,8 @@ Deckz also provides a `deckz.heap()` function to create a **heap of cards**. Thi
 ```
 
 The `deckz.heap()` function takes the following parameters:
-- `width`: The width of the heap in centimeters. This determines how far apart the cards will be scattered. The default is `10cm`.
-- `height`: The height of the heap in centimeters. This determines how far apart the cards will be scattered vertically. The default is `10cm`.
+- `width`: The width of the heap. This determines how far apart the cards will be scattered. The default is `10cm`.
+- `height`: The height of the heap. This determines how far apart the cards will be scattered vertically. The default is `10cm`.
 - `format`: the format of the cards in the heap. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`. 
 - `exceed`: a boolean value that determines whether the cards can exceed the specified width and height. If set to `true`, the heap can extend beyond the specified dimensions, yet assessing that all cards' center positions will be contained within the specified area. If set to `false`, the whole surface of each card will be contained within the specified dimensions. The default is `false`.
 
