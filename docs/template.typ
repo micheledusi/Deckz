@@ -28,3 +28,14 @@
   module: "deckz",
   ..tidy-args.named()
 )
+
+/// Helpers for note
+#let coming-soon-feature(body) = {
+  success-alert[
+    #text(olive)[
+      #octique.octique-inline("rocket", color: olive)	
+      _Coming Soon Feature_.
+    ]
+    #body
+  ]
+}

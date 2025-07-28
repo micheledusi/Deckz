@@ -115,8 +115,8 @@ Alternatively, you can use the general @cmd:deckz:render function with `"back"` 
 #deckz.back(format: "medium")
 ```
 
-#success-alert[
-	_Coming Soon Feature_. Currently, the back of cards uses a fixed design. In future updates, DECKZ will allow you to customize the back of cards and decks.
+#coming-soon-feature[
+	Currently, the back of cards uses a fixed design. In future updates, DECKZ will allow you to customize the back of cards and decks.
 ]
 
 == Visualize cards together
@@ -207,8 +207,8 @@ See also @sec:documentation for the full list of parameters of @cmd:deckz:heap.
 == Card customization
 DECKZ allows for some *customization of the card appearance*, such as colors and styles.
 
-#success-alert[
-	_Coming Soon Feature_. This functionality is not fully supported yet: please, come back for the next releases.
+#coming-soon-feature[
+	This functionality is not fully supported yet: please, come back for the next releases.
 ]
 
 /*
