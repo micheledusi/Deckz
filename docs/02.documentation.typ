@@ -19,3 +19,28 @@ This section provides an overview of the data structures used in the DECKZ packa
 #show-module("data/rank")
 //#show-module("data/style")
 #show-module("model/structs")
+
+#pagebreak()
+== Language-aware Card Symbols
+
+DECKZ automatically adapts the rendering of card rank symbols based on the document's language. This process is seamless: users only need to set the desired language using the `text` command, and DECKZ will adjust the symbols accordingly. No additional configuration is required.
+
+This feature is powered by the #link("https://typst.app/universe/package/linguify")[linguify] package.
+
+Currently supported languages and their rank symbols:
+- *English*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`
+- *Italian*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`
+- *French*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `V`, `D`, `R`
+
+```side-by-side
+#let seq = ("10C", "JH", "QS", "KD", "AC")
+
+#set text(lang: "en")
+#stack(dir: ltr, spacing: 5mm, ..seq.map(deckz.small))
+
+#set text(lang: "it")
+#stack(dir: ltr, spacing: 5mm, ..seq.map(deckz.small))
+
+#set text(lang: "fr")
+#stack(dir: ltr, spacing: 5mm, ..seq.map(deckz.small))
+```
