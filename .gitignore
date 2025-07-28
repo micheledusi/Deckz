@@ -16,3 +16,6 @@ Thumbs.db
 
 # Temporary assets
 fonts
+
+# Un-ignoring the PDF manual
+!/docs/manual*.pdf

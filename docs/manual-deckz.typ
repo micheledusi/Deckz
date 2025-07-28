@@ -4,6 +4,7 @@
 // ----------------------------
 // Manual for DECKZ package
 = How to use DECKZ
+<sec:guide>
 #include "01.manual.typ"
 
 

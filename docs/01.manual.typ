@@ -1,8 +1,18 @@
 #import "template.typ": *
 
-Introduction.
+DECKZ is a Typst package designed to display playing cards in the classic poker style, using the standard French suits (hearts #text(red, emoji.suit.heart), diamonds #text(red, emoji.suit.diamond), clubs #text(black, emoji.suit.club), and #text(black, emoji.suit.spade). 
+Whether you need to show a single card, a hand, a full deck, or a scattered heap, DECKZ provides flexible tools to visualize cards in a variety of formats and layouts. The package is ideal for games, teaching materials, or any document where clear and attractive card visuals are needed.
 
-We're at the version #doc.package.version #emoji.party
+DECKZ offers multiple display formats, ranging from compact inline symbols to detailed, full-sized cards—so you can adapt the appearance to your specific use case.
+It also includes functions for visualizing groups of cards, such as hands, decks, and heaps, making it easy to represent typical card game scenarios.
+
+This manual is organized in three parts: 
++ @sec:guide helps you get started with the main features; 
++ @sec:documentation provides detailed documentation for each function, serving as a reference; 
++ @sec:examples presents practical examples that combine different features. 
+At the end, you'll find credits and instructions for contributing to the project.
+
+This manual documents the most recent DECKZ release as of today: *#doc.package.version*.
 
 == Importing the package
 

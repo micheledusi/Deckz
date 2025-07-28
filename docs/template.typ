@@ -15,7 +15,7 @@
   theme: themes.default,
 
   abstract: [
-    _Deckz_ is a flexible and customizable package to render and display poker-style playing cards in #link("https://typst.app/")[Typst].
+    DECKZ is a flexible and customizable package to render and display poker-style playing cards in #link("https://typst.app/")[Typst].
     Use it to visualize individual cards, create stylish examples in documents, or build full decks and hands for games and illustrations.
   ],
 
