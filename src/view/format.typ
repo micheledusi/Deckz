@@ -68,7 +68,7 @@
 
 #let render-card-content(format, card-data) = {
   if format == "inline" {
-    align(center)[#ranks.at(card-data.rank)#suits.at(card-data.suit)]
+    align(center)[#get-rank-symbol(card-data.rank)#suits.at(card-data.suit)]
   } 
   else if format == "mini" {
     align(center,
@@ -79,7 +79,7 @@
   } 
   else if format == "small" {
     two-corners(
-      box(width: 0.8em, align(center, ranks.at(card-data.rank)))
+      box(width: 0.8em, align(center, get-rank-symbol(card-data.rank)))
     )
     align(center + horizon)[
       #text(size: 1.4em, suits.at(card-data.suit))

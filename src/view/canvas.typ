@@ -24,7 +24,7 @@
 #let draw-stack-rank-and-suit(card-data, dx: 0pt, dy: 0pt, angle: 0deg) = {
 	move-to((dx, dy))
 	content((rel: (0pt, -1em)), angle: angle, suits.at(card-data.suit))
-	content((rel: (0pt, +1em)), angle: angle, ranks.at(card-data.rank))
+	content((rel: (0pt, +1em)), angle: angle, get-rank-symbol(card-data.rank))
 }
 
 // Show the stack of rank + suit symbols

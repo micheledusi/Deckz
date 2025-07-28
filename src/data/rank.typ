@@ -31,3 +31,16 @@
   "queen": "Q", 
   "king": "K",
 )
+
+#import "@preview/linguify:0.4.2": *
+
+#let lang-data = toml("lang.toml")
+
+#let get-rank-symbol(rank-key) = {
+  if rank-key in ranks.keys() {
+    return linguify(rank-key + "-symbol", from: lang-data, default: ranks.at(rank-key))
+  } else {
+    // Error
+    panic("Cannot recognise key \"" + str(rank-key) + "\" as a rank")
+  }
+}
