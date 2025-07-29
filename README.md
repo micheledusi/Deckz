@@ -28,6 +28,11 @@ Use **Deckz** to visualize individual cards, create stylish examples in document
 The name is inspired by Typst’s drawing package [CeTZ](https://typst.app/universe/package/cetz) — it mirrors its sound while hinting at its own purpose: rendering card decks.
 In fact, _Deckz_ also relies on _CeTZ_ internally to position elements precisely.
 
+In order to get started with _Deckz_, you may want to:
+
+1. **Get things done quickly:** Continue reading this guide for practical examples and base instructions.
+2. **Get a broader comprehension or search for something specific:** Check out the [Deckz Manual](docs/manual-deckz.pdf) for in-depth documentation, advanced usage, and reference material.
+
 
 ## Quick Example
 ![Quick examples of some basic functionalities.](docs/img/quick_example.png)
@@ -50,7 +55,7 @@ You can also render cards #deckz.inline("KC") inline!
 To start using Deckz functionalities, import the package in your _Typst_ document with:
 
 ```typ
-#import "@preview/deckz:0.1.0" as deckz
+#import "@preview/deckz:0.1.2"
 ```
 
 You can then call any of the rendering functions using the `deckz` namespace.
@@ -430,4 +435,6 @@ or the [Apache License, Version 2.0](http://www.apache.org/licenses/)
 ([*Roboto Slab*](https://fonts.google.com/specimen/Roboto+Slab)).
 
 The card designs are inspired by the standard playing cards, with suit symbols taken from the [emoji library of Typst](https://typst.app/docs/img/reference/symbols/emoji/).
-This project works thanks to the following Typst packages: [CeTZ](https://typst.app/universe/package/cetz) and [Suiji](https://typst.app/universe/package/suiji).
+This project works thanks to the following Typst packages: [CeTZ](https://typst.app/universe/package/cetz), [Suiji](https://typst.app/universe/package/suiji), [Mantys](https://typst.app/universe/package/mantys/).
+
+Don't forget to read the [*Deckz Manual*](/docs/manual-deckz.pdf) for the complete documentation!
