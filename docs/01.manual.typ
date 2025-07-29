@@ -171,6 +171,7 @@ To customize such display, you can use the following parameters (more parameters
 - @cmd:deckz:hand.width -- The width of the hand, i.e. the distance between the centers of the first and last card.
 - @cmd:deckz:hand.format -- The format of the cards in the deck. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`.
 
+#example(breakable: true, )[
 ```example
 #let my-hand = ("AS", "KH", "QD", "JS", "JH", "10C", "9D", "6C")
 
@@ -185,13 +186,13 @@ To customize such display, you can use the following parameters (more parameters
   deckz.hand(angle: 180deg, width: 3cm, noise: 0.5, format: "large", ..(my-hand + my-hand)),
 )
 ```
-
-
+]
 
 === Heaps
 DECKZ also provides a @cmd:deckz:heap function to display a *heap of cards*. 
 This is similar to a hand (@cmd:deckz:hand), but the cards are randomly scattered within a specified area, rather than arranged in an arc. Like the hand, the heap requires a list of card identifiers as arguments, and it can be customized with various parameters.
 
+#example(breakable: true)[
 ```example
 #let (w, h) = (10cm, 10cm)
 #box(width: w, height: h, 
@@ -202,6 +203,7 @@ This is similar to a hand (@cmd:deckz:hand), but the cards are randomly scattere
 ]
 // Note: The `deckz.deck52` array contains all 52 standard playing cards.
 ```
+]
 
 Some customization options are:
 - @cmd:deckz:heap.width -- The width of the heap, i.e. how far apart the cards will be scattered horizontally.
