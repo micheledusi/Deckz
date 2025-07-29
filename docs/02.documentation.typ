@@ -1,12 +1,12 @@
 #import "template.typ": *
 
-== Card Visualization
+== Card visualization
 This section provides a comprehensive overview of the DECKZ package's *card visualization* capabilities. It presents the available formats and how to use them effectively.
 #show-module("view/format")
 #show-module("view/back", show-outline: false)
 
 #pagebreak()
-== Group Visualization
+== Group visualization
 This section covers the *group visualization* features of the DECKZ package, i.e. all functions that allow you to visualize groups of cards, such as hands, decks, and heaps.
 
 _(More functions and options will be added in the future)._
@@ -21,7 +21,7 @@ This section provides an overview of the data structures used in the DECKZ packa
 #show-module("model/structs")
 
 #pagebreak()
-== Language-aware Card Symbols
+== Language-aware card symbols
 
 DECKZ automatically adapts the rendering of card rank symbols based on the document's language. This process is seamless: users only need to set the desired language using the `text` command, and DECKZ will adjust the symbols accordingly. No additional configuration is required.
 

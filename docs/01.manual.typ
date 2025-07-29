@@ -1,6 +1,6 @@
 #import "template.typ": *
 
-DECKZ is a Typst package designed to display playing cards in the classic poker style, using the standard French suits (hearts #text(red, emoji.suit.heart), diamonds #text(red, emoji.suit.diamond), clubs #text(black, emoji.suit.club), and #text(black, emoji.suit.spade). 
+DECKZ is a Typst package designed to display playing cards in the classic poker style, using the standard French suits (hearts #text(red, emoji.suit.heart), diamonds #text(red, emoji.suit.diamond), clubs #text(black, emoji.suit.club), and spades #text(black, emoji.suit.spade)). 
 Whether you need to show a single card, a hand, a full deck, or a scattered heap, DECKZ provides flexible tools to visualize cards in a variety of formats and layouts. The package is ideal for games, teaching materials, or any document where clear and attractive card visuals are needed.
 
 DECKZ offers multiple display formats, ranging from compact inline symbols to detailed, full-sized cards—so you can adapt the appearance to your specific use case.
@@ -12,17 +12,15 @@ This manual is organized in three parts:
 + @sec:examples presents practical examples that combine different features. 
 At the end, you'll find credits and instructions for contributing to the project.
 
-This manual documents the most recent DECKZ release as of today: *#doc.package.version*.
+This manual presents the most recent DECKZ release as of today: *#doc.package.version*.
 
 == Importing the package
 
-To use DECKZ functionalities in your project, add this instruction to your document:
+To start using DECKZ in your Typst document, simply *import the package* with:
 
-#show-import(imports: "deckz")
+#show-import(imports: none)
 
-DECKZ is typically imported with the keyword #text(purple)[`deckz`], which will be used to call the package functions.
-
-You can then call any of the rendering functions using the `deckz` namespace.
+This makes all DECKZ functions available under the #text(purple.darken(30%))[`deckz`] namespace.
 
 == Basic usage
 
@@ -103,7 +101,7 @@ are equivalent to
 If you want more examples of how to use these formats, check out @sec:examples at the end of this document.
 
 
-=== Back of Cards
+=== Back of cards
 
 To render the *back of a card*, you can use the @cmd:deckz:back function. This will display a generic card back design, which can be useful for games or when you want to hide the card's face.
 
