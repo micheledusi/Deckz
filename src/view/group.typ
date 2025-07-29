@@ -30,43 +30,50 @@
 	..cards
 ) = {
 	let cards-array = cards.pos()
-	let (angle-start, angle-shift, radius, shift-x) = (0deg, 0deg, 0pt, 0pt)
-	if angle == 0deg {
-		shift-x = width / (cards-array.len() - 1)
+	if cards-array.len() == 0 {
+		return []
+	} else if cards-array.len() == 1 {
+		return render(format: format, noise: noise, cards-array.at(0))
 	} else {
-		angle-start = -angle / 2
-		angle-shift = angle / (cards-array.len() - 1)
-		radius = width / (2 * calc.sin(angle / 2))
-	}
-	// Handling randomness
-	let variabilities = ()
-  if noise != none and noise > 0 {
-    let seed = int(noise * 1e9) + 42
-    let rng = suiji.gen-rng-f(seed)
-		(_, variabilities) = suiji.uniform-f(rng, low: 0, high: 1e-6, size: cards-array.len())
-	}
-	// Drawing canvas
-	cetz.canvas({
-		draw.rotate(z: -angle-start)
-		for i in range(cards-array.len()) {
-			// Compute noise for the current card visualization
-			let card-noise = if noise == none or noise <= 0 {
-				none
-			} else {
-				noise + variabilities.at(i, default: none)
-			}
-			// Draw content
-			content((shift-x * i, radius),
-				rotate(
-					angle-start + i * angle-shift,
-					reflow: true,
-					origin: center + horizon,
-					render(format: format, noise: card-noise, cards-array.at(i))
-				)
-			)
-			draw.rotate(z: -angle-shift)
+		// If there is at least a pair of cards
+		let (angle-start, angle-shift, radius, shift-x) = (0deg, 0deg, 0pt, 0pt)
+		if angle == 0deg {
+			shift-x = width / (cards-array.len() - 1)
+		} else {
+			angle-start = -angle / 2
+			angle-shift = angle / (cards-array.len() - 1)
+			radius = width / (2 * calc.sin(angle / 2))
 		}
-	})
+		// Handling randomness
+		let variabilities = ()
+		if noise != none and noise > 0 {
+			let seed = int(noise * 1e9) + 42
+			let rng = suiji.gen-rng-f(seed)
+			(_, variabilities) = suiji.uniform-f(rng, low: 0, high: 1e-6, size: cards-array.len())
+		}
+		// Drawing canvas
+		cetz.canvas({
+			draw.rotate(z: -angle-start)
+			for i in range(cards-array.len()) {
+				// Compute noise for the current card visualization
+				let card-noise = if noise == none or noise <= 0 {
+					none
+				} else {
+					noise + variabilities.at(i, default: none)
+				}
+				// Draw content
+				content((shift-x * i, radius),
+					rotate(
+						angle-start + i * angle-shift,
+						reflow: true,
+						origin: center + horizon,
+						render(format: format, noise: card-noise, cards-array.at(i))
+					)
+				)
+				draw.rotate(z: -angle-shift)
+			}
+		})
+	}
 }
 
 
