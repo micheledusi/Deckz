@@ -154,9 +154,10 @@
 #let render(
   /// The code of the card you want to represent. -> string
   card, 
-  /// The selected format (inline, mini, small, medium, large, and square). Default value is "medium". -> string
+  /// The selected format of the card. Available formats are: #choices("inline", "mini", "small", "medium", "large", "square").
+  /// -> string
   format: "medium", 
-  /// The amount of "randomness" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. -> float | none
+  /// The amount of "randomness" in the placement and rotation of the card. Default value is #value(none) or #value(0.), which corresponds to no variations. A value of #value(1.) corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. -> float | none
   noise: none,
 ) = {
   if noise == none or noise <= 0 {

@@ -26,8 +26,9 @@
 /// 
 /// -> content
 #let back(
-	/// The format of the card back, defaults to `medium`.
-	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`.
+	/// The format of the card back, defaults to #value("medium").
+	/// Available formats: #choices("inline", "mini", "small", "medium", "large", "square").
+	/// -> str
 	format: "medium"
 ) = {
 	render-card-frame(format, box(
