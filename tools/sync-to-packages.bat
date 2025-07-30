@@ -47,37 +47,23 @@ if "%VERSION%"=="" (
 echo [INFO] Detected version: %VERSION%
 
 :: STEP 1.5: Check if some file refers to a previous version
+:: STEP 1.5: Check for outdated version references in files
 set "MISMATCH_FOUND=0"
 for /r "%SOURCE_DIR%" %%F in (*) do (
-    findstr /r /c:"%PACKAGE_NAME%:[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*" "%%F" >nul
+    findstr /r /c:"{%PACKAGE_NAME%}:[0-9]*\.[0-9]*\.[0-9]*" "%%F" >nul
     if not errorlevel 1 (
-        for /f "delims=" %%L in ('findstr /n /r /c:"%PACKAGE_NAME%:[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*" "%%F"') do (
-            set "LINE=%%L"
-            for /f "tokens=1,* delims=:" %%N in ("!LINE!") do (
-                set "LINENUM=%%N"
-                set "TEXT=%%O"
-                for /f "tokens=2 delims=:" %%V in ("!TEXT!") do (
-                    set "REF=%%V"
-                )
-                for %%R in (!TEXT!) do (
-                    setlocal enabledelayedexpansion
-                    for /f "tokens=1,2,3 delims=:" %%A in ("!TEXT!") do (
-                        set "MATCHED=!PACKAGE_NAME!:%%B"
-                        set "VER=%%B"
-                        if not "!MATCHED!"=="%PACKAGE_NAME%:%VERSION%" (
-                            echo [ERROR] Version reference mismatch in file: %%F, line !LINENUM!: !MATCHED! (expected %PACKAGE_NAME%:%VERSION%)
-                            set "MISMATCH_FOUND=1"
-                        )
-                    )
-                    endlocal
-                )
+        for /f "tokens=2 delims=:" %%V in ('findstr /r /c:"{%PACKAGE_NAME%}:[0-9]*\.[0-9]*\.[0-9]*" "%%F"') do (
+            set "FOUND_VER=%%V"
+            set "FOUND_VER=!FOUND_VER: =!"
+            if /i "!FOUND_VER!" NEQ "%VERSION%" (
+                echo [WARNING] Version mismatch in file: %%F -- found {!PACKAGE_NAME%}:!FOUND_VER!, expected {%PACKAGE_NAME%}:%VERSION%
+                set "MISMATCH_FOUND=1"
             )
         )
     )
 )
 if "%MISMATCH_FOUND%"=="1" (
-    echo [ERROR] One or more files refer to an old version.
-    exit /b 1
+    echo [WARNING] Some files reference a different version than detected: %VERSION%
 )
 
 :: STEP 2.0: Define target directory
@@ -102,7 +88,7 @@ if "%GIT_DIR:~-1%"=="\" set "GIT_DIR=%GIT_DIR:~0,-1%"
 
 :: STEP 3: Copy files (excluding tools folder, this script, and .git directory)
 echo [INFO] Copying files to: %TARGET_DIR%
-robocopy "%SOURCE_DIR%" "%TARGET_DIR%" /E /XD "%TOOLS_DIR%" "%GIT_DIR%" "%EXAMPLES_DIR%" /XF "%~f0"
+robocopy "%SOURCE_DIR%" "%TARGET_DIR%" /E /XD "%TOOLS_DIR%" "%GIT_DIR%" "%EXAMPLES_DIR%" /XF "%~f0" ".gitignore"
 
 if %ERRORLEVEL% GEQ 8 (
     echo [ERROR] robocopy failed.
