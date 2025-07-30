@@ -11,3 +11,7 @@
 #import "data/rank.typ": ranks
 #import "data/suit.typ": suits
 #import "model/structs.typ": cards52, deck52
+
+// Random, scoring, and game logic
+#import "model/random.typ": shuffle, choose
+#import "model/score.typ": *
