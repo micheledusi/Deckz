@@ -5,7 +5,7 @@
 
 #let get-seed-from-cards(cards) = {
 	// Generate a seed based on the card values
-	return int(array(sha256(bytes(cards.join()))).at(0))
+	return int(array(sha256(bytes(cards.join()))).at(0)) + 42
 }
 
 /// Shuffle the given cards and return the shuffled array.
