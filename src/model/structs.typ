@@ -35,11 +35,12 @@
 /// 
 /// -> dict
 #let cards52 = (:)
-#for (suit, suit-symbol) in suits {
-  cards52.insert(suit, (:))
-  for (rank, rank-symbol) in ranks {
-    cards52.at(suit).insert(rank, get-card-code(suit, rank))
+#for suit-key in suits.keys() {
+  let suit-cards = (:)
+  for rank-key in ranks.keys() {
+    suit-cards.insert(rank-key, get-card-code(suit-key, rank-key))
   }
+  cards52.insert(suit-key, suit-cards)
 }
 
 /// A list of all the cards in a standard deck of 52 playing cards.
@@ -71,8 +72,8 @@
 /// 
 /// -> array
 #let deck52 = ()
-#for (suit, suit-symbol) in suits {
-  for (rank, rank-symbol) in ranks {
-    deck52.push(get-card-code(suit, rank))
+#for (suit-key) in suits.keys() {
+  for (rank-key) in ranks.keys() {
+    deck52.push(get-card-code(suit-key, rank-key))
   }
 }

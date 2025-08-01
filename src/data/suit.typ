@@ -13,14 +13,40 @@
 /// #stack(
 ///   dir: ltr,
 ///   spacing: 1fr,
-///   ..deckz.suits.values()
+///   ..deckz.suits.values().map(suit-data => {
+///     text(suit-data.color)[#suit-data.symbol]
+///   }
 /// )
 /// ```
 /// 
 /// -> dictionary
 #let suits = (
-  "heart": emoji.suit.heart,
-  "spade": emoji.suit.spade,
-  "diamond": emoji.suit.diamond,
-  "club": emoji.suit.club,
+  heart: (
+    name: "heart",
+    code: "H",
+    symbol: emoji.suit.heart,
+    color: red,
+    order: 1,
+  ),
+  diamond: (
+    name: "diamond",
+    code: "D",
+    symbol: emoji.suit.diamond,
+    color: red,
+    order: 2,
+  ),
+  club: (
+    name: "club",
+    code: "C",
+    symbol: emoji.suit.club,
+    color: black,
+    order: 3,
+  ),
+  spade: (
+    name: "spade",
+    code: "S",
+    symbol: emoji.suit.spade,
+    color: black,
+    order: 4,
+  ),
 )

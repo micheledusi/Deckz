@@ -17,30 +17,92 @@
 /// 
 /// -> dictionary
 #let ranks = (
-  "ace": "A",
-  "two": "2",
-  "three": "3", 
-  "four": "4",
-  "five": "5", 
-  "six": "6", 
-  "seven": "7", 
-  "eight": "8", 
-  "nine": "9", 
-  "ten": "10", 
-  "jack": "J", 
-  "queen": "Q", 
-  "king": "K",
+  ace: (
+    code: "A",
+    order: 1,
+    score: 14,
+  ),
+  two: (
+    code: "2",
+    order: 2,
+    score: 2,
+  ),
+  three: (
+    code: "3",
+    order: 3,
+    score: 3,
+  ),
+  four: (
+    code: "4",
+    order: 4,
+    score: 4,
+  ),
+  five: (
+    code: "5",
+    order: 5,
+    score: 5,
+  ),
+  six: (
+    code: "6",
+    order: 6,
+    score: 6,
+  ),
+  seven: (
+    code: "7",
+    order: 7,
+    score: 7,
+  ),
+  eight: (
+    code: "8",
+    order: 8,
+    score: 8,
+  ),
+  nine: (
+    code: "9",
+    order: 9,
+    score: 9,
+  ),
+  ten: (
+    code: "10",
+    order: 10,
+    score: 10,
+  ),
+  jack: (
+    code: "J",
+    order: 11,
+    score: 11,
+  ),
+  queen: (
+    code: "Q",
+    order: 12,
+    score: 12,
+  ),
+  king: (
+    code: "K",
+    order: 13,
+    score: 13,
+  ),
 )
 
 #import "@preview/linguify:0.4.2": *
 
 #let lang-data = toml("lang.toml")
 
-#let get-rank-symbol(rank-key) = {
-  if rank-key in ranks.keys() {
-    return linguify(rank-key + "-symbol", from: lang-data, default: ranks.at(rank-key))
-  } else {
-    // Error
-    panic("Cannot recognise key \"" + str(rank-key) + "\" as a rank")
-  }
+// Overwrite rank names and symbols with linguified versions
+#{
+  ranks = ranks.pairs().map(((rank-key, rank-data)) => {
+    let name = linguify(
+      rank-key + "-name", 
+      from: lang-data, 
+      default: rank-key,
+    )
+    let symbol = linguify(
+      rank-key + "-symbol", 
+      from: lang-data, 
+      default: rank-data.code,
+    )
+    rank-data.insert("name", name)
+    rank-data.insert("symbol", symbol)
+    return (rank-key, rank-data)
+  }).to-dict()
 }

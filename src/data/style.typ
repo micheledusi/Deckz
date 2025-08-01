@@ -16,24 +16,6 @@
 /// -> color + length
 #let border-style = gray.mix(aqua).darken(50%) + 1pt
 
-
-/// Suits colors dictionary, defined with the suit name as key and the color as value.
-/// The colors are used to render the suit symbols on the cards.
-/// 
-/// Current colors are:
-/// - Hearts: red
-/// - Spades: black
-/// - Diamonds: red
-/// - Clubs: black
-/// 
-/// -> dict
-#let suits-colors = (
-  "heart": red, 
-  "spade": black,
-  "diamond": red,
-  "club": black,
-)
-
 /// Variant suits colors dictionary, defined with the suit name as key and the color as value.
 /// The colors are used to render the suit symbols on the cards.
 /// 
@@ -44,11 +26,11 @@
 /// - Clubs: blue mixed with black (10%)
 /// 
 /// -> dict
+/* // DEPRECATED
 #let suits-colors-variant = (
   "heart": red.mix((purple, 20%)), 
   "spade": black.mix((green, 10%)),
-  "diamond": red.mix((orange, 90%)),
+  "diamond": red.mix((yellow, 70%)),
   "club": blue.mix((black, 10%)),
 )
-
-#if false {suits-colors = suits-colors-variant}
+*/

@@ -21,7 +21,7 @@
 /// 
 /// -> string
 #let get-card-code(suit-key, rank-key) = {
-  ranks.at(rank-key) + upper(suit-key.at(0))
+  ranks.at(rank-key).code + suits.at(suit-key).code
 }
 
 
@@ -29,21 +29,25 @@
 /// 
 /// -> dictionary
 #let extract-card-data(card-code) = {
-  let my-suit = none
-  for (curr-suit, _) in suits {
-    if lower(card-code.at(-1)) == curr-suit.at(0) {
-      my-suit = curr-suit
+  let card-data = (:)
+
+  for (suit-key, suit-data) in suits.pairs() {
+    if upper(card-code.at(-1)) == suit-data.code {
+      card-data.suit = suit-key
+      for (k, v) in suit-data.pairs() {
+        card-data.insert("suit-" + k, v)
+      }
+      break
     }
   }
-  let my-rank = none
-  for (curr-rank, rank-symbol) in ranks {
-    if upper(card-code.slice(0, -1)) == rank-symbol {
-      my-rank = curr-rank
+  for (rank-key, rank-data) in ranks.pairs() {
+    if card-code.starts-with(rank-data.code) {
+      card-data.rank = rank-key
+      for (k, v) in rank-data.pairs() {
+        card-data.insert("rank-" + k, v)
+      }
+      break
     }
   }
-  return (
-    suit: my-suit,
-    color: if my-suit != none {suits-colors.at(my-suit, default: none)} else {none},
-    rank: my-rank,
-  )
+  return card-data
 }

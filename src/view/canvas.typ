@@ -23,14 +23,14 @@
 // _*Note*: this has to be drawn in a canvas._
 #let draw-stack-rank-and-suit(card-data, dx: 0pt, dy: 0pt, angle: 0deg) = {
 	move-to((dx, dy))
-	content((rel: (0pt, -1em)), angle: angle, suits.at(card-data.suit))
-	content((rel: (0pt, +1em)), angle: angle, get-rank-symbol(card-data.rank))
+	content((rel: (0pt, -1em)), angle: angle, card-data.suit-symbol)
+	content((rel: (0pt, +1em)), angle: angle, card-data.rank-symbol)
 }
 
 // Show the stack of rank + suit symbols
 #let draw-central-rank-canvas(card-data) = {
   let num = card-data.rank
-	let symbol = suits.at(card-data.suit)
+	let symbol = card-data.suit-symbol
 	cetz.canvas({
   // Switch by rank
 		
