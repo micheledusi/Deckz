@@ -1,6 +1,6 @@
 #import "@preview/mantys:1.0.2": *
 #import "@preview/tidy:0.4.3": *
-#import "../src/lib.typ" as deckz: *
+#import "../src/lib.typ" as deckz
 
 // Initialization of the Mantys document
 #let (doc, mantys) = mantys-init(

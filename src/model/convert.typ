@@ -49,5 +49,11 @@
       break
     }
   }
+  if not "suit" in card-data {
+    card-data.suit = none
+  }
+  if not "rank" in card-data {
+    card-data.rank = none
+  }
   return card-data
 }

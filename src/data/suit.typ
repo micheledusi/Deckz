@@ -15,7 +15,7 @@
 ///   spacing: 1fr,
 ///   ..deckz.suits.values().map(suit-data => {
 ///     text(suit-data.color)[#suit-data.symbol]
-///   }
+///   })
 /// )
 /// ```
 /// 
