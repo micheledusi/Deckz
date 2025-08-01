@@ -15,3 +15,4 @@
 // Random, scoring, and game logic
 #import "model/random.typ": shuffle, choose
 #import "model/score.typ": *
+#import "model/sort.typ": *

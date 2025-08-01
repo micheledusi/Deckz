@@ -280,7 +280,7 @@
 /// If there are no n-of-a-kind hands, it returns an empty array.
 /// 
 /// -> array
-#let get-n-of-a-kind(
+#let extract-n-of-a-kind(
   /// The cards from which we try to extract a n-of-a-kind.
   /// -> array 
   cards,
@@ -338,7 +338,7 @@
 /// If there are no high card hands, it returns an empty array.
 /// 
 /// -> array
-#let get-high-card(
+#let extract-high-card(
   /// The cards to check for high card. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,
@@ -375,12 +375,12 @@
 /// This function returns an array of arrays, where each inner array is a *hand* that contains two cards of the same rank.
 /// If there are no pairs, it returns an empty array.
 /// -> array
-#let get-pair(
+#let extract-pair(
   /// The cards to check for pairs. This can be an array or any iterable collection of card codes.
   /// -> array
   cards
 ) = {
-  return get-n-of-a-kind(cards, n: 2)
+  return extract-n-of-a-kind(cards, n: 2)
 }
 
 /// Check if the given cards contain two pairs.
@@ -412,7 +412,7 @@
 /// If there are no two pairs, it returns an empty array.
 /// 
 /// -> array
-#let get-two-pairs(
+#let extract-two-pairs(
   /// The cards to check for two pairs. This can be an array or any iterable collection of card codes.
   /// -> array
   cards
@@ -421,6 +421,9 @@
     .values() // Get the values (arrays of cards) from the dictionary
     .filter((cards-of-rank) => cards-of-rank.len() >= 2) // Filter ranks that have at least 2 cards
     .map((cards-of-rank) => choose-k-out-of-n(2, cards-of-rank)) // Take all combinations of 2 cards of each rank
+  if pairs-by-rank.len() < 2 {
+    return () // No two pairs found
+  }
   // We choose two ranks that can produce pairs
   return choose-k-out-of-n(2, pairs-by-rank)
     .map(((pairs-rank-1, pairs-rank-2)) => {
@@ -458,12 +461,12 @@
 /// If there are no three of a kind, it returns an empty array.
 /// 
 /// -> array
-#let get-three-of-a-kind(
+#let extract-three-of-a-kind(
   /// The cards to check for three of a kind. This can be an array or any iterable collection of card codes.
   /// -> array
   cards
 ) = {
-  return get-n-of-a-kind(cards, n: 3)
+  return extract-n-of-a-kind(cards, n: 3)
 }
 
 /// Check if the given cards contain a straight.
@@ -519,7 +522,7 @@
 /// If there are no straights, it returns an empty array.
 /// 
 /// -> array
-#let get-straight(
+#let extract-straight(
   /// The cards to check for a straight. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
@@ -579,7 +582,7 @@
 /// If there are no flushes, it returns an empty array.
 /// 
 /// -> array
-#let get-flush(
+#let extract-flush(
   /// The cards to check for a flush. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
@@ -587,9 +590,13 @@
   /// -> int
   n: 5,
 ) = {
-  return sort-cards-by-suit(cards, add-zero: false, allow-invalid: false)
+  let result = sort-cards-by-suit(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .filter((cards-of-suit) => cards-of-suit.len() >= n) // Filter suits that have at least n cards
+  if result.len() == 0 {
+    return () // No flush hands found
+  }
+  return result
     .map((cards-of-suit) => choose-k-out-of-n(n, cards-of-suit)) // Take all combinations of n cards of each suit
     .join() // Join all the combinations into a single array
 }
@@ -618,7 +625,7 @@
   return cards.len() == 5 and has-full-house(cards)
 }
 
-#let get-full-house(
+#let extract-full-house(
   /// The cards to check for a full house. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
@@ -684,12 +691,12 @@
 /// If there are no four of a kind, it returns an empty array.
 /// 
 /// -> array
-#let get-four-of-a-kind(
+#let extract-four-of-a-kind(
   /// The cards to check for four of a kind. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
 ) = {
-  return get-n-of-a-kind(cards, n: 4)
+  return extract-n-of-a-kind(cards, n: 4)
 }
 
 /// Check if the given cards contain a straight flush.
@@ -728,7 +735,7 @@
 /// If there are no straight flushes, it returns an empty array.
 ///
 /// -> array
-#let get-straight-flush(
+#let extract-straight-flush(
   /// The cards to check for a straight flush. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
@@ -741,7 +748,7 @@
   }
   return sort-cards-by-suit(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
-    .map((cards-of-suit) => get-straight(cards-of-suit, n: n)) // Get all straights for each suit
+    .map((cards-of-suit) => extract-straight(cards-of-suit, n: n)) // Get all straights for each suit
     .join()
 }
 
@@ -773,10 +780,100 @@
 /// If there are no five of a kind, it returns an empty array. 
 /// 
 /// -> array
-#let get-five-of-a-kind(
+#let extract-five-of-a-kind(
   /// The cards to check for five of a kind. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
 ) = {
-  return get-n-of-a-kind(cards, n: 5)
+  return extract-n-of-a-kind(cards, n: 5)
+}
+
+// --- Wrappers for the functions above
+
+/// Extract a scoring combination from the given cards.
+/// This function accepts a scoring combination name as a string and returns the corresponding hand.
+/// The scoring combinations are defined as follows:
+/// 
+/// - "high-card": A single card with a valid rank.
+/// - "pair": Two cards of the same rank.
+/// - "two-pairs": Two distinct pairs of cards, each of the same rank.
+/// - "three-of-a-kind": Three cards of the same rank.
+/// - "straight": Five consecutive ranks, regardless of suit.
+/// - "flush": Five cards of the same suit.
+/// - "full-house": Three of a kind and a pair.
+/// - "four-of-a-kind": Four cards of the same rank.
+/// - "straight-flush": A straight and a flush at the same time.
+/// - "five-of-a-kind": Five cards of the same rank.
+/// 
+/// If the scoring combination is not recognized, the function will panic.
+/// If the scoring combination is recognized, but the cards don't have such combination, the function will return an empty array.
+/// 
+/// -> array
+#let extract(
+  /// The scoring combination to extract.
+  /// -> string
+  scoring-combination,
+  /// The cards to check for the scoring combination. This can be an array or any iterable collection of card codes.
+  /// -> array
+  cards, 
+) = {
+  if scoring-combination == "high-card" {
+    return extract-high-card(cards)
+  } else if scoring-combination == "pair" {
+    return extract-pair(cards)
+  } else if scoring-combination == "two-pairs" {
+    return extract-two-pairs(cards)
+  } else if scoring-combination == "three-of-a-kind" {
+    return extract-three-of-a-kind(cards)
+  } else if scoring-combination == "straight" {
+    return extract-straight(cards)
+  } else if scoring-combination == "flush" {
+    return extract-flush(cards)
+  } else if scoring-combination == "full-house" {
+    return extract-full-house(cards)
+  } else if scoring-combination == "four-of-a-kind" {
+    return extract-four-of-a-kind(cards)
+  } else if scoring-combination == "straight-flush" {
+    return extract-straight-flush(cards)
+  } else if scoring-combination == "five-of-a-kind" {
+    return extract-five-of-a-kind(cards)
+  } else {
+    panic("Unknown scoring combination: " + scoring-combination)
+    return ()
+  }
+}
+
+/// Return all the combinations of the first valid scoring combination found in the given cards, starting from the highest scoring combination.
+/// This function checks the cards for the highest scoring combination and returns the corresponding hand.
+/// If the cards do not contain any valid scoring combination, the function will return an empty array.
+/// 
+/// -> array
+#let extract-highest(
+  /// The cards to check for the highest scoring combination. This can be an array or any iterable collection of card codes.
+  /// -> array
+  cards,
+) = {
+  if has-five-of-a-kind(cards) {
+    return extract-five-of-a-kind(cards)
+  } else if has-straight-flush(cards) {
+    return extract-straight-flush(cards)
+  } else if has-four-of-a-kind(cards) {
+    return extract-four-of-a-kind(cards)
+  } else if has-full-house(cards) {
+    return extract-full-house(cards)
+  } else if has-flush(cards) {
+    return extract-flush(cards)
+  } else if has-straight(cards) {
+    return extract-straight(cards)
+  } else if has-three-of-a-kind(cards) {
+    return extract-three-of-a-kind(cards)
+  } else if has-two-pairs(cards) {
+    return extract-two-pairs(cards)
+  } else if has-pair(cards) {
+    return extract-pair(cards)
+  } else if has-high-card(cards) {
+    return extract-high-card(cards)
+  } else {
+    return () // No valid hand found
+  }
 }
