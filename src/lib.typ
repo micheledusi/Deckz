@@ -13,6 +13,6 @@
 #import "model/structs.typ": cards52, deck52
 
 // Random, scoring, and game logic
-#import "model/random.typ": shuffle, choose
+#import "model/random.typ": shuffle, choose, split
 #import "model/score.typ": *
 #import "model/sort.typ": *

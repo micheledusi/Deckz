@@ -118,3 +118,27 @@ Which *five of a kind* can I make?
 		..head.slice(0, 24)
 	)
 }).join()
+
+#pagebreak()
+
+= Split deck
+
+#let (hands, market) = deckz.split(deckz.deck52, size: ((4, 2), 5), rest: false)
+
+_Players' hands:_
+#for hand in hands [
+	+ #deckz.hand(
+		format: "mini",
+		width: 1cm,
+		angle: 0deg,
+		..hand
+	)
+]
+
+_Central market:_
+#deckz.hand(
+	format: "mini",
+	width: 4cm,
+	angle: 0deg,
+	..market
+)
