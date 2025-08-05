@@ -3,7 +3,14 @@
 #import "@preview/suiji:0.4.0" // Random numbers library
 #import "@preview/digestify:0.1.0": sha256 // Hashing library, used to create a seed from the cards
 
-#let get-seed-from-cards(cards) = {
+/// Generate a seed based on the card values.
+/// 
+/// -> int
+#let get-seed-from-cards(
+  /// An array of cards to generate a seed from.
+  /// -> array
+  cards,
+) = {
   // Generate a seed based on the card values
   return int(array(sha256(bytes(cards.join()))).at(0)) + 42
 }
@@ -194,18 +201,15 @@
     }
   }
 
-  let aux-groups = ((), ) * current-index
-  // If the `rest` parameter is true, we need to add the remaining cards to the end of the array
-  if rest {
-    cards-indices += (current-index, ) * (cards.len() - cards-indices.len())
-    aux-groups.push(())
-    current-index += 1
-  }
+  let temp-groups = ((), ) * current-index
+  cards-indices += (current-index, ) * (cards.len() - cards-indices.len())
+  temp-groups.push(())
+  current-index += 1
 
   (rng, cards-indices) = suiji.shuffle-f(rng, cards-indices)
   
   for (idx, card) in cards-indices.zip(cards) {
-    aux-groups.at(idx).push(card)
+    temp-groups.at(idx).push(card)
   }
 
   current-index = 0 // Referencing the current index in the groups array
@@ -213,18 +217,18 @@
   for group-size in sizes-array {
     if type(group-size) == int {
       // If the group size is an integer, we can just slice the array
-      groups.push(aux-groups.at(current-index))
+      groups.push(temp-groups.at(current-index))
       current-index += 1
     } else if type(group-size) == array {
       // If the group size is an array, we need to reshape the array into a multi-dimensional array
       let num-subgroups = group-size.slice(0, -1).product()
-      groups.push(reshape(aux-groups.slice(current-index, current-index + num-subgroups).flatten(), group-size))
+      groups.push(reshape(temp-groups.slice(current-index, current-index + num-subgroups).flatten(), group-size))
       current-index += num-subgroups 
     }
   }
   // If the `rest` parameter is true, we need to add the remaining cards to the end of the array
   if rest {
-    groups.push(aux-groups.at(current-index))
+    groups.push(temp-groups.at(current-index))
   }
   if rng-from-outside {
     return (rng, groups)
