@@ -1,6 +1,6 @@
 #set table(stroke: 1pt + white, fill: white)
 #set text(font: "Arvo", size: 0.8em)
-#block(fill: gray.lighten(60%), inset: 10pt)[
+#block(fill: gray.lighten(60%), inset: 10pt, breakable: false)[
 
   #let example-cards = ("AS", "5H", "10C", "QD")
 

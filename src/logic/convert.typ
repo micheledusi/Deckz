@@ -41,7 +41,7 @@
     }
   }
   for (rank-key, rank-data) in ranks.pairs() {
-    if card-code.starts-with(rank-data.code) {
+    if type(card-code) == str and card-code.starts-with(rank-data.code) {
       card-data.rank = rank-key
       for (k, v) in rank-data.pairs() {
         card-data.insert("rank-" + k, v)
@@ -56,4 +56,18 @@
     card-data.rank = none
   }
   return card-data
+}
+
+
+#import "@preview/digestify:0.1.0": sha256 // Hashing library, used to create a seed from the cards
+
+/// Generate a seed based on the card values.
+/// -> int
+#let get-seed-from-cards(
+  /// An array of cards to generate a seed from.
+  /// -> array
+  cards,
+) = {
+  // Generate a seed based on the card values
+  return int(array(sha256(bytes(cards.join()))).sum())
 }

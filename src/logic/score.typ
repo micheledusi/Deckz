@@ -1,237 +1,10 @@
 // src/model/score.typ
 /// This file defines the functions to handle the scoring of hands of cards.
 
-#import "convert.typ": *
-#import "../data/rank.typ": *
-#import "../data/suit.typ": *
+#import "convert.typ": extract-card-data
 #import "combinatorics.typ": choose-k-out-of-n, cartesian-product
+#import "sort.typ": get-rank-count, get-suit-count, group-cards-by-rank, group-cards-by-suit, get-rank-presence, get-suit-presence, sort-by-score
 
-
-// --- Utility functions for scoring
-
-/// Get the count of each rank in the given cards.
-/// This function returns a dictionary where the keys are the ranks and the values are the counts of how many times each rank appears in the provided cards.
-/// 
-/// -> dictionary
-#let get-rank-count(
-  /// The cards to check for rank counts. This can be a list or any iterable collection of card codes.
-  /// -> array
-  cards,
-  /// If true, the function will add a zero count for ranks that do not appear in the cards. Default: false
-  /// -> bool
-  add-zero: false,
-  /// If true, the function will also count cards that are not valid according to the `extract-card-data` function.
-  /// This is useful for debugging or when you want to include all cards regardless of their validity
-  /// Default: false
-  /// -> bool
-  allow-invalid: false,
-) = {
-  let rank-counts = if add-zero {
-    // Initialize a dictionary with all ranks set to zero
-    ranks.keys().map((rank) => (rank, 0)).to-dict()
-  } else {
-    (:) // Initialize an empty dictionary to count occurrences of each rank
-  }
-  for card in cards {
-    let card-data = extract-card-data(card)
-    let new-count = rank-counts.at(card-data.rank, default: 0) + 1
-    rank-counts.insert(card-data.rank, new-count)
-  }
-  if none in rank-counts.keys() {
-    if not allow-invalid {
-      panic("Invalid card rank found in `get-rank-count` function: " + cards.join(", "))
-      return none
-    }
-  }
-  return rank-counts
-}
-
-/// For each rank, check if it is present in the given cards.
-/// This function returns a dictionary where the keys are the ranks and the values are booleans indicating whether that rank is present in the provided cards.
-/// This is more efficient than counting the ranks with the function @cmd:deckz:get-rank-count, as it only checks for presence and does not count occurrences.
-/// 
-/// -> dictionary
-#let get-rank-presence(
-  /// The cards to check for rank presence. This can be a list or any iterable collection of card codes.
-  /// -> array
-  cards,
-  /// If true, the function will also count cards that are not valid according to the `extract-card-data` function. This will add one entry with the key `none` to the result if there are invalid cards.
-  /// If false, the function will panic if it finds an invalid card, returning none.
-  /// Default: false
-  /// -> bool
-  allow-invalid: false,
-) = {
-  let rank-presence = ranks.keys().map((rank) => (rank, false)).to-dict() // Initialize a dictionary with all ranks set to false
-  if allow-invalid {
-    rank-presence.insert(none, false) // Add an entry for invalid cards
-  }
-  // Check each card for its rank
-  let remaining-ranks = rank-presence.len()
-  for card in cards {
-    let card-data = extract-card-data(card)
-    if card-data.rank == none and not allow-invalid {
-      panic("Invalid card rank found in `get-rank-presence` function: " + card)
-      return none
-    }
-    if not rank-presence.at(card-data.rank, default: false) {
-      rank-presence.insert(card-data.rank, true) // Set the rank to true if it is present
-      remaining-ranks -= 1 // Decrease the count of remaining ranks
-      if remaining-ranks == 0 {
-        break // If all ranks are found, exit the loop early
-      }
-    }
-  }
-  return rank-presence
-}
-
-/// Sort the given cards by their rank.
-/// This function returns a dictionary where the keys are the ranks and the values are arrays of cards that have that rank.
-/// 
-/// -> dictionary
-#let sort-cards-by-rank(
-  /// The cards to sort by rank. This can be a list or any iterable collection of card codes.
-  /// -> array
-  cards,
-  /// If true, the function will add an entry for each rank, even if the rank does not appear in the cards. 
-  /// This entry will have the rank as the key and an empty array as the value.
-  /// Default: false
-  /// -> bool
-  add-zero: false,
-  /// If true, the function will also count cards that are not valid according to the `extract-card-data` function.
-  /// If false, the function will simply ignore invalid cards. (No error will be raised.)
-  /// Default: false
-  /// -> bool
-  allow-invalid: false,
-) = {
-  let cards-by-rank = if add-zero {
-    // Initialize a dictionary with all ranks set to an empty array
-    ranks.keys().map((rank) => (rank, ())).to-dict()
-  } else {
-    (:) // Initialize an empty dictionary to hold the sorted cards
-  }
-  for card in cards {
-    let card-data = extract-card-data(card)
-    if card-data.rank != none or allow-invalid {
-      let current-cards = cards-by-rank.at(card-data.rank, default: ())
-      cards-by-rank.insert(card-data.rank, current-cards + (card, )) // Append the card to the list for its rank
-    }
-  }
-  return cards-by-rank
-}
-
-/// Get the count of each suit in the given cards.
-/// This function returns a dictionary where the keys are the suits and the values are the counts of how many times each suit appears in the provided cards.
-///
-/// -> dictionary
-#let get-suit-count(
-  /// The cards to check for suit counts. This can be a list or any iterable collection of card codes.
-  /// -> array
-  cards,
-  /// If true, the function will add a zero count for suits that do not appear in the cards. Default: false
-  /// -> bool
-  add-zero: false,
-  /// If true, the function will also count cards that are not valid according to the `extract-card-data` function.
-  /// This is useful for debugging or when you want to include all cards regardless of their validity
-  /// Default: false
-  /// -> bool
-  allow-invalid: false,
-) = {
-  let suit-counts = if add-zero {
-    // Initialize a dictionary with all suits set to zero
-    suits.keys().map((suit) => (suit, 0)).to-dict()
-  } else {
-    (:) // Initialize an empty dictionary to count occurrences of each suit
-  }
-  for card in cards {
-    let card-data = extract-card-data(card)
-    let new-count = suit-counts.at(card-data.suit, default: 0) + 1
-    suit-counts.insert(card-data.suit, new-count)
-  }
-  if none in suit-counts.keys() {
-    if not allow-invalid {
-      panic("Invalid card suit found in `get-suit-count` function: " + cards.join(", "))
-      return none
-    }
-  }
-  return suit-counts
-}
-
-/// For each suit, check if it is present in the given cards.
-/// This function returns a dictionary where the keys are the suits and the values are booleans indicating whether that suit is present in the provided cards.
-/// This is more efficient than counting the suits with the function @cmd:deckz:get-suit-count, as it only checks for presence and does not count occurrences.
-///
-/// -> dictionary
-#let get-suit-presence(
-  /// The cards to check for suit presence. This can be a list or any iterable collection of card codes.
-  /// -> array
-  cards,
-  /// If true, the function will also count cards that are not valid (i.e. whose rank symbol does not correspond to any of the known ranks). This will add one entry with the key `none` to the result if there are invalid cards.
-  /// If false, the function will panic if it finds an invalid card, returning none.
-  /// Default: false
-  /// -> bool
-  allow-invalid: false,
-) = {
-  let suit-presence = suits.keys().map((suit) => (suit, false)).to-dict() // Initialize a dictionary with all suits set to false
-  if allow-invalid {
-    suit-presence.insert(none, false) // Add an entry for invalid cards
-  }
-  // Check each card for its suit
-  let remaining-suits = suit-presence.len()
-  for card in cards {
-    let card-data = extract-card-data(card)
-    if card-data.suit == none and not allow-invalid {
-      panic("Invalid card suit found in `get-suit-presence` function: " + card)
-      return none
-    }
-    if not suit-presence.at(card-data.suit, default: false) {
-      suit-presence.insert(card-data.suit, true) // Set the suit to true if it is present
-      remaining-suits -= 1 // Decrease the count of remaining suits
-      if remaining-suits == 0 {
-        break // If all suits are found, exit the loop early
-      }
-    }
-  }
-  return suit-presence
-}
-
-/// Sort the given cards by their suit.
-/// This function returns a dictionary where the keys are the suits and the values are arrays of cards that have that suit.
-///
-/// -> dictionary
-#let sort-cards-by-suit(
-  /// The cards to sort by suit. This can be a list or any iterable collection of card codes.
-  /// -> array
-  cards,
-  /// If true, the function will add an entry for each suit, even if the suit does not appear in the cards. 
-  /// This entry will have the suit as the key and an empty array as the value.
-  /// Default: false
-  /// -> bool
-  add-zero: false,
-  /// If true, the function will also count cards that are not valid according to the `extract-card-data` function.
-  /// If false, the function will simply ignore invalid cards. (No error will be raised.)
-  /// Default: false
-  /// -> bool
-  allow-invalid: false,
-) = {
-  let cards-by-suit = if add-zero {
-    // Initialize a dictionary with all suits set to an empty array
-    suits.keys().map((suit) => (suit, ())).to-dict()
-  } else {
-    (:) // Initialize an empty dictionary to hold the sorted cards
-  }
-  for card in cards {
-    let card-data = extract-card-data(card)
-    if card-data.suit != none or allow-invalid {
-      let current-cards = cards-by-suit.at(card-data.suit, default: ())
-      cards-by-suit.insert(card-data.suit, current-cards + (card, )) // Append the card to the list for its suit
-    }
-  }
-  return cards-by-suit
-}
-)
-
-
-// --- Functions to assess a hand of cards
 
 /// Check if the given cards contain n-of-a-kind.
 /// n-of-a-kind is defined as having at least `n` cards of the same rank
@@ -291,7 +64,7 @@
   if cards.len() < n {
     return ()
   }
-  let cards-by-rank = sort-cards-by-rank(cards, add-zero: false, allow-invalid: false)
+  let cards-by-rank = group-cards-by-rank(cards, add-zero: false, allow-invalid: false)
   // We filter the ranks to only include those that have at least `n` cards
   // Then, for each rank with at least `n` cards, we take ALL the possible combinations of `n` cards from that rank
   // This is done with the binomial coefficient.
@@ -417,7 +190,7 @@
   /// -> array
   cards
 ) = {
-  let pairs-by-rank = sort-cards-by-rank(cards, add-zero: false, allow-invalid: false)
+  let pairs-by-rank = group-cards-by-rank(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .filter((cards-of-rank) => cards-of-rank.len() >= 2) // Filter ranks that have at least 2 cards
     .map((cards-of-rank) => choose-k-out-of-n(2, cards-of-rank)) // Take all combinations of 2 cards of each rank
@@ -533,7 +306,7 @@
   if cards.len() < n {
     return () // Not enough cards to form a straight
   }
-  let cards-by-rank = sort-cards-by-rank(cards, add-zero: true, allow-invalid: false)
+  let cards-by-rank = group-cards-by-rank(cards, add-zero: true, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
   cards-by-rank.push(cards-by-rank.at(0)) // Add the first rank to the end to handle 
   // wrap-around (e.g., A, 2, 3, 4, 5 or 10, J, Q, K, A)
@@ -590,7 +363,7 @@
   /// -> int
   n: 5,
 ) = {
-  let result = sort-cards-by-suit(cards, add-zero: false, allow-invalid: false)
+  let result = group-cards-by-suit(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .filter((cards-of-suit) => cards-of-suit.len() >= n) // Filter suits that have at least n cards
   if result.len() == 0 {
@@ -630,7 +403,7 @@
   /// -> array
   cards,
 ) = {
-  let cards-by-rank = sort-cards-by-rank(cards, add-zero: false, allow-invalid: false)
+  let cards-by-rank = group-cards-by-rank(cards, add-zero: false, allow-invalid: false)
   let cards-min-2 = cards-by-rank
     .pairs()
     .filter(((rank, cards-of-rank)) => cards-of-rank.len() >= 2) // Get ranks with at least 2 cards
@@ -746,7 +519,7 @@
   if cards.len() < n {
     return () // Not enough cards to form a straight flush
   }
-  return sort-cards-by-suit(cards, add-zero: false, allow-invalid: false)
+  return group-cards-by-suit(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .map((cards-of-suit) => extract-straight(cards-of-suit, n: n)) // Get all straights for each suit
     .join()
@@ -852,7 +625,14 @@
   /// The cards to check for the highest scoring combination. This can be an array or any iterable collection of card codes.
   /// -> array
   cards,
+  /// If true, the function will first sort the cards by their score. This is needed if you want the highest combination among multiple combinations of the same type. E.g. if you have more than one pair, the function will return the pair with the highest rank (i.e. the card with the highest score).
+  /// Default: true
+  sort: true,
 ) = {
+  if sort {
+    cards = sort-by-score(cards)
+  }
+
   if has-five-of-a-kind(cards) {
     return extract-five-of-a-kind(cards)
   } else if has-straight-flush(cards) {

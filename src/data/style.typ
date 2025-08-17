@@ -1,6 +1,6 @@
 // style.typ
-/// This file defines the style and colors used in the Deckz package.
-/// It includes the background color, border style, and suit colors.
+// This file defines the style and colors used in the Deckz package.
+// It includes the background color, border style, and suit colors.
 
 /// The background color for the card rendering area.
 /// It represents the color of the "paper" or "canvas" where the cards are displayed.
@@ -8,6 +8,10 @@
 /// 
 /// -> color
 #let bg-color = aqua.lighten(90%)
+
+/// The color used for the back of the cards.
+/// It is a light blue color, defined using a hex code.
+#let back-color = color.rgb("#4796a4")
 
 /// The border style for the card rendering area.
 /// It defines the appearance of the border around the card area.

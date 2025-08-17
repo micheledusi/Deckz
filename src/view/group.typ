@@ -1,6 +1,7 @@
 #import "format.typ": *
-
+#import "../logic/random.typ": prepare-rng, attach-rng-if-from-outside, call-rng-function, suiji
 #import cetz: draw
+
 
 /// Displays a *sequence of cards* in a horizontal hand layout.
 /// Optionally applies a slight rotation to each card, creating an arched effect.
@@ -17,23 +18,41 @@
 /// 
 /// -> content
 #let hand(
-	/// The *angle* between the first and last card, i.e. the angle covered by the arc. -> angle
-	angle: 30deg, 
-	/// The *width* of the hand, i.e. the distance between the first and last card. -> length
-	width: 10cm, 
-	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of "1" corresponds to a "standard" amount of noise, according to DECKZ style. Higher values might produce crazy results, handle with care. -> float | none
-	noise: none,
+	/// The list of *cards* to display, with standard code representation.
+	/// -> array
+	..cards,
 	/// The *format* of the cards to render. Default is "medium".
-	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`. -> string
+	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`. 
+	/// -> string
 	format: "medium",
-	/// The list of *cards* to display, with standard code representation. -> array
-	..cards
+	/// The *angle* between the first and last card, i.e. the angle covered by the arc. 
+	/// -> angle
+	angle: 30deg, 
+	/// The *width* of the hand, i.e. the distance between the first and last card.
+	/// -> length
+	width: 10cm, 
+	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of "1" corresponds to a "standard" amount of noise, according to DECKZ style. Higher values might produce crazy results, handle with care. 
+	/// -> float | none
+	noise: none,
+  /// The *random number generator* to use for the noise. If not provided or set to default value #value(auto), a new random number generator will be created. Otherwise, you can pass an existing random number generator to use.
+  /// -> rng | auto
+	rng: auto,
 ) = {
 	let cards-array = cards.pos()
+	// If no cards, return empty array
 	if cards-array.len() == 0 {
 		return []
-	} else if cards-array.len() == 1 {
-		return render(format: format, noise: noise, cards-array.at(0))
+	}
+	// Prepare the random number generator
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-array)
+	// If only one card, render it directly
+	if cards-array.len() == 1 {
+		let (new-rng, card-content) = call-rng-function(render, rng,
+			cards-array.at(0),
+			format: format,
+			noise: noise,
+		)
+		return attach-rng-if-from-outside(rng-from-outside, new-rng, card-content)
 	} else {
 		// If there is at least a pair of cards
 		let (angle-start, angle-shift, radius, shift-x) = (0deg, 0deg, 0pt, 0pt)
@@ -44,35 +63,23 @@
 			angle-shift = angle / (cards-array.len() - 1)
 			radius = width / (2 * calc.sin(angle / 2))
 		}
-		// Handling randomness
-		let variabilities = ()
-		if noise != none and noise > 0 {
-			let seed = int(noise * 1e9) + 42
-			let rng = suiji.gen-rng-f(seed)
-			(_, variabilities) = suiji.uniform-f(rng, low: 0, high: 1e-6, size: cards-array.len())
-		}
 		// Drawing canvas
-		cetz.canvas({
+		let result = cetz.canvas({
 			draw.rotate(z: -angle-start)
 			for i in range(cards-array.len()) {
-				// Compute noise for the current card visualization
-				let card-noise = if noise == none or noise <= 0 {
-					none
-				} else {
-					noise + variabilities.at(i, default: none)
-				}
-				// Draw content
-				content((shift-x * i, radius),
-					rotate(
-						angle-start + i * angle-shift,
-						reflow: true,
-						origin: center + horizon,
-						render(format: format, noise: card-noise, cards-array.at(i))
-					)
+				// Draw content - use call-rng-function to properly handle RNG state
+				let (new-rng, card-content) = call-rng-function(render, rng,
+					cards-array.at(i),
+					format: format,
+					noise: noise,
 				)
+				rng = new-rng  // Update RNG state for next iteration
+				
+				draw.content((shift-x * i, radius), angle: -(angle-start + i * angle-shift), card-content)
 				draw.rotate(z: -angle-shift)
 			}
 		})
+		return attach-rng-if-from-outside(rng-from-outside, rng, result)
 	}
 }
 
@@ -90,38 +97,58 @@
 /// 
 /// -> content
 #let deck(
-	/// The *angle* at which the deck is fanned out. Default is #{60deg}. -> angle
+	/// The *top card* in the deck, with standard code representation.
+	/// -> string
+	top-card,
+	/// The *format* to use for rendering each card. Default is "medium". 
+	/// -> string
+	format: "medium", 
+	/// The *angle* at which the deck is fanned out. Default is #value(60deg). 
+	/// -> angle
 	angle: 60deg, 
-	/// The total *height* of the deck stack. This determines how many cards are rendered in the stack, as one card is displayed for every #{2.5pt} of height. 
+	/// The total *height* of the deck stack. This determines how many cards are rendered in the stack, as one card is displayed for every #value(2.5pt) of height. 
 	/// -> height
 	height: 1cm, 
-	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. -> float | none
+	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is "none" or "0", which corresponds to no variations. A value of 1 corresponds to a "standard" amount of noise, according to Deckz style. Higher values might produce crazy results, handle with care. 
+	/// -> float | none
 	noise: none, 
-	/// The *format* to use for rendering each card. Default is "medium". -> string
-	format: "medium", 
-	/// The *top card* in the deck, with standard code representation. -> string
-	top-card
+  /// The *random number generator* to use for the noise. If not provided or set to default value #value(auto), a new random number generator will be created. Otherwise, you can pass an existing random number generator to use.
+  /// -> rng | auto
+	rng: auto,
 ) = {
 	let num-cards = calc.max(int(height / 2.5pt), 1)
 	let shift-x = height * calc.cos(angle) / num-cards
 	let shift-y = height * calc.sin(angle) / num-cards
+	
+	// Prepare the random number generator  
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: top-card)
+	
 	// Handling randomness
 	let variabilities = ()
   if noise != none and noise > 0 {
-    let seed = int(noise * 1e9) + 42
-    let rng = suiji.gen-rng-f(seed)
-		(_, variabilities) = suiji.uniform-f(rng, low: 0, high: 1e-6, size: num-cards)
+		let (rng, new-variabilities) = suiji.uniform-f(rng, low: 0, high: 1e-6, size: num-cards)
+		variabilities = new-variabilities
 	}
-	cetz.canvas({
+	
+	let result = cetz.canvas({
 		for i in range(num-cards) {
 			let card-noise = if noise == none or noise <= 0 {
 				none
 			} else {
-				noise + variabilities.at(i, default: none)
+				noise + variabilities.at(i, default: 0)
 			}
-			content((shift-x * i, shift-y * i), render(format: format, noise: card-noise, top-card))
+			// Use call-rng-function to properly handle RNG state
+			let (new-rng, card-content) = call-rng-function(render, rng,
+				top-card,
+				format: format,
+				noise: card-noise,
+			)
+			rng = new-rng  // Update RNG state for next iteration
+			
+			content((shift-x * i, shift-y * i), card-content)
 		}
 	})
+	return attach-rng-if-from-outside(rng-from-outside, rng, result)
 }
 
 /// Renders a *heap* of cards, randomly placed in the given area.
@@ -138,11 +165,17 @@
 /// 
 /// -> content 
 #let heap(
-	/// The *format* to use for rendering each card. Default is "medium". -> string
+	/// The *cards to display*, with standard code representation. The last cards are represented on top of the previous one, as the rendering follows the given order.
+	/// -> array
+	..cards,
+	/// The *format* to use for rendering each card. Default is "medium".
+	/// -> string
 	format: "medium", 
-	/// The *horizontal dimension* of the area in which cards are placed. -> length
+	/// The *horizontal dimension* of the area in which cards are placed.
+	/// -> length
 	width: 10cm,
-	/// The *vertical dimension* of the area in which cards are placed. -> length
+	/// The *vertical dimension* of the area in which cards are placed.
+	/// -> length
 	height: 10cm, 
 	/// If `true`, allows cards to *exceed the frame* with the given dimensions. When the parameter is `false`, instead, cards placement considers a margin of half the card length on all four sides. This way, it is guaranteed that cards are placed within the specified frame size. Default is `false`.
 	/// 
@@ -173,18 +206,24 @@
 	/// 
 	/// -> boolean
 	exceed: false, 
-	/// The *cards to display*, with standard code representation. The last cards are represented on top of the previous one, as the rendering follows the given order.  -> array
-	..cards
+  /// The *random number generator* to use for cards displacement. If not provided or set to default value #value(auto), a new random number generator will be created. Otherwise, you can pass an existing random number generator to use.
+  /// -> rng | auto
+	rng: auto,
 ) = context {
-	let num-cards = cards.pos().len()
+	let cards-array = cards.pos()
+	let num-cards = cards-array.len()
 	let card-w = format-parameters.at(format).width.to-absolute()
 	let card-h = format-parameters.at(format).height.to-absolute()
+	
+	// Prepare the random number generator  
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-array)
+	
 	// Random values
-	let rng = suiji.gen-rng-f(42)
 	let (rng, rand-x) = suiji.uniform-f(rng, size: num-cards) 	// [0, 1)
 	let (rng, rand-y) = suiji.uniform-f(rng, size: num-cards) 	// [0, 1)
 	let (rng, shift-rot) = suiji.uniform-f(rng, low: 0, high: 360, size: num-cards) // [0°, 360°)
-	cetz.canvas({
+	
+	let result = cetz.canvas({
 		for i in range(num-cards) {
 			// Compute random angle
 			let angle = shift-rot.at(i) * 1deg
@@ -201,13 +240,19 @@
 				x = rand-x.at(i) * width
 				y = rand-y.at(i) * height
 			}
-			// Render content
+			// Render content using call-rng-function to properly handle RNG state
+			let (new-rng, card-content) = call-rng-function(render, rng,
+				cards-array.at(i),
+				format: format,
+			)
+			rng = new-rng  // Update RNG state for next iteration
+			
 			content((x, y), 
 				rotate(angle, origin: center + horizon, reflow: true)[
-					//#box(width: card-w, height: card-h, stroke: 1pt)
-					#render-card(format, cards.pos().at(i))
+					#card-content
 				]
 			)
 		}
 	})
+	return attach-rng-if-from-outside(rng-from-outside, rng, result)
 }

@@ -1,24 +1,18 @@
 #import "template.typ": *
 #show: mantys
 
-// ----------------------------
-// Manual for DECKZ package
-= How to use DECKZ
-<sec:guide>
-#include "01.manual.typ"
 
+// ----------------------------
+// Guide for DECKZ package
+#include "guide/index.typ"
 
 // ----------------------------
 // Complete documentation for DECKZ functions and features
-= Documentation
-<sec:documentation>
-#include "02.documentation.typ"
+#include "documentation/index.typ"
 
 // ----------------------------
 // Examples
-= Examples
-<sec:examples>
-#include "03.examples.typ"
+#include "examples/index.typ"
 
 // ----------------------------
 // Additional information
@@ -37,14 +31,14 @@ The *card designs* are inspired by the standard playing cards, with suit symbols
 
 This project owes a lot to the creators of these *Typst packages*, whose work made DECKZ possible:
 - #universe("cetz"), for handling graphics and for the name inspiration.
-- #universe("suiji"), for random number generation.
+- #universe("suiji") and #universe("digestify"), for random number generation and hashing respectively.
 - #universe("linguify"), for localization.
 - #universe("mantys"), #universe("tidy"), and #universe("codly"), for documentation.
 - #universe("octique") and #universe("showybox"), for documentation styling.
 
 Special thanks to everyone involved in the development of the #link("https://typst.app/about/")[Typst] language and engine, whose efforts made the entire ecosystem possible.
 
-#heading(numbering: none, level: 2)[Contributing]
+#heading(numbering: none, level: 2)[Contributions are welcome!]
 Found a bug, have an idea, or want to contribute?
 Feel free to open an *issue* or *pull request* on the _GitHub_ repository (#github("micheledusi/Deckz")).
 

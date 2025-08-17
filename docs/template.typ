@@ -1,5 +1,6 @@
 #import "@preview/mantys:1.0.2": *
 #import "@preview/tidy:0.4.3": *
+
 #import "../src/lib.typ" as deckz
 
 // Initialization of the Mantys document
@@ -22,12 +23,21 @@
 )
 
 /// Helper for Tidy-Support
-#let show-module(name, ..tidy-args) = tidy-module(
-  name,
-  read("../src/" + name + ".typ"),
-  module: "deckz",
-  ..tidy-args.named()
-)
+#let show-module(name, ..tidy-args) = {
+  let content = if type(name) == str {
+    read("../src/" + name + ".typ")
+  } else if type(name) == array {
+    name.map((n) => read("../src/" + n + ".typ")).join("\n")
+  } else {
+    error("Invalid module name: " + (name))
+  }
+  return tidy-module(
+    name,
+    content,
+    module: "deckz",
+    ..tidy-args.named()
+  )
+}
 
 /// Helpers for note
 #let coming-soon-feature(body) = {

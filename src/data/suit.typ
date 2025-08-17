@@ -2,17 +2,13 @@
 
 /// A mapping of all *suit symbols* utilized in DECKZ.
 /// 
-/// ```example
-/// #deckz.suits
-/// ```
-/// 
 /// Primarily intended for internal use within higher-level functions,
 /// but can also be accessed directly, for example, to iterate over the four suits.
 /// 
 /// ```side-by-side
 /// #stack(
 ///   dir: ltr,
-///   spacing: 1fr,
+///   spacing: 1em,
 ///   ..deckz.suits.values().map(suit-data => {
 ///     text(suit-data.color)[#suit-data.symbol]
 ///   })

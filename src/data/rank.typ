@@ -2,10 +2,6 @@
 
 /// A mapping of all *rank symbols* utilized in DECKZ.
 /// 
-/// ```example
-/// #deckz.ranks
-/// ```
-/// 
 /// This dictionary is primarily intended for internal use within higher-level functions, but can also be accessed directly, for example, to iterate over the ranks.
 /// 
 /// ```side-by-side
