@@ -56,8 +56,8 @@ More specifically, it is possible to assess *poker hands* with three types of fu
 - *Validation*: check if a hand _exactly matches_ a specific combination.
 - *Hand Extraction*: extract _all possible combinations_ of a specific type from a hand.
 
-#info-alert()[
-	*Important*: DECKZ recognizes the standard poker combinations:
+#bts-info[
+	The combinations recognized by DECKZ are the standard poker combinations:
 	#let combos = (
 		"high-card": "The singular highest card of the hand",
 		"pair": "A pair of cards with the same rank",
@@ -139,8 +139,8 @@ The general @cmd:deckz:extract function can be used to extract any combination s
 	```
 ]
 
-#info-alert()[
-	*Note*: All extraction functions are *stable functions*, meaning they evaluate the hand in a consistent order: if two cards have a certain order, their relative order will be preserved in the output.
+#bts-info[
+	All extraction functions are *stable functions*, meaning they evaluate the hand in a consistent order: if two cards have a certain order, their relative order will be preserved in the output.
 	This is particularly useful for games where the order of cards matters.
 ]
 

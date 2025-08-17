@@ -46,8 +46,7 @@ Randomization in DECKZ is designed to be simple and intuitive: each function tha
 
 As a *general rule*:
 
-- #primary[_If you don't provide a `rng`_] $=>$ DECKZ will instance a *default generator* that is seeded with the current input content (usually, the cards array). 
-	#info-alert()[*Important*: This ensures that the same input will always produce the same output, making it deterministic and reproducible.] 
+- #primary[_If you don't provide a `rng`_] $=>$ DECKZ will instance a *default generator* that is seeded with the current input content (usually, the cards array). This ensures that the same input will always produce the same output, making it *deterministic and reproducible*.
 - #primary[_If you provide a `rng`_] $=>$ DECKZ will use the provided generator and return the new `rng` state along with the produced output. With this approach, you can chain multiple random operations together, ensuring a pseudo-random sequence of results.
 
 Let's explore these two modes in detail.
@@ -96,8 +95,8 @@ To get *different visual results* for the same cards, you need to provide your o
 	```
 ]
 
-#info-alert()[
-	*Important*: You may have noticed the `.last()` at the end of each call, in the previous example.
+#bts-info[
+	You may have noticed the `.last()` at the end of each call, in the previous example.
 	This is because when using an external RNG, DECKZ functions return a *tuple* containing the new RNG state and the rendered content.
 	To extract the final content, you need to access the last element of the returned tuple, which is done with the `.last()` function call.
 ]

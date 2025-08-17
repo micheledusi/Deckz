@@ -27,7 +27,7 @@ For example, if you want to use a _croissant emoji_ #emoji.croissant as a custom
 #deckz.hand(..deckz.cards52.diamond.values().slice(0, 7))
 ```
 
-#info-alert[
+#bts-info[
 	The *resizing* of the emoji in the previous example is used to make it fit better in the card layout.
 	When you're defining your own `show` rule for suits customization, you may need to adjust their size as needed.
 ]

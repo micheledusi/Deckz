@@ -15,7 +15,7 @@ As you can see, the function has been called with two arguments, and it produced
 	- *Available ranks*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`.
 	- *Available suits*: `H` (Hearts #text(red)[#emoji.suit.heart]), `D` (Diamonds #text(red)[#emoji.suit.diamond]), `C` (Clubs #emoji.suit.club), `S` (Spades #emoji.suit.spade).
 
-	#info-alert[
+	#bts-info[
 		Card identifier is *case-insensitive*, so `"as"` and `"AS"` are equivalent and both represent the _Ace of Spades_.
 	]
 
@@ -67,7 +67,7 @@ You can use any of these with the *general function* @cmd:deckz:render, or by ca
 - @cmd:deckz:large, 
 - @cmd:deckz:square.
 
-#info-alert()[All formats are *responsive to the current text size*: they scale proportionally using #{`em`} units, making them adaptable to different layouts and styles.
+#bts-info[All formats are *responsive to the current text size*: they scale proportionally using #{`em`} units, making them adaptable to different layouts and styles.
 
 For reference, the summaries in larger formats (i.e. the symbols representing the rank and suit of a cards, usually placed in the card's corners) scale with the current text size, ensuring that card details remain readable even when the surrounding text is small.
 ]
@@ -98,8 +98,8 @@ This is the back of a card:
 
 Alternatively, you can use the general @cmd:deckz:render function with #value("back") as the card code, which is equivalent.
 
-#info-alert[
-	*Important*: Any string other than a valid card identifier will be interpreted as a request for the back of the card (except for the empty string). The convention, however, is to use the string #value("back") for clarity.
+#bts-info[
+	Any string other than a valid card identifier will be interpreted as a request for the back of the card (except for the empty string). The convention, however, is to use the string #value("back") for clarity.
 ]
 
 ```side-by-side

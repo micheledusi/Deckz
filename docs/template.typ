@@ -49,3 +49,12 @@
     #body
   ]
 }
+#let bts-info(body) = {
+  info-alert[
+    #text(eastern)[
+      #octique.octique-inline("telescope", color: eastern)	
+      _Behind The Scenes_.
+    ]
+    #body
+  ]
+}
