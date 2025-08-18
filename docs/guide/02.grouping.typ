@@ -1,7 +1,7 @@
 #import "../template.typ": *
 
 == Visualize cards together
-DECKZ also provides convenient functions to render *entire decks* or *hands of cards*. Both functions produce a _CeTZ_ canvas, which can be used in any context where you need to display multiple cards together.
+DECKZ also provides convenient functions to render *entire decks* or *hands of cards*. Both functions produce a _CeTZ_ `canvas` from the #universe("cetz") package, which can be used in any context where you need to display multiple cards together.
 
 === Decks
 The deck visualization is created with the @cmd:deckz:deck function, which takes a card identifier as an argument. It renders a full deck of cards, with the specified card on top.

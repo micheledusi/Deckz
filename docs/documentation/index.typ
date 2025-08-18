@@ -19,10 +19,8 @@ This section covers the *group visualization* features of the DECKZ package, i.e
 #pagebreak()
 == Data
 This section provides an overview of the *data structures* used in the DECKZ package, including suits, ranks, and cards. It explains how these data structures are organized and how to access them.
-#show-module("data/suit")
-#show-module("data/rank")
+#show-module(("data/suit", "data/rank", "logic/structs"))
 //#show-module("data/style")
-#show-module("logic/structs")
 
 
 #pagebreak()

@@ -18,7 +18,7 @@ At the end, you'll find credits and instructions for contributing to the project
 ]
 
 
-== Importing the package
+== Import the package
 
 To start using DECKZ in your Typst document, simply *import the package* with:
 

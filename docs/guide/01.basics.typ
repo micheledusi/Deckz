@@ -69,7 +69,7 @@ You can use any of these with the *general function* @cmd:deckz:render, or by ca
 
 #bts-info[All formats are *responsive to the current text size*: they scale proportionally using #{`em`} units, making them adaptable to different layouts and styles.
 
-For reference, the summaries in larger formats (i.e. the symbols representing the rank and suit of a cards, usually placed in the card's corners) scale with the current text size, ensuring that card details remain readable even when the surrounding text is small.
+For reference, the summary view contained in larger formats (i.e. the symbols representing the rank and suit of a cards, usually placed in the card's corners) *scale with the current text size*, ensuring that card details remain readable by being no smaller than #value(1em) in size.
 ]
 
 ```side-by-side
