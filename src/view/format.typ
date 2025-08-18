@@ -183,7 +183,7 @@
       dx: shift-x * noise * 1em,  // Use approximate sizing since we can't measure here
       dy: shift-y * noise * 1em,
       rotate(
-        shift-rot * noise * 120deg,
+        shift-rot * noise * 90deg,
         origin: center + horizon,
         reflow: false,
         result-content
