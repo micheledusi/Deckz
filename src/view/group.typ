@@ -123,25 +123,13 @@
 	// Prepare the random number generator  
 	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: top-card)
 	
-	// Handling randomness
-	let variabilities = ()
-  if noise != none and noise > 0 {
-		let (rng, new-variabilities) = suiji.uniform-f(rng, low: 0, high: 1e-6, size: num-cards)
-		variabilities = new-variabilities
-	}
-	
 	let result = cetz.canvas({
 		for i in range(num-cards) {
-			let card-noise = if noise == none or noise <= 0 {
-				none
-			} else {
-				noise + variabilities.at(i, default: 0)
-			}
 			// Use call-rng-function to properly handle RNG state
 			let (new-rng, card-content) = call-rng-function(render, rng,
 				top-card,
 				format: format,
-				noise: card-noise,
+				noise: noise,
 			)
 			rng = new-rng  // Update RNG state for next iteration
 			
