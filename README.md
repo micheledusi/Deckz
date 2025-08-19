@@ -76,11 +76,8 @@ The first argument is the **card identifier** as a string. Use standard short no
 > *Note*. Card identifier is case-insensitive, so `"as"` and `"AS"` are equivalent and both represent the Ace of Spades.
 
 The second argument is optional and specifies the **format** of the card display. If not provided, it defaults to `medium`.
-See the next section for available formats.
 
-### Formats
-
-Deckz provides multiple display formats to fit different design needs:
+Deckz provides **multiple display formats** to fit different design needs:
 
 | Format | Description |
 | --- | --- |
@@ -124,13 +121,7 @@ are equivalent to
 
 > *Note*. All formats are responsive to the current text size — they scale proportionally using `em` units, making them adaptable to different layouts and styles.
 
-If you want more examples of how to use these formats, check out the examples at the end of this document.
-
-### Back of Cards
-
-To render the back of a card, you can use the `deckz.back(format)` function. This will display a generic card back design, which can be useful for games or when you want to hide the card's face.
-
-Alternatively, you can use the `deckz.render("back", format)` function, which is equivalent. Any string other than a valid card identifier will be interpreted as a request for the back of the card (except for the empty string).
+Every format works also for representing the **back of the card**. To render the back, you can use the same `deckz.render()` function with `"back"` as the card identifier, or simply call the `deckz.back(format)` function. This will display a generic card back design, which can be useful for games or when you want to hide the card's face.
 
 ```typst
 // These are all equivalent:
@@ -143,8 +134,8 @@ Alternatively, you can use the `deckz.render("back", format)` function, which is
 <img src="docs/img/back_medium.png" alt="Example of cards back" width="300px"/>
 </p>
 
-## Decks & Hands
-Deckz also provides convenient functions to render **entire decks** or **hands of cards**. Both functions produce a _CeTZ_ canvas, which can be used in any context where you need to display multiple cards together.
+## Group Display
+Deckz also provides convenient functions to render **entire decks** or **hands of cards**, resulting in a _CeTZ_ [canvas](https://cetz-package.github.io/docs/basics/canvas).
 
 ### Decks
 The deck visualization is created with the `deckz.deck()` function, which takes a card identifier as an argument. It renders a full deck of cards, with the specified card on top.
@@ -185,7 +176,7 @@ The hand visualization is created with the `deckz.hand()` function, which takes 
 #deckz.hand("AS", "KS", "QS", "JS", "10S")
 ```
 
-As can be seen in the example above, the cards are displayed in an arc shape, with the first card on the left and the last card on the right. To customize such display, you can use the following parameters:
+Cards are displayed in an arc shape from left to right. To customize such display, you can use the following parameters:
 - `angle`: The angle of the arc in degrees. The default is `30deg`, which creates a gentle arc. Higher values will create a wider arc, while lower values will create a tighter arc.
 - `width`: The width of the hand. This determines how far apart the cards will be spaced. The default is `10cm`. More precisely, the width is the distance between the centers of the first and last card in the hand.
 - `noise`: A number between `0` and `1` that determines how much the cards are scattered in random directions. A value of `0` means no noise, while a value of `1` means maximum noise. Higher values are permitted, but they will result in a more chaotic distribution of cards. Default is `none`, which corresponds to `0` (no random displacement).
@@ -232,28 +223,13 @@ The `deckz.heap()` function takes the following parameters:
 - `format`: the format of the cards in the heap. It can be any of the formats described above, such as `inline`, `mini`, `small`, `medium`, `large`, or `square`. The default is `medium`. 
 - `exceed`: a boolean value that determines whether the cards can exceed the specified width and height. If set to `true`, the heap can extend beyond the specified dimensions, yet assessing that all cards' center positions will be contained within the specified area. If set to `false`, the whole surface of each card will be contained within the specified dimensions. The default is `false`.
 
-## Card Customization *(COMING SOON)*
-Deckz allows for some customization of the card appearance, such as colors and styles. However, this feature is still under development and will be available in future releases.
+## Looking for more? 🧐
+Deckz offers many other features to help you create engaging card displays, including:
+- **Card customization**: You can customize the appearance of cards, such as the suit symbols, colors, and styles.
+- **Hand manipulation**: You can manipulate hands of cards, such as shuffling, sorting, or even drawing random cards from a deck.
+- **Game combinations**: Deckz provides functions to evaluate you hand of cards and determine the best poker combinations, such as pairs, straights, flushes, and more.
 
-**Variant Colors**: to better distinguish same-color suits, Deckz will support variant colors for each suit.
-
-![Example of cards with custom colors.](docs/img/future_variant_colors.png)
-
-> *Note*. The color scheme shown above is inspired by the game *Balatro*. The hand displayed is the initial hand from a game started with the seed "DECKZ" — not a bad opening, huh? 😉
-
-**Custom Suits**: Deckz will also allow you to define custom suits, so you can use your own symbols or images instead of the standard hearts, diamonds, clubs, and spades.
-
-![Example of cards with custom suits.](docs/img/future_custom_suits.png)
-
-Even though this feature is not yet implemented, you can still use custom suits by defining your own `show` rule for the emoji suits. In fact, Deckz uses the `emoji.suit.*` symbols to render the standard suits, so you can override them with your own definitions.
-
-For example, if you want to use a croissant emoji as a custom suit for diamonds, you can define it like this:
-
-```typ
-#show emoji.suit.diamond: text(size: 0.7em, emoji.croissant)
-```
-
-> *Note*. The resizing of the emoji is used to make it fit better in the card layout. You can adjust the size as needed.
+Every functionality is documented in the [Deckz Manual](docs/manual-deckz.pdf), which you can download and read for more details.
 
 ## Final Examples
 
