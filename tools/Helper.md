@@ -62,7 +62,7 @@ git push -u origin dev-deckz # Publish the current branch to your forked reposit
 
 # Now, you can add the new package to your forked repository.
 git add packages/preview/deckz # Add the new package to the staging area.
-git commit -m "{your-package-name}:0.1.0"
+git commit -m "{your-package-name}:0.Y.Z"
 git push origin dev-deckz # Push changes from your local repository to your forked repository on GitHub.
 ```
 Now you can move to GitHub and create a **pull request** to the official Typst packages repository.
@@ -73,6 +73,6 @@ Assuming that you have made changes to the folder in which you are developing th
 - `./tools/sync-to-packages.bat` Copy the contents of the working folder to the `typst-packages` repository.
 - `cd ../typst-packages` Change directory to your forked repository.
 - `git add .` Add all changes to the staging area.
-- `git commit -m "Update <Name> package to version X.Y.Z"`
+- `git commit -m "{package-name}:X.Y.Z"`
 - `git push origin main`
 Push changes from your local repository to your forked repository on GitHub. This is needed to create a **pull request** on the official Typst packages repo.
