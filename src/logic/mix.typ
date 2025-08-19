@@ -5,7 +5,7 @@
 
 /// Shuffle the given cards and return the *shuffled array*, i.e. a new array with the same elements in a different (random) order.
 /// 
-/// To handle randomness, this function accepts a *random number generator* (`rng`) as an optional parameter. This `rng` follows the conventions of the #universe("suiji") library, which provides a random number generator. See the @cmd:deckz:shuffle.rng parameter documentation for more information.
+/// To handle randomness, this function accepts a *random number generator* (`rng`) as an optional parameter. This `rng` follows the conventions of the #universe("suiji") library, which provides a random number generator. See the @cmd:deckz.mix:shuffle.rng parameter documentation for more information.
 /// 
 /// This function also relies on the `suiji.shuffle-f` function from the #universe("suiji") library to shuffle the cards.
 /// 
@@ -49,7 +49,7 @@
 /// - If `n` is greater than the number of cards and `replacement` is #value(false), the function will return all cards (optionally shuffled, if `permutation` is `true`). This corresponds to drawing all cards from the deck.
 /// - If `n` is 0 or less, the function will return an empty array.
 /// 
-/// This function uses the `suiji.choose-f` function from the #universe("suiji") library to draw elements from the array. As such, it accepts a *random number generator* (`rng`) as an optional parameter (more information in the @cmd:deckz:choose.rng parameter documentation).
+/// This function uses the `suiji.choose-f` function from the #universe("suiji") library to draw elements from the array. As such, it accepts a *random number generator* (`rng`) as an optional parameter (more information in the @cmd:deckz.mix:choose.rng parameter documentation).
 /// 
 /// The return value of this function depends on the `rng` parameter:
 /// 
@@ -126,14 +126,14 @@
 /// Split the given deck of cards into groups of specified sizes.
 /// This is useful for dealing cards to players or creating smaller decks from a larger one.
 /// 
-/// The split is governed by the @cmd:deckz:split.size parameter, which can be a _single integer_ (if only one group of cards should be split from the original deck array) or an _array of integers_ (if multiple groups should be dealt from the same original deck array).
-/// With this function, cards are guaranteed to be dealt *in-place*, meaning that the order of the cards in the original deck is preserved in the output groups. If you want to shuffle the cards before splitting them, you can use the @cmd:deckz:shuffle function before calling this function.
+/// The split is governed by the @cmd:deckz.mix:split.size parameter, which can be a _single integer_ (if only one group of cards should be split from the original deck array) or an _array of integers_ (if multiple groups should be dealt from the same original deck array).
+/// With this function, cards are guaranteed to be dealt *in-place*, meaning that the order of the cards in the original deck is preserved in the output groups. If you want to shuffle the cards before splitting them, you can use the @cmd:deckz.mix:shuffle function before calling this function.
 ///
 /// The function produces an array containing *the groups of cards*, with some important warnings:
-/// - if the @cmd:deckz:split.rest is #value(true), the returned array will contain all cards in the input deck, with the remaining cards (i.e. those which were not split into groups of the specified sizes) at the end of the array, in one single group.
-/// - if the @cmd:deckz:split.rest is #value(false), the returned array will contain only the split cards, and those which are not contained in the split groups will be discarded.
+/// - if the @cmd:deckz.mix:split.rest is #value(true), the returned array will contain all cards in the input deck, with the remaining cards (i.e. those which were not split into groups of the specified sizes) at the end of the array, in one single group.
+/// - if the @cmd:deckz.mix:split.rest is #value(false), the returned array will contain only the split cards, and those which are not contained in the split groups will be discarded.
 /// 
-/// Also, the function accepts a *random number generator* (`rng`) as an optional parameter. This `rng` follows the conventions of the #universe("suiji") library, which provides a random number generator. See the @cmd:deckz:split.rng parameter documentation for more information.
+/// Also, the function accepts a *random number generator* (`rng`) as an optional parameter. This `rng` follows the conventions of the #universe("suiji") library, which provides a random number generator. See the @cmd:deckz.mix:split.rng parameter documentation for more information.
 /// 
 /// The return value of this function depends on the `rng` parameter:
 /// - If `rng` is set to #value(auto), the function will return only the split groups, i.e. an array of arrays of cards.

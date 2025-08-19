@@ -45,7 +45,7 @@ You can use DECKZ to display a *full deck of cards*, simply by retrieving the `d
 #pagebreak()
 == Randomized game with card scoring
 
-You can use DECKZ to create a *randomized _Texas Hold'em_-like game*, where players are dealt random hands and their best hands are determined based on the cards on the table, using the @cmd:deckz:extract-highest function.
+You can use DECKZ to create a *randomized _Texas Hold'em_-like game*, where players are dealt random hands and their best hands are determined based on the cards on the table/*, using the @cmd:deckz:val:extract-highest function*/.
 
 #example(breakable: true)[
 	#raw(

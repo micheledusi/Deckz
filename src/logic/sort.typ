@@ -63,8 +63,8 @@
 
 /// Sort a list of cards based on a specified key.
 /// The key can be "score", "order", or any other attribute of the card.
-/// If the key is *"score"*, the cards are sorted by their score (see @cmd:deckz:sort-by-score).
-/// If the key is *"order"*, the cards are sorted by their order in a standard sorted deck (see @cmd:deckz:sort-by-order).
+/// If the key is *"score"*, the cards are sorted by their score (see @cmd:deckz.arr:sort-by-score).
+/// If the key is *"order"*, the cards are sorted by their order in a standard sorted deck (see @cmd:deckz.arr:sort-by-order).
 /// If the key is not specified or is #value(auto), the behavior defaults to sorting by *order*.
 /// Other keys will be interpreted as attributes of the card and sorted accordingly, as if using the `sorted` method with that key.
 /// 
@@ -126,7 +126,7 @@
 
 /// For each rank, check if it is present in the given cards.
 /// This function returns a dictionary where the keys are the ranks and the values are booleans indicating whether that rank is present in the provided cards.
-/// This is more efficient than counting the ranks with the function @cmd:deckz:count-ranks, as it only checks for presence and does not count occurrences.
+/// This is more efficient than counting the ranks with the function @cmd:deckz.arr:count-ranks, as it only checks for presence and does not count occurrences.
 /// 
 /// -> dictionary
 #let find-ranks(
@@ -236,7 +236,7 @@
 
 /// For each suit, check if it is present in the given cards.
 /// This function returns a dictionary where the keys are the suits and the values are booleans indicating whether that suit is present in the provided cards.
-/// This is more efficient than counting the suits with the function @cmd:deckz:count-suits, as it only checks for presence and does not count occurrences.
+/// This is more efficient than counting the suits with the function @cmd:deckz.arr:count-suits, as it only checks for presence and does not count occurrences.
 ///
 /// -> dictionary
 #let find-suits(

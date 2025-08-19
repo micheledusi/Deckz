@@ -9,7 +9,7 @@ For this reason, the *#primary[`arr`] and #primary[`val`] sub-modules* of DECKZ 
 
 === Sort hands with #primary(`arr`)
 
-The @cmd:deckz:sort function *organizes cards array by different criteria*. The resulting array of cards can be passed to a function for group visualization, such as @cmd:deckz:hand, to display the cards in a specific order.
+The @cmd:deckz.arr:sort function *organizes cards array by different criteria*. The resulting array of cards can be passed to a function for group visualization, such as @cmd:deckz:hand, to display the cards in a specific order.
 
 #example(breakable: true, side-by-side: false)[
 	```typ
@@ -25,7 +25,7 @@ The @cmd:deckz:sort function *organizes cards array by different criteria*. The 
 ]
 
 Sometimes it can be useful to *count or group cards in the hand* according to their suit or rank, for example to display them in a more organized way. 
-The @cmd:deckz:group-ranks and @cmd:deckz:group-suits functions can be used for this purpose.
+The @cmd:deckz.arr:group-ranks and @cmd:deckz.arr:group-suits functions can be used for this purpose.
 
 #example(breakable: true, side-by-side: false)[
 	```typ
@@ -124,7 +124,7 @@ DECKZ offers many functions to *extract* all possible combinations of a specific
 	```
 ]
 
-The general @cmd:deckz:extract function can be used to extract any combination specified with the @cmd:deckz:extract.scoring-combination parameter.
+The general @cmd:deckz.val:extract function can be used to extract any combination specified with the @cmd:deckz.val:extract.scoring-combination parameter.
 
 #example(breakable: true, side-by-side: false)[
 	```typ

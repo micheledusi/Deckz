@@ -1,5 +1,5 @@
 #import "@preview/mantys:1.0.2": *
-#import "@preview/tidy:0.4.3": *
+#import "@preview/tidy:0.4.3" as tidy: *
 
 #import "../src/lib.typ" as deckz
 
@@ -23,19 +23,36 @@
 )
 
 /// Helper for Tidy-Support
-#let show-module(name, ..tidy-args) = {
-  let content = if type(name) == str {
-    read("../src/" + name + ".typ")
-  } else if type(name) == array {
-    name.map((n) => read("../src/" + n + ".typ")).join("\n")
+#let show-module(
+  filename,
+  submodule: none,
+  ..tidy-args,
+) = context {
+  // Load the module content from the specified filename or array of filenames
+  let name = ""
+  let content = ""
+  if type(filename) == str {
+    name = filename
+    content = read("../src/" + filename + ".typ")
+  } else if type(filename) == array {
+    name = filename.join("-")
+    content = filename.map((n) => read("../src/" + n + ".typ")).join("\n")
   } else {
-    error("Invalid module name: " + (name))
+    error("Invalid module name: " + (filename))
   }
+
+  let namespace = if submodule == none {
+    "deckz"
+  } else {
+    "deckz." + submodule
+  }
+
   return tidy-module(
     name,
     content,
-    module: "deckz",
-    ..tidy-args.named()
+    //submodule: submodule,
+    module: namespace,
+    ..tidy-args,
   )
 }
 

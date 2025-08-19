@@ -145,7 +145,7 @@ As a general guideline, you can follow these practices when working with randomn
 
 In addition to rendering, DECKZ provides functions for *manipulating hands and decks*, such as shuffling or drawing cards. These functions -- included in the #primary[`mix`] submodule of DECKZ -- also support RNGs to control randomness.
 
-Here we can see how to *shuffle* a deck of cards (@cmd:deckz:shuffle) and *draw* a hand of five cards (@cmd:deckz:choose):
+Here we can see how to *shuffle* a deck of cards (@cmd:deckz.mix:shuffle) and *draw* a hand of five cards (@cmd:deckz.mix:choose) from it:
 
 #example(breakable: true, side-by-side: false)[
 	```typ
@@ -165,7 +165,7 @@ Here we can see how to *shuffle* a deck of cards (@cmd:deckz:shuffle) and *draw*
 	```
 ]
 
-Another function included in the #primary(`mix`) submodule is @cmd:deckz:split, which allows to *split a deck* into multiple parts, according to the specified sizes. This can be useful for creating multiple hands or sub-decks from a larger deck.
+Another function included in the #primary(`mix`) submodule is @cmd:deckz.mix:split, which allows to *split a deck* into multiple parts, according to the specified sizes. This can be useful for creating multiple hands or sub-decks from a larger deck.
 
 #example(breakable: true, side-by-side: false)[
 	```typ
@@ -187,8 +187,8 @@ Another function included in the #primary(`mix`) submodule is @cmd:deckz:split, 
 	```
 ]
 
-At first glance, the @cmd:deckz:split function may seem similar to the @cmd:deckz:choose function, but it has a fundamental difference: it keeps track of the *remaining cards* in the deck, allowing you to draw more cards later. If you use @cmd:deckz:choose three times, you will have three different hands, but it's not guaranteed that the same card won't be drawn twice. Instead, @cmd:deckz:split ensures that the drawn cards are unique and that you can still access the remaining cards in the deck.
+At first glance, the @cmd:deckz.mix:split function may seem similar to the @cmd:deckz.mix:choose function, but it has a fundamental difference: it keeps track of the *remaining cards* in the deck, allowing you to draw more cards later. If you use @cmd:deckz.mix:choose three times, you will have three different hands, but it's not guaranteed that the same card won't be drawn twice. Instead, @cmd:deckz.mix:split ensures that the drawn cards are unique and that you can still access the remaining cards in the deck.
 
 #bts-info[
-	For this reason, @cmd:deckz:split is less efficient than @cmd:deckz:choose, as it needs to keep track of the remaining cards.
+	For this reason, @cmd:deckz.mix:split is less efficient than @cmd:deckz.mix:choose, as it needs to keep track of the remaining cards.
 ]
