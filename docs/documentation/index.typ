@@ -31,13 +31,13 @@ This section explains how to use these randomization tools within DECKZ, describ
 #show-module("logic/mix")
 
 #pagebreak()
-== Sorting
+== Arranging hands
 This section covers the *sorting features* of the DECKZ package, which are essential for organizing cards in a meaningful way. It explains how to sort cards by rank, suit, and other criteria, providing a foundation for building more complex card games and applications.
 #show-module("logic/sort")
 
 
 #pagebreak()
-== Scoring
+== Evaluating hands
 This section provides an overview of the *scoring features* of the DECKZ package, which are essential for evaluating hands in card games. It explains how to assess the value of a hand based on various criteria, such as n-of-a-kind, flushes, and straights.
 #show-module("logic/score")
 
