@@ -51,7 +51,7 @@ You can render *multiple formats*:
 You can also render cards #deckz.inline("KC") inline!
 ```
 
-## Importing the Package
+## Importing the Package 📦
 To start using Deckz functionalities, import the package in your _Typst_ document with:
 
 ```typ
@@ -60,7 +60,7 @@ To start using Deckz functionalities, import the package in your _Typst_ documen
 
 You can then call any of the rendering functions using the `deckz` namespace.
 
-## Basic Usage – `deckz.render`
+## Rapid Usage – `deckz.render` ⚡
 
 The main entry point is the `deckz.render()` function:
 
@@ -134,7 +134,7 @@ Every format works also for representing the **back of the card**. To render the
 <img src="docs/img/back_medium.png" alt="Example of cards back" width="300px"/>
 </p>
 
-## Group Display
+## Group Visualizations ⛓️
 Deckz also provides convenient functions to render **entire decks** or **hands of cards**, resulting in a _CeTZ_ [canvas](https://cetz-package.github.io/docs/basics/canvas).
 
 ### Decks
@@ -231,7 +231,7 @@ Deckz offers many other features to help you create engaging card displays, incl
 
 Every functionality is documented in the [Deckz Manual](docs/manual-deckz.pdf), which you can download and read for more details.
 
-## Final Examples
+## Final Examples 📝
 
 ### Displaying the current state of a game
 You can use Deckz to display the **current state of a game**, such as the cards in hand, the cards on the table, and the deck.
@@ -396,7 +396,7 @@ You can use Deckz to display a **full deck of cards**, simply by retrieving the 
 ```
 </details>
 
-## Contributing
+## Contributing 🧩
 Found a bug, have an idea, or want to contribute?
 Feel free to open an **issue** or **pull request** on the [GitHub repository](https://github.com/micheledusi/Deckz).
 
