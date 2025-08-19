@@ -34,8 +34,8 @@
   /// -> (suiji.rng)
   rng: auto
 ) = {
-  let (rng-from-outside, rng) = prepare-rng(rng, cards)
-  let (rng, cards) = shuffle-f(rng, cards)
+  let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards)
+  let (rng, cards) = suiji.shuffle-f(rng, cards)
   return attach-rng-if-from-outside(rng-from-outside, rng, cards)
 }
 
@@ -94,8 +94,8 @@
   if n <= 0 {
     return ()
   }
-  let (rng-from-outside, rng) = prepare-rng(rng, cards)
-  let (rng, sample) = choice-f(rng, cards, size: n, replacement: replacement, permutation: permutation)
+  let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards)
+  let (rng, sample) = suiji.choice-f(rng, cards, size: n, replacement: replacement, permutation: permutation)
   return attach-rng-if-from-outside(rng-from-outside, rng, sample)
 }
 
