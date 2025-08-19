@@ -1,6 +1,6 @@
 // Defining players and their hands
 #let players = ("Alice", "Bob", "Carol", "David")
-#let (players-hands, board-cards) = deckz.split(
+#let (players-hands, board-cards) = deckz.mix.split(
   deckz.deck52, // Start with a standard deck of 52 cards
   size: ((players.len(), 2), 5), // 2 cards per player + 5 board cards
   rest: false,
@@ -75,7 +75,7 @@ Which is the *best hand* each player can make?
     #(hand + board-cards).map(deckz.mini).join("  ")
   ]
   $stretch(=>)^"  Best hand  "$
-  #let best = deckz.extract-highest(hand + board-cards, sort: true).first()
+  #let best = deckz.val.extract-highest(hand + board-cards, sort: true).first()
   #box(
     fill: none, 
     stroke: (paint: green, thickness: 3pt, dash: "dashed"), 

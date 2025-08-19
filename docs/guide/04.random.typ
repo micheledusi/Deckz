@@ -107,7 +107,7 @@ However, instead of creating separate RNGs for each call, it is often more conve
 	```typ
 	#import "@preview/suiji:0.4.0": gen-rng-f
 
-	#let my-rng = gen-rng-f(123)
+	#let my-rng = gen-rng-f(42)
 
 	// First operation: render a single card
 	#let (my-rng, card1) = deckz.small("3C", noise: 0.2, rng: my-rng)
@@ -119,8 +119,6 @@ However, instead of creating separate RNGs for each call, it is often more conve
 	#grid(columns: 2, gutter: 1cm, card1, card2)
 	```
 ]
-
-=== Best practices
 
 As a general guideline, you can follow these practices when working with randomness in DECKZ:
 
@@ -142,3 +140,55 @@ As a general guideline, you can follow these practices when working with randomn
 		- Generating multiple variations.
 	]
 )
+
+=== Manipulate cards with #primary[`mix`]
+
+In addition to rendering, DECKZ provides functions for *manipulating hands and decks*, such as shuffling or drawing cards. These functions -- included in the #primary[`mix`] submodule of DECKZ -- also support RNGs to control randomness.
+
+Here we can see how to *shuffle* a deck of cards (@cmd:deckz:shuffle) and *draw* a hand of five cards (@cmd:deckz:choose):
+
+#example(breakable: true, side-by-side: false)[
+	```typ
+	#import "@preview/suiji:0.4.0": gen-rng-f
+
+	// Shuffle the deck with a specific RNG
+	#let (my-rng, shuffled-deck) = deckz.mix.shuffle(deckz.deck52, rng: gen-rng-f(42))
+	
+	// Display the shuffled deck
+	The current shuffled deck: #shuffled-deck.map(deckz.inline).join()
+
+	// Draw the top 5 cards from the shuffled deck
+	#let (my-rng, hand) = deckz.mix.choose(shuffled-deck, n: 5, rng: my-rng)
+
+	// Display the drawn hand
+	We draw the following *five cards*: #deckz.hand(..hand, format: "small", width: 3cm)
+	```
+]
+
+Another function included in the #primary(`mix`) submodule is @cmd:deckz:split, which allows to *split a deck* into multiple parts, according to the specified sizes. This can be useful for creating multiple hands or sub-decks from a larger deck.
+
+#example(breakable: true, side-by-side: false)[
+	```typ
+	// Randomly split the deck
+	#let split-deck = deckz.mix.split(deckz.deck52, size: ((3, 5), 8), rest: true)
+	#let ((hand1, hand2, hand3), board, remaining-cards) = split-deck
+
+	// Display the hands and the board
+	We split the deck into three hands and a board:
+	#grid(
+		columns: (1fr, 1fr, 1fr),
+		gutter: 1em,
+		deckz.hand(..hand1, format: "small", width: 3cm),
+		deckz.hand(..hand2, format: "small", width: 3cm),
+		deckz.hand(..hand3, format: "small", width: 3cm),
+		deckz.hand(..board, format: "small", angle: 0deg)
+	)
+	There are still *#remaining-cards.len() cards* left in the deck.
+	```
+]
+
+At first glance, the @cmd:deckz:split function may seem similar to the @cmd:deckz:choose function, but it has a fundamental difference: it keeps track of the *remaining cards* in the deck, allowing you to draw more cards later. If you use @cmd:deckz:choose three times, you will have three different hands, but it's not guaranteed that the same card won't be drawn twice. Instead, @cmd:deckz:split ensures that the drawn cards are unique and that you can still access the remaining cards in the deck.
+
+#bts-info[
+	For this reason, @cmd:deckz:split is less efficient than @cmd:deckz:choose, as it needs to keep track of the remaining cards.
+]

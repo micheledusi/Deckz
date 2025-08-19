@@ -91,7 +91,7 @@
 /// This function returns a dictionary where the keys are the ranks and the values are the counts of how many times each rank appears in the provided cards.
 /// 
 /// -> dictionary
-#let get-rank-count(
+#let count-ranks(
   /// The cards to check for rank counts. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,
@@ -117,7 +117,7 @@
   }
   if none in rank-counts.keys() {
     if not allow-invalid {
-      panic("Invalid card rank found in `get-rank-count` function: " + cards.join(", "))
+      panic("Invalid card rank found in `count-ranks` function: " + cards.join(", "))
       return none
     }
   }
@@ -126,10 +126,10 @@
 
 /// For each rank, check if it is present in the given cards.
 /// This function returns a dictionary where the keys are the ranks and the values are booleans indicating whether that rank is present in the provided cards.
-/// This is more efficient than counting the ranks with the function @cmd:deckz:get-rank-count, as it only checks for presence and does not count occurrences.
+/// This is more efficient than counting the ranks with the function @cmd:deckz:count-ranks, as it only checks for presence and does not count occurrences.
 /// 
 /// -> dictionary
-#let get-rank-presence(
+#let find-ranks(
   /// The cards to check for rank presence. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,
@@ -148,7 +148,7 @@
   for card in cards {
     let card-data = extract-card-data(card)
     if card-data.rank == none and not allow-invalid {
-      panic("Invalid card rank found in `get-rank-presence` function: " + card)
+      panic("Invalid card rank found in `find-ranks` function: " + card)
       return none
     }
     if not rank-presence.at(card-data.rank, default: false) {
@@ -166,7 +166,7 @@
 /// This function returns a dictionary where the keys are the ranks and the values are arrays of cards that have that rank.
 /// 
 /// -> dictionary
-#let group-cards-by-rank(
+#let group-ranks(
   /// The cards to sort by rank. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,
@@ -201,7 +201,7 @@
 /// This function returns a dictionary where the keys are the suits and the values are the counts of how many times each suit appears in the provided cards.
 ///
 /// -> dictionary
-#let get-suit-count(
+#let count-suits(
   /// The cards to check for suit counts. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,
@@ -227,7 +227,7 @@
   }
   if none in suit-counts.keys() {
     if not allow-invalid {
-      panic("Invalid card suit found in `get-suit-count` function: " + cards.join(", "))
+      panic("Invalid card suit found in `count-suits` function: " + cards.join(", "))
       return none
     }
   }
@@ -236,10 +236,10 @@
 
 /// For each suit, check if it is present in the given cards.
 /// This function returns a dictionary where the keys are the suits and the values are booleans indicating whether that suit is present in the provided cards.
-/// This is more efficient than counting the suits with the function @cmd:deckz:get-suit-count, as it only checks for presence and does not count occurrences.
+/// This is more efficient than counting the suits with the function @cmd:deckz:count-suits, as it only checks for presence and does not count occurrences.
 ///
 /// -> dictionary
-#let get-suit-presence(
+#let find-suits(
   /// The cards to check for suit presence. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,
@@ -258,7 +258,7 @@
   for card in cards {
     let card-data = extract-card-data(card)
     if card-data.suit == none and not allow-invalid {
-      panic("Invalid card suit found in `get-suit-presence` function: " + card)
+      panic("Invalid card suit found in `find-suits` function: " + card)
       return none
     }
     if not suit-presence.at(card-data.suit, default: false) {
@@ -276,7 +276,7 @@
 /// This function returns a dictionary where the keys are the suits and the values are arrays of cards that have that suit.
 ///
 /// -> dictionary
-#let group-cards-by-suit(
+#let group-suits(
   /// The cards to sort by suit. This can be a list or any iterable collection of card codes.
   /// -> array
   cards,

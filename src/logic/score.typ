@@ -3,7 +3,7 @@
 
 #import "convert.typ": extract-card-data
 #import "combinatorics.typ": choose-k-out-of-n, cartesian-product
-#import "sort.typ": get-rank-count, get-suit-count, group-cards-by-rank, group-cards-by-suit, get-rank-presence, get-suit-presence, sort-by-score
+#import "sort.typ": count-ranks, count-suits, group-ranks, group-suits, find-ranks, find-suits, sort-by-score
 
 
 /// Check if the given cards contain n-of-a-kind.
@@ -22,7 +22,7 @@
   return {
     cards.len() >= n
   } and {
-    get-rank-count(cards).values().any((count) => count >= n)
+    count-ranks(cards).values().any((count) => count >= n)
   }
 }
 
@@ -64,7 +64,7 @@
   if cards.len() < n {
     return ()
   }
-  let cards-by-rank = group-cards-by-rank(cards, add-zero: false, allow-invalid: false)
+  let cards-by-rank = group-ranks(cards, add-zero: false, allow-invalid: false)
   // We filter the ranks to only include those that have at least `n` cards
   // Then, for each rank with at least `n` cards, we take ALL the possible combinations of `n` cards from that rank
   // This is done with the binomial coefficient.
@@ -165,7 +165,7 @@
   /// -> array
   cards
 ) = {
-  return get-rank-count(cards).values().filter((count) => count >= 2).len() >= 2
+  return count-ranks(cards).values().filter((count) => count >= 2).len() >= 2
 }
 
 /// Check if the given cards correspond to two pairs, i.e. if they are four cards with two distinct pairs of the same rank.
@@ -190,7 +190,7 @@
   /// -> array
   cards
 ) = {
-  let pairs-by-rank = group-cards-by-rank(cards, add-zero: false, allow-invalid: false)
+  let pairs-by-rank = group-ranks(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .filter((cards-of-rank) => cards-of-rank.len() >= 2) // Filter ranks that have at least 2 cards
     .map((cards-of-rank) => choose-k-out-of-n(2, cards-of-rank)) // Take all combinations of 2 cards of each rank
@@ -257,7 +257,7 @@
   if cards.len() < n {
     return false // Not enough cards to form a straight
   }
-  let rank-presence = get-rank-presence(cards).values()
+  let rank-presence = find-ranks(cards).values()
   // Add the first rank to the end to handle wrap-around (e.g., A, 2, 3, 4, 5 or 10, J, Q, K, A)
   rank-presence.push(rank-presence.at(0))
   return rank-presence
@@ -280,7 +280,7 @@
   if cards.len() != n {
     return false // Not enough cards to form a straight
   }
-  let rank-presence = get-rank-presence(cards).values()
+  let rank-presence = find-ranks(cards).values()
   // Add the first rank to the end to handle wrap-around (e.g., A, 2, 3, 4, 5 or 10, J, Q, K, A)
   rank-presence.push(rank-presence.at(0))
   return rank-presence
@@ -306,7 +306,7 @@
   if cards.len() < n {
     return () // Not enough cards to form a straight
   }
-  let cards-by-rank = group-cards-by-rank(cards, add-zero: true, allow-invalid: false)
+  let cards-by-rank = group-ranks(cards, add-zero: true, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
   cards-by-rank.push(cards-by-rank.at(0)) // Add the first rank to the end to handle 
   // wrap-around (e.g., A, 2, 3, 4, 5 or 10, J, Q, K, A)
@@ -329,7 +329,7 @@
   /// -> int
   n: 5,
 ) = {
-  return get-suit-count(cards, add-zero: false).values().any((count) => count >= n)
+  return count-suits(cards, add-zero: false).values().any((count) => count >= n)
 }
 
 /// Check if the given cards correspond to a flush, i.e. the hand is composed by `n` cards of the same suit.
@@ -345,7 +345,7 @@
   n: 5,
 ) = {
   return cards.len() == n and {
-    let suit-presence = get-suit-presence(cards, allow-invalid: false)
+    let suit-presence = find-suits(cards, allow-invalid: false)
     return suit-presence.values().filter((present) => present).len() == 1 // Only one suit should be present
   }
 }
@@ -363,7 +363,7 @@
   /// -> int
   n: 5,
 ) = {
-  let result = group-cards-by-suit(cards, add-zero: false, allow-invalid: false)
+  let result = group-suits(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .filter((cards-of-suit) => cards-of-suit.len() >= n) // Filter suits that have at least n cards
   if result.len() == 0 {
@@ -403,7 +403,7 @@
   /// -> array
   cards,
 ) = {
-  let cards-by-rank = group-cards-by-rank(cards, add-zero: false, allow-invalid: false)
+  let cards-by-rank = group-ranks(cards, add-zero: false, allow-invalid: false)
   let cards-min-2 = cards-by-rank
     .pairs()
     .filter(((rank, cards-of-rank)) => cards-of-rank.len() >= 2) // Get ranks with at least 2 cards
@@ -519,7 +519,7 @@
   if cards.len() < n {
     return () // Not enough cards to form a straight flush
   }
-  return group-cards-by-suit(cards, add-zero: false, allow-invalid: false)
+  return group-suits(cards, add-zero: false, allow-invalid: false)
     .values() // Get the values (arrays of cards) from the dictionary
     .map((cards-of-suit) => extract-straight(cards-of-suit, n: n)) // Get all straights for each suit
     .join()

@@ -1,5 +1,5 @@
 // Define and sort the initial hand
-#let my-hand = deckz.sort-by-score(("8S", "9S", "10S", "JS", "QS", "9H", "9D", "9C", "QD", "3D", "4D", "5D"))
+#let my-hand = deckz.arr.sort-by-score(("8S", "9S", "10S", "JS", "QS", "9H", "9D", "9C", "QD", "3D", "4D", "5D"))
 
 #set text(font: "Roboto Slab")
 My current *hand*: 
@@ -14,7 +14,7 @@ My current *hand*:
 	
 	Which *#combination* can I make?
 
-	#let combinations = deckz.extract(combination, my-hand)
+	#let combinations = deckz.val.extract(combination, my-hand)
 	#if combinations.len() == 0 {
 	 	[None.]
 	} else {

@@ -1,13 +1,13 @@
 #import "../template.typ": *
 
-== Sort and score cards
+== Arrange and score cards
 <subsec:scoring>
 
 Up to this point, all cards have been "treated equally", without regard to their suit or rank. However, in most card games, the arrangement and value of cards are crucial -- winning often depends on how cards are sorted and scored, and specific combinations can determine the outcome.
 
-For this reason, the DECKZ package includes *sorting* and *scoring* modules for organizing cards and evaluating hands, according to the rules of the most popular card games (especially poker).
+For this reason, the *#primary[`arr`] and #primary[`val`] sub-modules* of DECKZ include *sorting* and *scoring* functions respectively, for organizing cards and evaluating hands according to the rules of the most popular card games (especially poker).
 
-=== Sorting functions
+=== Sort hands with #primary(`arr`)
 
 The @cmd:deckz:sort function *organizes cards array by different criteria*. The resulting array of cards can be passed to a function for group visualization, such as @cmd:deckz:hand, to display the cards in a specific order.
 
@@ -17,15 +17,15 @@ The @cmd:deckz:sort function *organizes cards array by different criteria*. The 
 	#let cards = ("AS", "KH", "QD", "JC", "10S", "2H")
 
 	// Sort by standard order (suit first, then rank)
-	#deckz.hand(..deckz.sort(cards, by: "order"))
+	#deckz.hand(..deckz.arr.sort(cards, by: "order"))
 
 	// Sort by score (high cards first: A, K, Q, J, 10...)
-	#deckz.hand(..deckz.sort(cards, by: "score"))
+	#deckz.hand(..deckz.arr.sort(cards, by: "score"))
 	```
 ]
 
 Sometimes it can be useful to *count or group cards in the hand* according to their suit or rank, for example to display them in a more organized way. 
-The @cmd:deckz:group-cards-by-rank and @cmd:deckz:group-cards-by-suit functions can be used for this purpose.
+The @cmd:deckz:group-ranks and @cmd:deckz:group-suits functions can be used for this purpose.
 
 #example(breakable: true, side-by-side: false)[
 	```typ
@@ -33,21 +33,21 @@ The @cmd:deckz:group-cards-by-rank and @cmd:deckz:group-cards-by-suit functions 
 
 	// Count occurrences of each rank
 	Count the number of each rank in a hand:
-	#deckz.get-rank-count(hand)
+	#deckz.arr.count-ranks(hand)
 
 	// Group cards by rank or suit
 	Group cards by *rank*:
-	#for (rank, cards) in deckz.group-cards-by-rank(hand).pairs() [
+	#for (rank, cards) in deckz.arr.group-ranks(hand).pairs() [
 		- #rank: #cards
 	]
 	Group cards by *suit*:
-	#for (suit, cards) in deckz.group-cards-by-suit(hand).pairs() [
+	#for (suit, cards) in deckz.arr.group-suits(hand).pairs() [
 		- #suit: #cards
 	]
 	```
 ]
 
-=== Scoring functions
+=== Score hands with #primary(`val`)
 
 DECKZ includes functions to *evaluate hands of cards* according to the rules of the most common card games.
 More specifically, it is possible to assess *poker hands* with three types of functions:
@@ -84,7 +84,7 @@ More specifically, it is possible to assess *poker hands* with three types of fu
 				stack(
 					dir: ltr,
 					spacing: 10pt,
-					..deckz.extract(id, hand).at(0, default: ()).map(deckz.mini)
+					..deckz.val.extract(id, hand).at(0, default: ()).map(deckz.mini)
 				)
 			)}
 		).flatten()
@@ -100,9 +100,9 @@ Detection and validation functions return a `bool` value, and can be used as fol
 #example(breakable: true, side-by-side: false)[
 	```typ
 	#let cards = ("AS", "AH", "KD", "QC", "JH")
-	#deckz.has-pair(cards) // true (contains a pair)
-	#deckz.is-pair(cards) // false (5 cards, not exactly 2)
-	#deckz.is-pair(("AS", "AH")) // true (exactly 2 matching cards)
+	#deckz.val.has-pair(cards) // true (contains a pair)
+	#deckz.val.is-pair(cards) // false (5 cards, not exactly 2)
+	#deckz.val.is-pair(("AS", "AH")) // true (exactly 2 matching cards)
 	```
 ]
 
@@ -116,11 +116,11 @@ DECKZ offers many functions to *extract* all possible combinations of a specific
 
 	// Get all possible pairs from these cards
 	All possible pairs:
-	#for pair in deckz.extract-pair(available-cards) [ - #pair ]
+	#for pair in deckz.val.extract-pair(available-cards) [ - #pair ]
 
 	// Find the best hand automatically
 	Best hand combination:
-	#deckz.extract-highest(available-cards).first()
+	#deckz.val.extract-highest(available-cards).first()
 	```
 ]
 
@@ -132,10 +132,10 @@ The general @cmd:deckz:extract function can be used to extract any combination s
 
 	// These are equivalent:
 	Extracted combinations:
-	#deckz.extract("three-of-a-kind", some-cards)
+	#deckz.val.extract("three-of-a-kind", some-cards)
 
 	Extracted combinations:
-	#deckz.extract-three-of-a-kind(some-cards)
+	#deckz.val.extract-three-of-a-kind(some-cards)
 	```
 ]
 
