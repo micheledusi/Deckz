@@ -181,7 +181,7 @@ Another function included in the #primary(`mix`) submodule is @cmd:deckz.mix:spl
 		deckz.hand(..hand1, format: "small", width: 3cm),
 		deckz.hand(..hand2, format: "small", width: 3cm),
 		deckz.hand(..hand3, format: "small", width: 3cm),
-		deckz.hand(..board, format: "small", angle: 0deg)
+		deckz.line(..board, format: "small", width: 10cm)
 	)
 	There are still *#remaining-cards.len() cards* left in the deck.
 	```

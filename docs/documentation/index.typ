@@ -55,16 +55,18 @@ Currently supported languages and their rank symbols:
 - *Italian*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`
 - *French*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `V`, `D`, `R`
 
-```side-by-side
-#let seq = ("10C", "JH", "QS", "KD", "AC")
+#example(breakable: true, side-by-side: true)[
+	```typ
+	#let seq = ("10C", "JH", "QS", "KD", "AC")
 
-#set text(lang: "en")
-#stack(dir: ltr, spacing: 5mm, ..seq.map(deckz.small))
+	#set text(lang: "en")
+	#deckz.line(..seq, format: "small")
 
-#set text(lang: "it")
-#stack(dir: ltr, spacing: 5mm, ..seq.map(deckz.small))
+	#set text(lang: "it")
+	#deckz.line(..seq, format: "small")
 
-#set text(lang: "fr")
-#stack(dir: ltr, spacing: 5mm, ..seq.map(deckz.small))
-```
+	#set text(lang: "fr")
+	#deckz.line(..seq, format: "small")
+	```
+]
 

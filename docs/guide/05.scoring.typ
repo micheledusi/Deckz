@@ -17,10 +17,10 @@ The @cmd:deckz.arr:sort function *organizes cards array by different criteria*. 
 	#let cards = ("AS", "KH", "QD", "JC", "10S", "2H")
 
 	// Sort by standard order (suit first, then rank)
-	#deckz.hand(..deckz.arr.sort(cards, by: "order"))
+	#deckz.line(..deckz.arr.sort(cards, by: "order"), format: "small")
 
 	// Sort by score (high cards first: A, K, Q, J, 10...)
-	#deckz.hand(..deckz.arr.sort(cards, by: "score"))
+	#deckz.line(..deckz.arr.sort(cards, by: "score"), format: "small")
 	```
 ]
 

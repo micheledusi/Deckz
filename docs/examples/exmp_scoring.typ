@@ -22,9 +22,9 @@ My current *hand*:
 			box(
 				fill: eastern,
 				inset: 6pt, 
-				radius: 35%,
+				radius: 12pt,
 			)[
-				#combo.map(deckz.mini).join([#h(3pt)])
+				#deckz.line(..combo, format: "mini", spacing: 6pt)
 			]
 			h(1mm)
 		}
