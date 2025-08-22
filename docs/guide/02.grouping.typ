@@ -29,6 +29,39 @@ For more information and in-depth explanations, see the documentation in @sec:do
 )
 ```
 
+=== Line
+The line visualization is created with the @cmd:deckz:line function, which takes a variable number of card identifiers as arguments. It renders an horizontal *line of cards*, with the specified cards displayed side by side.
+It's a simple way to show a sequence of cards in a row, minimizing the space they occupy.
+
+```example
+#deckz.line("AC", "KH", "QS", "JD", "10S")
+```
+
+As can be seen in the example above, the cards are displayed adjacent with no extra space.
+
+However, such display can be customized. You can use the following parameters (more parameters for @cmd:deckz:line explained in @sec:documentation):
+- @cmd:deckz:line.spacing -- The *spacing between adjacent cards*. It must be a #dtype(length) (e.g., #value(10pt)). If set to #value(auto), visualization will place cards according to the specidied `width` (if any).
+- @cmd:deckz:line.width -- The *total width* of the line. It can be a #dtype(length) (e.g., #value(350pt)) or a #dtype(ratio) (e.g., #value(90%)). If left to #value(auto), the width is determined by the number of cards and their format. 
+#bts-info[
+  Being one dependent on the other, only *one parameter* between @cmd:deckz:line.spacing and @cmd:deckz:line.width can be set to a specific value at a time. If none of them is set, cards are placed adjacent with no extra space.
+]
+- @cmd:deckz:line.format -- The *format* of the cards in the line. It can be any of the formats described above, such as #choices("inline", "mini", "small", "medium", "large", "square"). The default is #value("medium").
+
+See also @sec:documentation for the full list of parameters of @cmd:deckz:line.
+
+#example(breakable: true, )[
+  ```typ
+  #let my-line = ("AS", "KH", "QD", "JS", "JH", "10C", "9D", "6C")
+
+  #deckz.line(..my-line, format: "mini")
+  #deckz.line(..my-line, format: "small", spacing: 10pt)
+  #deckz.line(..my-line, format: "mini", width: 6cm)
+  #deckz.line(..my-line, format: "small", spacing: 1cm, noise: 0.8)
+  #deckz.line(..my-line, format: "small", width: 100%)
+  #deckz.line(..my-line, format: "square", width: 90%)
+  ```
+]
+
 === Hands
 The hand visualization is created with the @cmd:deckz:hand function, which takes a variable number of card identifiers as arguments. It renders a *hand of cards*, with the specified cards displayed side by side.
 
