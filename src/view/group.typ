@@ -3,8 +3,122 @@
 #import cetz: draw
 
 
-/// Displays a *sequence of cards* in a horizontal hand layout.
-/// Optionally applies a slight rotation to each card, creating an arched effect.
+/// Displays a *sequence of cards* in a horizontal line layout.
+/// The function accepts any number of cards, each represented by a string identifier (e.g., `"AH"` for Ace of Hearts). 
+/// It accepts parameters to control the format of the cards and the area they occupy. The value of `spacing` determines the space between adjacent cards, while `width` specifies the total width of the line. 
+/// *Important*: being one dependent on the other, only one parameter between `spacing` and `width` can be set to a specific value at a time.
+/// If none of them is set, cards are placed adjacent with no extra space.
+/// 
+/// ```side-by-side
+/// #let hand = ("AH", "AD", "AS", "AC")
+/// 
+/// #deckz.line(..hand, format: "small")
+/// 
+/// #deckz.line(..hand, format: "small", spacing: 10pt)
+/// 
+/// #deckz.line(..hand, format: "small", width: 6cm)
+/// 
+/// #deckz.line(..hand, format: "small", width: 100%)
+/// 
+/// #box(width: 6cm, stroke: purple)[
+/// 	#deckz.line(..hand, format: "small", width: 100%)
+/// ]
+/// ```
+/// 
+/// -> content
+#let line(
+	/// The list of *cards* to display, with standard code representation.
+	/// -> array
+	..cards,
+	/// The *format* of the cards to render. Default is "medium".
+	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`.
+	/// -> string
+	format: "medium",
+	/// The *spacing* between adjacent cards.
+	/// - If set, cards are distributed with the specified spacing.
+	/// - Default is #value(auto). If left to default value, cards are placed adjacent with no extra space.
+	/// - In any other case -- i.e. when `spacing` is set to a specific positive non-zero value, the function requires `width` to be left as #value(auto) or set to #value(none); otherwise, the function will panic.
+	/// -> length | auto | none
+	spacing: auto,
+	/// The *total width* of the line, measured from the center of the first card to the center of the last card.
+	/// - If set, cards are distributed evenly along this width.
+	/// - Requires `spacing` to be left as #value(auto) or set to #value(none); otherwise, the function will panic.
+	/// - Default is #value(auto). If both `width` and `spacing` are #value(auto), cards are placed adjacent with no extra space.
+	/// -> length | auto | none
+	width: auto,
+	/// The amount of "*randomness*" in the placement and rotation of the card. Default value is #value(none) or #value(0), which corresponds to no variations. A value of #value(1) corresponds to a "standard" amount of noise, according to DECKZ style. Higher values might produce crazy results, handle with care. 
+	/// -> float | none
+	noise: none,
+  /// The *random number generator* utilized for the noise. If not provided or set to default value #value(auto), a new random number generator will be created. Otherwise, you can pass an existing random number generator to use.
+  /// -> rng | auto
+	rng: auto,
+) = context {
+	let cards-array = cards.pos()
+	// If no cards, return empty array
+	if cards-array.len() == 0 {
+		return []
+	}
+	// Prepare the random number generator
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-array)
+	// If only one card, render it directly
+	if cards-array.len() == 1 {
+		let (new-rng, card-content) = call-rng-function(render, rng,
+			cards-array.at(0),
+			format: format,
+			noise: noise,
+		)
+		return attach-rng-if-from-outside(rng-from-outside, new-rng, card-content)
+	} 
+	// If there are multiple cards
+	else {
+		// Set the spacing
+		let computed-spacing = 0pt
+		if spacing == auto or spacing == none {
+			// Case: spacing is auto or none
+			if width == auto or width == none {
+				// Case: width is auto or none, like "spacing"
+				// Cards are placed adjacent with no extra space
+				computed-spacing = 0pt
+			} else {
+				// Case: `width` is set, thus `spacing` is computed based on the number of cards
+				let card-width = format-parameters.at(format).width.to-absolute()
+				computed-spacing = (width - card-width * cards-array.len()) / (cards-array.len() - 1)
+			}
+		} else {
+			// Case: spacing is set to a specific value
+			// We need to ensure that `width` is left as auto or none
+			if width == auto or width == none {
+				// Everything's okay, we can use the specified spacing
+				computed-spacing = spacing.to-absolute()
+			} else {
+				// If `width` is set, it must be left as auto or none
+				panic("Cannot set both `spacing` and `width` to specific values. Either leave `spacing` as auto or none, or set `width` to auto or none.")
+			}
+		}
+
+		// Visualization
+		let cards-content = ()
+		for card in cards-array {
+			// Use call-rng-function to properly handle RNG state
+			let (new-rng, card-view) = call-rng-function(render, rng,
+				card,
+				format: format,
+				noise: noise,
+			)
+			rng = new-rng  // Update RNG state for next iteration
+			cards-content.push(card-view)
+		}
+		let result = stack(
+			dir: ltr,
+			spacing: computed-spacing,
+			..cards-content
+		)
+		return attach-rng-if-from-outside(rng-from-outside, rng, result)
+	}
+}
+
+
+/// Displays a *sequence of cards* in a horizontal hand layout and applying a slight rotation to each card, creating an arched effect.
 /// 
 /// This function is useful for displaying a hand of cards in a visually appealing way. It accepts any number of cards, each represented by a string identifier (e.g., `"AH"` for Ace of Hearts).
 /// 

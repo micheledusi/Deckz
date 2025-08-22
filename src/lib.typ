@@ -5,7 +5,7 @@
 #import "view/back.typ": back
 
 // Group visualization functions
-#import "view/group.typ": hand, deck, heap
+#import "view/group.typ": line, hand, deck, heap
 
 // Data structures and utility functions
 #import "data/rank.typ": ranks
