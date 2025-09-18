@@ -48,12 +48,35 @@ This section provides an overview of the *scoring functions* from the #primary[`
 == Language-aware card symbols
 DECKZ automatically adapts the rendering of card rank symbols based on the document's language. This process is seamless: users only need to set the desired language using the `text` command, and DECKZ will adjust the symbols accordingly. No additional configuration is required.
 
-This feature is powered by the #universe("linguify") package.
+#let build-lang-row(lang) = {
+	return (
+		text(weight: "bold")[
+			#primary(smallcaps(lang))
+		],
+		..deckz.ranks.values().map(rank-data => [
+				#set text(lang: lang)
+				#text(size: 1.2em, weight: "medium", rank-data.symbol)
+				#linebreak()
+				#text(size: 0.5em)[#rank-data.name]
+			]),
+	)
+}
 
-Currently supported languages and their rank symbols:
-- *English*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`
-- *Italian*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`
-- *French*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `V`, `D`, `R`
+The current version of DECKZ supports the following *languages*:
+
+#show table.cell: set align(center)
+#show table.cell: set text(font: "Roboto Slab", size: 0.9em)
+#table(
+	stroke: gray.transparentize(70%) + 1pt,
+	columns: (1cm, ) + (1fr,) * 13,
+	..build-lang-row("en"),
+	..build-lang-row("it"),
+	..build-lang-row("fr"),
+	..build-lang-row("de"),
+	..build-lang-row("ru"),
+)
+
+The localization is powered by the #universe("linguify") package, thanks to the generous contribution of the users who helped translating card names and symbols.
 
 #example(breakable: true, side-by-side: true)[
 	```typ

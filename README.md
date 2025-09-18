@@ -12,7 +12,7 @@ Use **Deckz** to visualize individual cards, create stylish examples in document
   <summary><i><u>See the code for this example</u></i></summary>
 
 ```typ
-#import "@preview/deckz:0.3.0"
+#import "@preview/deckz:0.3.1"
 
 #set text(font: "Roboto Slab")
 
@@ -38,7 +38,7 @@ In order to get started with _Deckz_, you may want to:
 ![Quick examples of some basic functionalities.](docs/img/quick_example.png)
 
 ```typ
-#import "@preview/deckz:0.3.0"
+#import "@preview/deckz:0.3.1"
 
 You can render cards by specifying their *card identifier*:
 
@@ -55,7 +55,7 @@ You can also render cards #deckz.inline("KC") inline!
 To start using Deckz functionalities, import the package in your _Typst_ document with:
 
 ```typ
-#import "@preview/deckz:0.3.0"
+#import "@preview/deckz:0.3.1"
 ```
 
 You can then call any of the rendering functions using the `deckz` namespace.
@@ -242,7 +242,7 @@ You can use Deckz to display the **current state of a game**, such as the cards 
   <summary><i><u>See the code for this example</u></i></summary>
 
 ```typ
-#import "@preview/deckz:0.3.0"
+#import "@preview/deckz:0.3.1"
 
 #let player-mat(body) = box(
   stroke: olive.darken(20%),
@@ -314,7 +314,7 @@ You can use Deckz to **compare different formats** of the same card, or to show 
   <summary><i><u>See the code for this example</u></i></summary>
 
 ```typ
-#import "@preview/deckz:0.3.0"
+#import "@preview/deckz:0.3.1"
 
 #set page(margin: 0.5in, fill: gray.lighten(60%))
 #set table(stroke: 1pt + white, fill: white)
@@ -377,7 +377,7 @@ You can use Deckz to display a **full deck of cards**, simply by retrieving the 
   <summary><i><u>See the code for this example</u></i></summary>
 
 ```typ
-#import "@preview/deckz:0.3.0"
+#import "@preview/deckz:0.3.1"
 
 #set page(margin: 5mm)
 
