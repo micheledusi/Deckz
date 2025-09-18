@@ -46,6 +46,7 @@ Then, you will "move" the changes of this directory to your forked repository.
 Assuming you are in the `MicheleDusi/Deckz` repository, you now want to create a *new package* in your forked repository.
 
 ```sh
+# Note: be sure that the branch in the forked repo is set to `dev-{your-package-name}`, before running the next command to copy the files.
 ./tools/sync-to-packages.bat # Copy the contents of the working folder to the `typst-packages` repository.
 ```
 This command will copy the contents of the current working folder to the `typst-packages` repository, which is your forked repository.
@@ -63,7 +64,7 @@ git push -u origin dev-deckz # Publish the current branch to your forked reposit
 # Now, you can add the new package to your forked repository.
 git add packages/preview/deckz # Add the new package to the staging area.
 git commit -m "{your-package-name}:0.Y.Z"
-git push origin dev-deckz # Push changes from your local repository to your forked repository on GitHub.
+# Push changes from your local repository to your forked repository on GitHub.
 ```
 Now you can move to GitHub and create a **pull request** to the official Typst packages repository.
 
