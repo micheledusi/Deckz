@@ -42,4 +42,4 @@ Special thanks to everyone involved in the development of the #link("https://typ
 Found a bug, have an idea, or want to contribute?
 Feel free to open an *issue* or *pull request* on the _GitHub_ repository (#github("micheledusi/Deckz")).
 
-Made something cool with Deckz? Let me know — I'd love to feature your work!
+Made something cool with DECKZ? Let me know — I'd love to feature your work!
