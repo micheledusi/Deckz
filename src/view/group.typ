@@ -27,8 +27,8 @@
 /// 
 /// -> content
 #let line(
-	/// The list of *cards* to display, with standard code representation.
-	/// -> array
+	/// The list of *cards* to display, with standard code representation or dictionary representation.
+	/// -> array(str | dictionary)
 	..cards,
 	/// The *format* of the cards to render. Default is "medium".
 	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`.
@@ -53,19 +53,21 @@
   /// -> rng | auto
 	rng: auto,
 ) = context {
-	let cards-array = cards.pos()
+	let cards = convert-input-cards(cards.pos())
 	// If no cards, return empty array
-	if cards-array.len() == 0 {
+	if cards.len() == 0 {
 		return []
 	}
 	// Prepare the random number generator
-	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-array)
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards.map(card => card.id))
 	// If only one card, render it directly
-	if cards-array.len() == 1 {
+	if cards.len() == 1 {
+		let card = cards.at(0)
 		let (new-rng, card-content) = call-rng-function(render, rng,
-			cards-array.at(0),
+			card.id,
 			format: format,
 			noise: noise,
+			outjogged: card.outjogged
 		)
 		return attach-rng-if-from-outside(rng-from-outside, new-rng, card-content)
 	} 
@@ -82,7 +84,7 @@
 			} else {
 				// Case: `width` is set, thus `spacing` is computed based on the number of cards
 				let card-width = format-parameters.at(format).width.to-absolute()
-				computed-spacing = (width - card-width * cards-array.len()) / (cards-array.len() - 1)
+				computed-spacing = (width - card-width * cards.len()) / (cards.len() - 1)
 			}
 		} else {
 			// Case: spacing is set to a specific value
@@ -98,12 +100,13 @@
 
 		// Visualization
 		let cards-content = ()
-		for card in cards-array {
+		for card in cards {
 			// Use call-rng-function to properly handle RNG state
 			let (new-rng, card-view) = call-rng-function(render, rng,
-				card,
+				card.id,
 				format: format,
 				noise: noise,
+				outjogged: card.outjogged
 			)
 			rng = new-rng  // Update RNG state for next iteration
 			cards-content.push(card-view)
@@ -132,8 +135,8 @@
 /// 
 /// -> content
 #let hand(
-	/// The list of *cards* to display, with standard code representation.
-	/// -> array
+	/// The list of *cards* to display, with standard code representation or dictionary representation.
+	/// -> array(str | dictionary)
 	..cards,
 	/// The *format* of the cards to render. Default is "medium".
 	/// Available formats: `inline`, `mini`, `small`, `medium`, `large`, `square`. 
@@ -152,40 +155,44 @@
   /// -> rng | auto
 	rng: auto,
 ) = {
-	let cards-array = cards.pos()
+	let cards = convert-input-cards(cards.pos())
 	// If no cards, return empty array
-	if cards-array.len() == 0 {
+	if cards.len() == 0 {
 		return []
 	}
 	// Prepare the random number generator
-	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-array)
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards.map(card => card.id))
 	// If only one card, render it directly
-	if cards-array.len() == 1 {
+	if cards.len() == 1 {
+		let card = cards.at(0)
 		let (new-rng, card-content) = call-rng-function(render, rng,
-			cards-array.at(0),
+			card.id,
 			format: format,
 			noise: noise,
+			outjogged: card.outjogged
 		)
 		return attach-rng-if-from-outside(rng-from-outside, new-rng, card-content)
 	} else {
 		// If there is at least a pair of cards
 		let (angle-start, angle-shift, radius, shift-x) = (0deg, 0deg, 0pt, 0pt)
 		if angle == 0deg {
-			shift-x = width / (cards-array.len() - 1)
+			shift-x = width / (cards.len() - 1)
 		} else {
 			angle-start = -angle / 2
-			angle-shift = angle / (cards-array.len() - 1)
+			angle-shift = angle / (cards.len() - 1)
 			radius = width / (2 * calc.sin(angle / 2))
 		}
 		// Drawing canvas
 		let result = cetz.canvas({
 			draw.rotate(z: -angle-start)
-			for i in range(cards-array.len()) {
+			for i in range(cards.len()) {
 				// Draw content - use call-rng-function to properly handle RNG state
+				let card = cards.at(i)
 				let (new-rng, card-content) = call-rng-function(render, rng,
-					cards-array.at(i),
+					card.id,
 					format: format,
 					noise: noise,
+					outjogged: card.outjogged
 				)
 				rng = new-rng  // Update RNG state for next iteration
 				
