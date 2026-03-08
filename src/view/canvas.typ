@@ -137,6 +137,10 @@
 		} else if num == "king" {
 			draw-symmetric-figure-canvas(emoji.man.crown, symbol)
 
+		//JOKER
+		} else if num == "joker" {
+			draw-symmetric-figure-canvas(emoji.juggling, symbol)
+
 		// otherwise
 		} else {
 			content((0,0), [$emptyset$])

@@ -12,7 +12,7 @@ As you can see, the function has been called with two arguments, and it produced
 
 + The first argument is the *card identifier* as a string (@cmd:deckz:render.card). Use *standard short notation* like `"AH"`, `"10S"`, `"QC"`, etc., where the first letter(s) indicates the *rank*, and the last letter the *suit*.
 
-	- *Available ranks*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`.
+	- *Available ranks*: `A`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `J`, `Q`, `K`, `*` (Joker).
 	- *Available suits*: `H` (Hearts #text(red)[#emoji.suit.heart]), `D` (Diamonds #text(red)[#emoji.suit.diamond]), `C` (Clubs #emoji.suit.club), `S` (Spades #emoji.suit.spade).
 
 	#bts-info[
