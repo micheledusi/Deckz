@@ -26,6 +26,7 @@
 
 
 /// This function takes the code for a card and returns the corresponding data about its suit, color, and rank.
+/// For example, if the input is "AH", the output will be a dictionary containing the suit `"heart"`, color `"red"`, rank `"ace"`, and other related properties from the `suits` and `ranks` dictionaries.
 /// 
 /// -> dictionary
 #let extract-card-data(card-code) = {
@@ -58,33 +59,45 @@
   return card-data
 }
 
-/// This function converts the mixed input cards to a uniform array of cards
+/// This function converts the mixed input cards to a uniform array of card specifiers in dictionary form.
+/// The input can be a mix of strings (card codes) and dictionaries (card specifiers). 
+/// The output is an array of dictionaries, where each dictionary has at least an "id" property (the card code).
+/// Other properties that can be included are:
+/// - `outjogged`: a boolean or float value indicating whether the card should be displayed with a vertical shift (outjogged). Default is #false | #`none`.
+/// - (more properties can be added in the future as needed)
+/// 
+/// If an input cannot be parsed as a valid card specifier, it will be skipped.
 /// 
 /// -> array(dictionary)
-#let convert-input-cards(input-cards) = {
-  let cards = ()
-  for card in input-cards {
+#let convert-card-inputs-to-dict-specifiers(card-inputs) = {
+  // Initialize an empty array to hold the card specifiers
+  let card-specifiers = ()
+  // Setup the default properties for the card specifier
+  let specifier-defaults = (
+    outjogged: none,
+  )
+
+  for card in card-inputs {
+    let specifier = specifier-defaults
+
     if type(card) == str {
-      cards.push((id: card, outjogged: false))
+      // If the input is a string, we add it as the "id" property in the specifier
+      specifier += (id: card,)
     }
-    else {
-      // id is required in dictionary form
+    else if type(card) == dictionary {
+      // If the input is a dictionary, we check if it has an "id" property and add it to the specifier
       if not "id" in card {
         continue
       }
-      // default properties
-      let new-card = (
-        id: "",
-        outjogged: false,
-      )
-      // overwrite properties from input
-      for (key, value) in card {
-        new-card.insert(key, value)
-      }
-      cards.push(new-card)
+      specifier += card
     }
+    else {
+      // If the input is neither a string nor a dictionary, skip it
+      continue
+    }
+    card-specifiers.push(specifier)
   }
-  return cards
+  return card-specifiers
 }
 
 

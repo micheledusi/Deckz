@@ -53,16 +53,16 @@
   /// -> rng | auto
 	rng: auto,
 ) = context {
-	let cards = convert-input-cards(cards.pos())
+	let cards-specifiers = convert-card-inputs-to-dict-specifiers(cards.pos())
 	// If no cards, return empty array
-	if cards.len() == 0 {
+	if cards-specifiers.len() == 0 {
 		return []
 	}
 	// Prepare the random number generator
-	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards.map(card => card.id))
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-specifiers.map(card => card.id))
 	// If only one card, render it directly
-	if cards.len() == 1 {
-		let card = cards.at(0)
+	if cards-specifiers.len() == 1 {
+		let card = cards-specifiers.at(0)
 		let (new-rng, card-content) = call-rng-function(render, rng,
 			card.id,
 			format: format,
@@ -84,7 +84,7 @@
 			} else {
 				// Case: `width` is set, thus `spacing` is computed based on the number of cards
 				let card-width = format-parameters.at(format).width.to-absolute()
-				computed-spacing = (width - card-width * cards.len()) / (cards.len() - 1)
+				computed-spacing = (width - card-width * cards-specifiers.len()) / (cards-specifiers.len() - 1)
 			}
 		} else {
 			// Case: spacing is set to a specific value
@@ -100,7 +100,7 @@
 
 		// Visualization
 		let cards-content = ()
-		for card in cards {
+		for card in cards-specifiers {
 			// Use call-rng-function to properly handle RNG state
 			let (new-rng, card-view) = call-rng-function(render, rng,
 				card.id,
@@ -155,16 +155,16 @@
   /// -> rng | auto
 	rng: auto,
 ) = {
-	let cards = convert-input-cards(cards.pos())
+	let cards-specifiers = convert-card-inputs-to-dict-specifiers(cards.pos())
 	// If no cards, return empty array
-	if cards.len() == 0 {
+	if cards-specifiers.len() == 0 {
 		return []
 	}
 	// Prepare the random number generator
-	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards.map(card => card.id))
+	let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: cards-specifiers.map(card => card.id))
 	// If only one card, render it directly
-	if cards.len() == 1 {
-		let card = cards.at(0)
+	if cards-specifiers.len() == 1 {
+		let card = cards-specifiers.at(0)
 		let (new-rng, card-content) = call-rng-function(render, rng,
 			card.id,
 			format: format,
@@ -176,18 +176,18 @@
 		// If there is at least a pair of cards
 		let (angle-start, angle-shift, radius, shift-x) = (0deg, 0deg, 0pt, 0pt)
 		if angle == 0deg {
-			shift-x = width / (cards.len() - 1)
+			shift-x = width / (cards-specifiers.len() - 1)
 		} else {
 			angle-start = -angle / 2
-			angle-shift = angle / (cards.len() - 1)
+			angle-shift = angle / (cards-specifiers.len() - 1)
 			radius = width / (2 * calc.sin(angle / 2))
 		}
 		// Drawing canvas
 		let result = cetz.canvas({
 			draw.rotate(z: -angle-start)
-			for i in range(cards.len()) {
+			for i in range(cards-specifiers.len()) {
 				// Draw content - use call-rng-function to properly handle RNG state
-				let card = cards.at(i)
+				let card = cards-specifiers.at(i)
 				let (new-rng, card-content) = call-rng-function(render, rng,
 					card.id,
 					format: format,
