@@ -167,6 +167,9 @@
   /// The random number generator to use for the noise. If not provided or set to default value #value(auto), a new random number generator will be created. Otherwise, you can pass an existing random number generator to use.
   /// -> rng | auto
   rng: auto,
+  /// Whether to display the card outjogged
+  /// -> bool
+  outjogged: false
 ) = {
   let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: card)
   
@@ -188,6 +191,13 @@
         reflow: false,
         result-content
       )
+    ))
+  }
+
+  if (outjogged) {
+    result-content = box(move(
+      dy: -format-parameters.at(format).height / 2,
+      result-content
     ))
   }
   

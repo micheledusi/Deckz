@@ -58,6 +58,35 @@
   return card-data
 }
 
+/// This function converts the mixed input cards to a uniform array of cards
+/// 
+/// -> array(dictionary)
+#let convert-input-cards(input-cards) = {
+  let cards = ()
+  for card in input-cards {
+    if type(card) == str {
+      cards.push((id: card, outjogged: false))
+    }
+    else {
+      // id is required in dictionary form
+      if not "id" in card {
+        continue
+      }
+      // default properties
+      let new-card = (
+        id: "",
+        outjogged: false,
+      )
+      // overwrite properties from input
+      for (key, value) in card {
+        new-card.insert(key, value)
+      }
+      cards.push(new-card)
+    }
+  }
+  return cards
+}
+
 
 #import "@preview/digestify:0.1.0": sha256 // Hashing library, used to create a seed from the cards
 
