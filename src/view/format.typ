@@ -160,6 +160,10 @@
   /// The selected format of the card. Available formats are: #choices("inline", "mini", "small", "medium", "large", "square").
   /// -> string
   format: "medium", 
+  /// Whether to display the card outjogged, i.e. with a vertical shift upwards. This is useful for simulating the common practice of holding cards with a slight vertical offset, making it easier to distinguish between them when they are displayed in a stack or fan layout.
+  /// Default value is #value(none) or #value(false), which corresponds to no vertical shift. If set to true, the card will be shifted upwards by half of its height, creating an outjogged effect. If set to a float value, the card will be shifted upwards by that amount (e.g. 0.5em).
+  /// -> float | bool | auto | none
+  outjogged: none,
   /// The amount of "randomness" in the placement and rotation of the card. Default value is #value(none) or #value(0.), which corresponds to no variations.
   /// A value of #value(1.) corresponds to a "standard" amount of noise, according to DECKZ style. Higher values might produce crazy results, handle with care. 
   /// -> float | none
@@ -167,9 +171,6 @@
   /// The random number generator to use for the noise. If not provided or set to default value #value(auto), a new random number generator will be created. Otherwise, you can pass an existing random number generator to use.
   /// -> rng | auto
   rng: auto,
-  /// Whether to display the card outjogged
-  /// -> bool
-  outjogged: false
 ) = {
   let (rng-from-outside, rng) = prepare-rng(rng: rng, seed: card)
   
@@ -194,9 +195,16 @@
     ))
   }
 
-  if (outjogged) {
+  // If outjogged is true/auto/float, apply vertical shift
+  if outjogged != none and outjogged != false {
+    let outjogged-shift = if outjogged == true or outjogged == auto {
+      format-parameters.at(format).height / 2
+    } else {
+      outjogged
+    }
+
     result-content = box(move(
-      dy: -format-parameters.at(format).height / 2,
+      dy: -outjogged-shift,
       result-content
     ))
   }
