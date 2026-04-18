@@ -78,6 +78,11 @@
     order: 13,
     score: 13,
   ),
+  joker: (
+    code: "*",
+    order: 99,
+    score: 99,
+  )
 )
 
 #import "@preview/linguify:0.4.2": *

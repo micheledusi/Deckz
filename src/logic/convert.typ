@@ -31,7 +31,9 @@
 /// -> dictionary
 #let extract-card-data(card-code) = {
   let card-data = (:)
-
+  if card-code == ranks.joker.code {
+    card-code += suits.club.code
+  }
   for (suit-key, suit-data) in suits.pairs() {
     if upper(card-code.at(-1)) == suit-data.code {
       card-data.suit = suit-key
@@ -55,6 +57,10 @@
   }
   if not "rank" in card-data {
     card-data.rank = none
+  }
+  if card-data.rank == "joker" {
+    card-data.rank-symbol = sym.star.filled
+    card-data.suit-symbol = "\u{2003}"
   }
   return card-data
 }
