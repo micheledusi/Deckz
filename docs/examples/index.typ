@@ -43,6 +43,20 @@ You can use DECKZ to display a *full deck of cards*, simply by retrieving the `d
 ]
 
 #pagebreak()
+== Outjogging cards
+
+Thanks to the suggested outjogging feature, you can easily *outjog cards* in a line or a hand, by using the `outjogged` property of the card specification. This property accepts different values to control how much the card should be outjogged, or whether it should be outjogged at all.
+
+#example(breakable: true)[
+	#raw(
+		lang: "typ",
+		read("exmp_outjog.typ"),
+	)
+]
+
+Please, notice that outjogging *does not affect the bounding box* of the card. This may lead to unexpected results, as the drawn card may overlap with other elements.
+
+#pagebreak()
 == Randomized game with card scoring
 
 You can use DECKZ to create a *randomized _Texas Hold'em_-like game*, where players are dealt random hands and their best hands are determined based on the cards on the table/*, using the @cmd:deckz:val:extract-highest function*/.

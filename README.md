@@ -405,6 +405,12 @@ Made something cool with Deckz? Let me know — I’d love to feature your work!
 ### Credits
 This package is created by [Michele Dusi](https://github.com/micheledusi) and is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
+The following people contributed to the development of this package:
+- [Michele Dusi](https://github.com/micheledusi);
+- [Lukas Dachtler](https://github.com/lukas-dachtler) for the outjogging feature;
+- [jassler](https://github.com/jassler) for German localization;
+- [benzlokzik](https://github.com/benzlokzik) for Armenian and Russian localizations.
+
 All fonts used in this package are licensed under the [SIL Open Font License, Version 1.1](https://openfontlicense.org) 
 ([*Oldenburg*](https://fonts.google.com/specimen/Oldenburg), [*Arvo*](https://fonts.google.com/specimen/Arvo))
 or the [Apache License, Version 2.0](http://www.apache.org/licenses/)
