@@ -20,7 +20,7 @@
       doc: "A number indicating in which order the rank should be placed, with respect to the other ranks in the deck. This is automatically initialized by the library, according to the order in which ranks are defined, starting from 1 for the first rank of the list.",
       required: true,
     ),
-    e.field("code", e.types.smart(e.types.union(str, int)), 
+    e.field("code", e.types.smart(str), 
       doc: "The code used to identify the rank when used in the card abbreviations. If not provided, it defaults to the first character of the ID, uppercased.",
       required: false,
       named: true, 
