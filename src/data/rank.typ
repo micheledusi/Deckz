@@ -1,7 +1,6 @@
 // rank.typ
 
 #import "import.typ": *
-#import "style.typ": title-case
 
 #let rank = e.element.declare(
   "Rank",

@@ -20,3 +20,17 @@
 
 // Decks directory containing the styles specifications
 #let decks-dir = res-dir + "decks/"
+
+// -------------------------------------------------------------
+// Utility functions
+
+// Capitalizes the words within a string
+#let title-case(string) = {
+  return string.replace(
+    regex("[A-Za-z]+('[A-Za-z]+)?"),
+    word => upper(word.text.first()) + lower(word.text.slice(1)),
+  )
+}
+
+#let regex-hex-color = regex("^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$")
+#let regex-gradient = regex("gradient\.[a-z_-]+\(.*\)")

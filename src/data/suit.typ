@@ -1,7 +1,6 @@
 // suit.typ
 
 #import "import.typ": *
-#import "style.typ": title-case, regex-hex-color, regex-gradient
 
 #let suit = e.element.declare(
   "Suit",

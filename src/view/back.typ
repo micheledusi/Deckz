@@ -1,6 +1,6 @@
 // Functions to handle the back of cards.
 #import "format.typ": format-parameters, render-card-frame
-#import "../data/style.typ": back-color, border-style
+#import "../view/style.typ": back-color, border-style
 
 #let fill-rombus = {
 	tiling(

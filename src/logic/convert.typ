@@ -3,7 +3,6 @@
 
 #import "../data/suit.typ": *
 #import "../data/rank.typ": *
-#import "../data/style.typ": *
 
 /// Get the card code for a given suit and rank.
 /// 
