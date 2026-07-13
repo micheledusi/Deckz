@@ -1,0 +1,12 @@
+heart:
+  symbol: ♥
+  color: "#ff4136"
+diamond:
+  symbol: ♦
+  color: "#ff4136"
+club:
+  symbol: ♣
+  color: "#000"
+spade:
+  symbol: ♠
+  color: "#000"

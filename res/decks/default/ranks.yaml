@@ -1,0 +1,35 @@
+ace:
+  score: 14
+two:
+  code: 2
+  score: 2
+three:
+  code: 3
+  score: 3
+four:
+  code: 4
+  score: 4
+five:
+  code: 5
+  score: 5
+six:
+  code: 6
+  score: 6
+seven:
+  code: 7
+  score: 7
+eight:
+  code: 8
+  score: 8
+nine:
+  code: 9
+  score: 9
+ten:
+  code: 10
+  score: 10
+jack:
+  score: 11
+queen:
+  score: 12
+king:
+  score: 13

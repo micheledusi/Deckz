@@ -1,12 +1,11 @@
-#import "../src/data/rank.typ": *
-#import "../src/data/suit.typ": *
+#import "../src/data/rank.typ": ranks
+#import "../src/data/suit.typ": suits
+#import "../src/data/card.typ": card
 
 #set text(lang: "en")
 
-#show: e.set_(suit, symbol: emoji.abacus)
-
-#for suit in suits.values() {
-	for rank in ranks.values() [
-		#rank#suit -- 
+#for s in suits.values() {
+	for r in ranks.values() [
+		#card(r, s)
 	]
 }
