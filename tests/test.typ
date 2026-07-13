@@ -4,8 +4,8 @@
 
 #set text(lang: "en")
 
-#for s in suits.values() {
-	for r in ranks.values() [
-		#card(r, s)
-	]
-}
+#card("5C")
+#card("9S")
+#card("2H")
+#card("3D")
+#card("QS")
