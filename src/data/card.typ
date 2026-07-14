@@ -58,6 +58,12 @@
       named: true,
       default: gray.mix(aqua).darken(50%) + 1pt,
     ),
+    e.field("back-tiling", str,
+      doc: "The path to the image used to tile the back of the card.",
+      required: false,
+      named: true,
+      default: "../../res/decks/default/back.svg" // TODO FIXME better implementation
+    ),
 	),
 
 	construct: default-constructor => (..args) => {

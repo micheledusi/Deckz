@@ -8,16 +8,11 @@
 
 #show: e.set_(card)
 
-#card("5C", format: "inline")
-
-#card("5S", format: "mini")
-
+#card("5D", format: "inline")
+#card("5D", format: "mini")
 #card("5D", format: "small")
-
 #card("5D", format: "medium")
-
 #card("5H", format: "large")
-
 #card("5D", format: "square")
 
 #card("QS")

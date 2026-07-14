@@ -93,7 +93,7 @@
 			width: 100%,
 			height: 100%,
 			radius: 4pt,
-			fill: tiling(offset: (50%, 50%), image("../../res/decks/default/back.svg"))
+			fill: tiling(offset: (50%, 50%), image(card.back-tiling), relative: "self")
 		)
 	}
 	else {
@@ -101,6 +101,6 @@
 			render-card-content(card)
 		)
 	}
-
+	// Render the card structure with the content inside
 	render-card-frame(card, card-content-body)
 }
